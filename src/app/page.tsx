@@ -82,7 +82,8 @@ export default async function HomePage() {
             </ul>
           ) : (
             <EmptyState title="No other meetings scheduled right now.">
-              New meetings appear here as soon as the city publishes them.
+              The city has not yet published its next round of meeting dates. They appear here
+              automatically as soon as it does.
             </EmptyState>
           )}
           <SourceNote source={meetings} className="mt-4" />

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getPastMeetings, getUpcomingMeetings } from "@/lib/legistar";
 import { MeetingCard } from "@/components/MeetingCard";
+import { formatDate } from "@/lib/format";
 import { Container, EmptyState, PageHeader, SectionHeading, SourceNote } from "@/components/ui";
 
 export const revalidate = 900;
@@ -13,6 +14,8 @@ export const metadata: Metadata = {
 
 export default async function MeetingsPage() {
   const [upcoming, past] = await Promise.all([getUpcomingMeetings(30), getPastMeetings(12)]);
+  // With nothing scheduled ahead, the newest record is the calendar's horizon.
+  const horizon = past.data[0]?.date;
 
   return (
     <>
@@ -37,7 +40,9 @@ export default async function MeetingsPage() {
             <EmptyState title="Nothing on the calendar yet.">
               {upcoming.health === "unavailable"
                 ? "The city's meeting system could not be reached. Try again shortly."
-                : "Meetings appear here as soon as the city schedules them."}
+                : horizon
+                  ? `The city has not published any meeting later than ${formatDate(horizon)}. Councils commonly recess in late summer and post the autumn calendar a few weeks ahead, so check back shortly.`
+                  : "Meetings appear here as soon as the city schedules them."}
             </EmptyState>
           )}
           <SourceNote source={upcoming} className="mt-4" />
