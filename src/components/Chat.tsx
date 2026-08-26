@@ -2,21 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Markdown } from "./Markdown";
+import { LANGUAGES, STRINGS, type LanguageCode } from "@/data/chat-i18n";
 
 interface Msg {
   role: "user" | "assistant";
   content: string;
 }
 
-const SUGGESTIONS = [
-  "When does the City Council meet next?",
-  "Who is on the council right now?",
-  "How do I speak at a meeting?",
-  "Who is running in November, and for what?",
-  "What did the council do in July?",
-];
-
 export function Chat() {
+  const [lang, setLang] = useState<LanguageCode>("en");
+  const t = STRINGS[lang];
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -42,7 +37,7 @@ export function Chat() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next }),
+        body: JSON.stringify({ messages: next, language: lang }),
       });
 
       if (!res.ok || !res.body) {
@@ -73,6 +68,28 @@ export function Chat() {
 
   return (
     <div className="flex flex-col">
+      <div className="mb-4 flex flex-wrap items-center gap-2">
+        <span className="text-xs font-medium uppercase tracking-wider text-ink-muted">
+          Language
+        </span>
+        {LANGUAGES.map((l) => (
+          <button
+            key={l.code}
+            type="button"
+            onClick={() => setLang(l.code)}
+            aria-pressed={lang === l.code}
+            lang={l.code}
+            className={`rounded-full border px-3 py-1 text-sm transition-colors ${
+              lang === l.code
+                ? "border-transparent bg-primary text-primary-fg"
+                : "border-border-strong text-ink hover:bg-surface-2"
+            }`}
+          >
+            {l.name}
+          </button>
+        ))}
+      </div>
+
       <div
         className="min-h-[22rem] rounded-xl border border-border bg-surface p-5"
         aria-live="polite"
@@ -80,16 +97,19 @@ export function Chat() {
       >
         {empty ? (
           <div>
-            <p className="text-sm leading-relaxed text-ink-muted">
-              Ask about meetings, agendas, the council, commissions, the November election, or
-              local news. Answers come from the city&rsquo;s own records.
+            <p className="text-sm leading-relaxed text-ink-muted" lang={lang}>
+              {t.intro}
+            </p>
+            <p className="mt-2 text-xs leading-relaxed text-ink-muted" lang={lang}>
+              {t.recordsNote}
             </p>
             <ul className="mt-5 flex flex-wrap gap-2">
-              {SUGGESTIONS.map((s) => (
+              {t.suggestions.map((s) => (
                 <li key={s}>
                   <button
                     type="button"
                     onClick={() => send(s)}
+                    lang={lang}
                     className="rounded-full border border-border-strong px-3 py-1.5 text-sm text-ink transition-colors hover:bg-surface-2"
                   >
                     {s}
@@ -109,14 +129,14 @@ export function Chat() {
                 ) : (
                   <div className="max-w-[95%]">
                     <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-ink-muted">
-                      Civic Index
+                      {t.label}
                     </p>
                     {m.content ? (
                       <Markdown text={m.content} />
                     ) : (
                       <p className="flex items-center gap-2 text-ink-muted">
                         <span className="inline-block size-2 animate-pulse rounded-full bg-primary" />
-                        Checking the city&rsquo;s records
+                        {t.thinking}
                       </p>
                     )}
                   </div>
@@ -142,7 +162,7 @@ export function Chat() {
         }}
       >
         <label htmlFor="chat-input" className="sr-only">
-          Ask a question about Cupertino city government
+          {t.inputLabel}
         </label>
         <textarea
           id="chat-input"
@@ -157,7 +177,8 @@ export function Chat() {
               send(input);
             }
           }}
-          placeholder="Ask about meetings, the council, the election..."
+          placeholder={t.placeholder}
+          lang={lang}
           className="min-h-[3.25rem] flex-1 resize-y rounded-lg border border-border-strong bg-surface px-3.5 py-2.5 text-ink placeholder:text-ink-muted disabled:opacity-60"
         />
         <button
@@ -165,13 +186,12 @@ export function Chat() {
           disabled={busy || input.trim().length === 0}
           className="rounded-lg bg-primary px-4 py-2.5 font-medium text-primary-fg transition-colors hover:bg-primary-hover disabled:opacity-50"
         >
-          {busy ? "Working" : "Ask"}
+          {busy ? t.working : t.ask}
         </button>
       </form>
 
-      <p className="mt-3 text-xs leading-relaxed text-ink-muted">
-        Answers are generated and can be wrong. This site is not the City of Cupertino. Confirm
-        anything with legal or financial consequences against the city&rsquo;s official records.
+      <p className="mt-3 text-xs leading-relaxed text-ink-muted" lang={lang}>
+        {t.disclaimer}
       </p>
     </div>
   );

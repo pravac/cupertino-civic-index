@@ -1,6 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { chatTools } from "@/lib/chat-tools";
 import { formatDate, todayInCupertino } from "@/lib/format";
+import { LANGUAGE_NAMES, type LanguageCode } from "@/data/chat-i18n";
 
 // The SDK needs Node APIs, so this route cannot run on the edge runtime.
 export const runtime = "nodejs";
@@ -32,6 +33,15 @@ function rateLimited(key: string): boolean {
   hits.set(key, recent);
   if (hits.size > 5_000) hits.clear();
   return recent.length > MAX_PER_WINDOW;
+}
+
+function systemFor(language: LanguageCode): string {
+  if (language === "en") return SYSTEM;
+  return `${SYSTEM}
+
+Reply in ${LANGUAGE_NAMES[language]}. The reader chose that language, so use it for your whole answer even though the records you are reading are in English.
+
+Quote official text (agenda titles, motion wording, headlines) in its original language and translate it alongside, rather than replacing it. Someone acting on a record needs the words the city actually used, and a name or file number they can match. Keep proper nouns, street names, and file numbers as they appear.`;
 }
 
 const SYSTEM = `You are the assistant for the Cupertino Civic Index, an independent guide to local government in Cupertino, California. Today is ${formatDate(todayInCupertino())}.
@@ -98,6 +108,12 @@ export async function POST(req: Request) {
     return Response.json({ error: "Malformed request." }, { status: 400 });
   }
 
+  const requested = (body as { language?: unknown })?.language;
+  const language: LanguageCode =
+    typeof requested === "string" && requested in LANGUAGE_NAMES
+      ? (requested as LanguageCode)
+      : "en";
+
   const raw = (body as { messages?: unknown })?.messages;
   if (!Array.isArray(raw) || raw.length === 0) {
     return Response.json({ error: "No messages supplied." }, { status: 400 });
@@ -130,7 +146,7 @@ export async function POST(req: Request) {
           // it on this model can make the agent emit a tool call as plain text,
           // which would silently never run.
           output_config: { effort: "low" },
-          system: SYSTEM,
+          system: systemFor(language),
           tools: chatTools,
           messages,
           stream: true,
