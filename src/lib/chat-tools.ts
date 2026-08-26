@@ -217,7 +217,7 @@ export const chatTools = [
         topic: {
           type: "string",
           description:
-            "Subject to find votes about, e.g. 'Mary Avenue' or 'Vallco'. Without it you get the most recent meetings. With it, more meetings are scanned to find the ones that discuss it, so always pass a topic when the question is about a specific thing.",
+            "Subject to find votes about, e.g. 'Mary Avenue'. ALWAYS pass this when the question is about a specific thing; omit it only for 'how have they been voting lately'. Matching is literal against the minutes text, so use the words the city uses, not the words the person used: minutes say 'law enforcement contract', not 'sheriff'. Search the city records first if you are unsure of the official wording, and retry with a different term before concluding there is no vote.",
         },
       },
       additionalProperties: false,
@@ -226,7 +226,10 @@ export const chatTools = [
       const since = `${Math.min(Math.max(since_year ?? 2025, 2000), 2100)}-01-01`;
       const result = await getRecentVotes(body ?? "City Council", since, topic);
       if (result.data.length === 0) {
-        return `No recorded votes found. ${result.error ?? ""} Minutes are only published after a body approves them at a later meeting, so recent meetings will not have any yet.`;
+        const retry = topic
+          ? ` Matching is literal, so try a broader or different word before concluding there is none: a single distinctive word ("Vallco", "Torre") beats a phrase, and the city's own wording beats the everyday term. Searching the city records will show you how staff titled the item.`
+          : "";
+        return `No recorded votes found. ${result.error ?? ""}${retry} Minutes are only published after a body approves them at a later meeting, so recent meetings will not have any yet.`;
       }
       const out = result.data.map((rec) => {
         const lines = rec.motions.map((m) => {
