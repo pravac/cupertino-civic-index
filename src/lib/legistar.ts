@@ -161,6 +161,25 @@ export function excludeCanceled(meetings: Meeting[]): Meeting[] {
   return meetings.filter((m) => !m.canceled);
 }
 
+/**
+ * Every meeting within a date window, for the month calendar. The end bound is
+ * exclusive so callers can pass the first day of the following month.
+ */
+export async function getMeetingsInRange(
+  startIso: string,
+  endIsoExclusive: string,
+): Promise<Sourced<Meeting[]>> {
+  const filter = `EventDate ge datetime'${startIso}' and EventDate lt datetime'${endIsoExclusive}'`;
+  try {
+    const raw = await legistarFetch<RawEvent[]>(
+      `/events?$filter=${encodeURIComponent(filter)}&$orderby=EventDate&$top=200`,
+    );
+    return wrap(await withCancellations(raw.map(toMeeting)));
+  } catch (err) {
+    return wrap([] as Meeting[], err);
+  }
+}
+
 export async function getMeeting(id: number): Promise<Sourced<Meeting | null>> {
   try {
     const raw = await legistarFetch<RawEvent>(`/events/${id}`);

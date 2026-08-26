@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { getPastMeetings, getUpcomingMeetings } from "@/lib/legistar";
+import { getMeetingsInRange, getPastMeetings, getUpcomingMeetings } from "@/lib/legistar";
+import { parseMonthKey } from "@/lib/month";
+import { MeetingCalendar } from "@/components/MeetingCalendar";
 import { MeetingCard } from "@/components/MeetingCard";
 import { formatDate } from "@/lib/format";
 import { Container, EmptyState, PageHeader, SectionHeading, SourceNote } from "@/components/ui";
@@ -12,8 +14,18 @@ export const metadata: Metadata = {
     "Every upcoming and recent public meeting of the Cupertino City Council, its commissions and its committees.",
 };
 
-export default async function MeetingsPage() {
-  const [upcoming, past] = await Promise.all([getUpcomingMeetings(30), getPastMeetings(12)]);
+// Next 16 delivers searchParams as a Promise.
+type Params = { searchParams: Promise<{ month?: string }> };
+
+export default async function MeetingsPage({ searchParams }: Params) {
+  const { month } = await searchParams;
+  const info = parseMonthKey(month);
+
+  const [upcoming, past, monthMeetings] = await Promise.all([
+    getUpcomingMeetings(30),
+    getPastMeetings(12),
+    getMeetingsInRange(info.firstDayIso, info.nextMonthIso),
+  ]);
   // With nothing scheduled ahead, the newest record is the calendar's horizon.
   const horizon = past.data[0]?.date;
 
@@ -26,6 +38,15 @@ export default async function MeetingsPage() {
       />
       <Container className="py-12">
         <section>
+          <SectionHeading
+            title="Calendar"
+            description="Every public meeting, past and upcoming. Select any meeting to see its agenda, or what was decided."
+          />
+          <MeetingCalendar info={info} meetings={monthMeetings.data} />
+          <SourceNote source={monthMeetings} className="mt-4" />
+        </section>
+
+        <section className="mt-16">
           <SectionHeading
             title="Upcoming"
             description="Scheduled meetings, soonest first. Agendas post shortly before each meeting."
