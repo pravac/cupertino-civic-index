@@ -19,6 +19,7 @@ import {
   searchMatters,
 } from "./legistar";
 import { getNews, searchNews } from "./news";
+import { getRecentVotes } from "./votes";
 import { formatDate, todayInCupertino } from "./format";
 import {
   COUNCIL,
@@ -194,6 +195,51 @@ export const chatTools = [
       return `${guide.title}\n${guide.summary}\n\n${guide.steps
         .map((s, i) => `${i + 1}. ${s}`)
         .join("\n")}\n\nOfficial page: ${guide.officialUrl}`;
+    },
+  }),
+
+  betaTool({
+    name: "get_voting_record",
+    description:
+      "How each member actually voted, recovered from meeting minutes. Returns the motion, who moved and seconded it, and every member listed under ayes, noes, abstain and absent. Use this for any question about how someone voted or where a body stood on something. Slow, because it reads PDFs, so call it only when the question is genuinely about votes.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        body: {
+          type: "string",
+          description:
+            "Body name or part of one, e.g. 'City Council' or 'Planning'. Defaults to the City Council.",
+        },
+        since_year: {
+          type: "number",
+          description: "Only minutes introduced on or after this year. Defaults to 2025.",
+        },
+      },
+      additionalProperties: false,
+    },
+    run: async ({ body, since_year }) => {
+      const since = `${Math.min(Math.max(since_year ?? 2025, 2000), 2100)}-01-01`;
+      const result = await getRecentVotes(body ?? "City Council", since);
+      if (result.data.length === 0) {
+        return `No recorded votes found. ${result.error ?? ""} Minutes are only published after a body approves them at a later meeting, so recent meetings will not have any yet.`;
+      }
+      const out = result.data.map((rec) => {
+        const lines = rec.motions.map((m) => {
+          const tally = [
+            `Ayes: ${m.ayes.join(", ") || "none"}`,
+            `Noes: ${m.noes.join(", ") || "none"}`,
+            m.abstain.length ? `Abstain: ${m.abstain.join(", ")}` : "",
+            m.absent.length ? `Absent: ${m.absent.join(", ")}` : "",
+          ]
+            .filter(Boolean)
+            .join(" | ");
+          return `  - ${m.text.slice(0, 300)}\n    ${tally}`;
+        });
+        return `${rec.body} meeting of ${rec.meetingDate ?? "unknown date"} (minutes ${rec.file ?? "n/a"})\n${lines.join(
+          "\n",
+        )}\n  Source PDF: ${rec.pdfUrl}`;
+      });
+      return `${out.join("\n\n")}\n\nThese come from the approved minutes PDF, which is the only place Cupertino records individual votes. Only the most recent few meetings are read per request.`;
     },
   }),
 
