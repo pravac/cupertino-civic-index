@@ -295,6 +295,63 @@ const NON_BODIES = new Set([
   "City Strategic Partnership Meetings",
 ]);
 
+interface RawMatter {
+  MatterId: number;
+  MatterGuid: string;
+  MatterFile: string | null;
+  MatterTitle: string | null;
+  MatterTypeName: string | null;
+  MatterStatusName: string | null;
+  MatterIntroDate: string | null;
+  MatterBodyName: string | null;
+}
+
+export interface MatterHit {
+  file: string | null;
+  title: string;
+  body: string | null;
+  status: string | null;
+  introduced: string | null;
+  url: string;
+}
+
+/**
+ * Keyword search across the legislative record: every item staff have filed,
+ * not just the ones on a meeting we happen to be looking at. This is how a
+ * resident finds the paper trail for a project near them, which the
+ * meeting-by-meeting view cannot answer without knowing the date first.
+ */
+export async function searchMatters(
+  query: string,
+  sinceIso = "2024-01-01",
+  limit = 12,
+): Promise<Sourced<MatterHit[]>> {
+  // Single quotes terminate an OData string literal; doubling escapes them.
+  const safe = query.replace(/[^\w\s.,'&/-]/g, " ").trim().slice(0, 80).replace(/'/g, "''");
+  if (safe.length < 2) return wrap([] as MatterHit[]);
+
+  const filter = `substringof('${safe}',MatterTitle) and MatterIntroDate gt datetime'${sinceIso}'`;
+  try {
+    const raw = await legistarFetch<RawMatter[]>(
+      `/matters?$filter=${encodeURIComponent(filter)}&$orderby=${encodeURIComponent(
+        "MatterIntroDate desc",
+      )}&$top=${limit}`,
+    );
+    return wrap(
+      raw.map((m) => ({
+        file: m.MatterFile,
+        title: (m.MatterTitle ?? "").replace(/\s+/g, " ").replace(/^Subject:\s*/i, "").trim(),
+        body: m.MatterBodyName,
+        status: m.MatterStatusName,
+        introduced: m.MatterIntroDate,
+        url: `https://cupertino.legistar.com/LegislationDetail.aspx?ID=${m.MatterId}&GUID=${m.MatterGuid}`,
+      })),
+    );
+  } catch (err) {
+    return wrap([] as MatterHit[], err);
+  }
+}
+
 export async function getBodies(): Promise<Sourced<GoverningBody[]>> {
   try {
     const raw = await legistarFetch<RawBody[]>("/bodies");

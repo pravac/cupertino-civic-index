@@ -252,6 +252,37 @@ function dedupe(items: NewsItem[]): NewsItem[] {
   });
 }
 
+/**
+ * A live, scoped search rather than a filter over the cached topic feeds.
+ * The topic feeds only look back 60 days, so a project approved in February
+ * is invisible to them by spring, which is exactly when someone asks about it.
+ */
+export async function searchNews(query: string, limit = 12): Promise<NewsItem[]> {
+  const clean = query.replace(/["\\]/g, " ").trim().slice(0, 120);
+  if (clean.length < 2) return [];
+  const url =
+    "https://news.google.com/rss/search?q=" +
+    encodeURIComponent(`Cupertino ${clean} when:730d`) +
+    "&hl=en-US&gl=US&ceid=US:en";
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  try {
+    const res = await fetch(url, {
+      signal: controller.signal,
+      headers: { "User-Agent": "CupertinoCivicIndex/1.0 (+civic resource aggregator)" },
+      next: { revalidate: REVALIDATE },
+    });
+    if (!res.ok) return [];
+    return dedupe(parseRss(await res.text(), "search"))
+      .filter((i) => !SPORTS.test(i.title))
+      .slice(0, limit);
+  } catch {
+    return [];
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 export async function getNews(limit = 40): Promise<Sourced<NewsItem[]>> {
   const [directResults, topicResults] = await Promise.all([
     Promise.allSettled(DIRECT_FEEDS.map(fetchDirect)),

@@ -16,8 +16,9 @@ import {
   getMeetingsInRange,
   getPastMeetings,
   getUpcomingMeetings,
+  searchMatters,
 } from "./legistar";
-import { getNews } from "./news";
+import { getNews, searchNews } from "./news";
 import { formatDate, todayInCupertino } from "./format";
 import {
   COUNCIL,
@@ -197,9 +198,46 @@ export const chatTools = [
   }),
 
   betaTool({
+    name: "search_city_records",
+    description:
+      "Search Cupertino's legislative record by keyword: every item staff have filed, across all meetings and years. Use this FIRST for any question about a specific project, street, address, development, ordinance, or topic, for example 'Mary Avenue', 'Vallco', 'bike lane', 'plastic bag'. It finds the paper trail when you do not already know which meeting to look at.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        query: {
+          type: "string",
+          description:
+            "Words that would appear in the item's title, e.g. a street name or project name. Keep it short; two or three words match best.",
+        },
+        since_year: {
+          type: "number",
+          description: "Only items introduced on or after this year. Defaults to 2024.",
+        },
+      },
+      required: ["query"],
+      additionalProperties: false,
+    },
+    run: async ({ query, since_year }) => {
+      const since = `${Math.min(Math.max(since_year ?? 2024, 2000), 2100)}-01-01`;
+      const hits = (await searchMatters(query, since)).data;
+      if (hits.length === 0) {
+        return `Nothing in the city's legislative record matches "${query}" since ${since.slice(0, 4)}. Try fewer or different words, an earlier since_year, or search local news instead.`;
+      }
+      return hits
+        .map(
+          (h) =>
+            `${h.introduced ? h.introduced.slice(0, 10) : "undated"} | ${h.body ?? "unknown body"} | file ${
+              h.file ?? "n/a"
+            } | ${h.title.slice(0, 220)}\n    ${h.url}`,
+        )
+        .join("\n");
+    },
+  }),
+
+  betaTool({
     name: "search_local_news",
     description:
-      "Recent news headlines about Cupertino from local outlets. Headlines only, with publisher and link. Never state a headline as established fact; attribute it to the outlet.",
+      "News headlines about Cupertino from local outlets. With a query it searches the past two years; without one it returns recent headlines. Use it for public reaction, lawsuits, and context that never reaches the city's own record. Headlines only: attribute to the outlet, never state one as established fact.",
     inputSchema: {
       type: "object",
       properties: {
@@ -211,13 +249,15 @@ export const chatTools = [
       additionalProperties: false,
     },
     run: async ({ query }) => {
-      const news = await getNews(40);
-      let items = news.data;
-      if (query) {
-        const q = query.toLowerCase();
-        items = items.filter((i) => i.title.toLowerCase().includes(q));
+      // With a query, search live over two years. Without one, show the
+      // recent topic feeds. Filtering the 60-day feeds by keyword missed
+      // anything older, which is usually the thing being asked about.
+      const items = query ? await searchNews(query) : (await getNews(40)).data;
+      if (items.length === 0) {
+        return query
+          ? `No headlines found about "${query}" in the last two years.`
+          : "No recent headlines available.";
       }
-      if (items.length === 0) return "No matching headlines in the last 60 days.";
       return items
         .slice(0, 15)
         .map((i) => `${i.title} (${i.source}) ${i.url}`)
