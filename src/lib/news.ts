@@ -74,24 +74,76 @@ function splitTitle(raw: string, source: string | null): string {
   return idx > 20 ? raw.slice(0, idx).trim() : raw;
 }
 
-function parseRss(xml: string, topic: string): NewsItem[] {
+interface ParseOpts {
+  /** Publisher feeds carry no <source> tag, so name them explicitly. */
+  defaultSource?: string;
+  /** Google appends " - Publisher" to titles; publisher feeds do not. */
+  splitTitles?: boolean;
+}
+
+function parseRss(xml: string, topic: string, opts: ParseOpts = {}): NewsItem[] {
   const items: NewsItem[] = [];
   const blocks = xml.match(/<item>[\s\S]*?<\/item>/g) ?? [];
   for (const block of blocks) {
     const rawTitle = tag(block, "title");
     const link = tag(block, "link");
     if (!rawTitle || !link) continue;
-    const source = tag(block, "source");
+    const source = tag(block, "source") ?? opts.defaultSource ?? "Unknown";
     const pub = tag(block, "pubDate");
     items.push({
-      title: splitTitle(rawTitle, source),
+      title: opts.splitTitles === false ? rawTitle : splitTitle(rawTitle, source),
       url: link,
-      source: source ?? "Unknown",
+      source,
       publishedAt: pub ? new Date(pub).toISOString() : null,
       topic,
     });
   }
   return items;
+}
+
+/**
+ * Feeds published directly by local outlets. These beat the Google News search
+ * on every axis — the publisher has already decided the story is about
+ * Cupertino, the links are canonical rather than redirects, and attribution is
+ * exact — so they are fetched first and win deduplication.
+ *
+ * The city's own newsroom at cupertino.gov is deliberately absent: it sits
+ * behind bot protection that returns 403 to any automated request. Working
+ * around that would mean evading an access control, which is the wrong posture
+ * for a tool meant to be handed to the city. The right fix is to ask the city
+ * for a feed, not to take one.
+ */
+interface DirectFeed {
+  name: string;
+  url: string;
+  topic: string;
+}
+
+export const DIRECT_FEEDS: DirectFeed[] = [
+  {
+    name: "San José Spotlight",
+    url: "https://sanjosespotlight.com/category/cupertino/feed",
+    topic: "city-hall",
+  },
+];
+
+async function fetchDirect(feed: DirectFeed): Promise<NewsItem[]> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  try {
+    const res = await fetch(feed.url, {
+      signal: controller.signal,
+      headers: { "User-Agent": "CupertinoCivicIndex/1.0 (+civic resource aggregator)" },
+      next: { revalidate: REVALIDATE },
+    });
+    if (!res.ok) throw new Error(`${feed.name} responded ${res.status}`);
+    return parseRss(await res.text(), feed.topic, {
+      defaultSource: feed.name,
+      splitTitles: false,
+    }).map((i) => ({ ...i, trusted: true }));
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 async function fetchTopic(t: NewsTopic): Promise<NewsItem[]> {
@@ -141,7 +193,8 @@ const CIVIC =
 
 function isRelevant(item: NewsItem): boolean {
   const t = item.title;
-  if (!LOCAL.test(t)) return false;
+  // A publisher's own Cupertino section has already made the local call.
+  if (!item.trusted && !LOCAL.test(t)) return false;
   if (NOT_CIVIC.test(t) || SPORTS.test(t)) return false;
   if (APPLE_CORPORATE.test(t) && !CIVIC.test(t)) return false;
   return true;
@@ -159,8 +212,13 @@ function dedupe(items: NewsItem[]): NewsItem[] {
 }
 
 export async function getNews(limit = 40): Promise<Sourced<NewsItem[]>> {
-  const results = await Promise.allSettled(NEWS_TOPICS.map(fetchTopic));
+  const [directResults, topicResults] = await Promise.all([
+    Promise.allSettled(DIRECT_FEEDS.map(fetchDirect)),
+    Promise.allSettled(NEWS_TOPICS.map(fetchTopic)),
+  ]);
+  const results = [...directResults, ...topicResults];
   const ok = results.filter((r) => r.status === "fulfilled");
+  // Direct feeds lead so deduplication keeps the canonical publisher link.
   const all = ok.flatMap((r) => (r as PromiseFulfilledResult<NewsItem[]>).value);
 
   if (ok.length === 0) {
@@ -182,12 +240,12 @@ export async function getNews(limit = 40): Promise<Sourced<NewsItem[]>> {
   return {
     data: sorted.slice(0, limit),
     // A partial failure still renders, but say so rather than implying full coverage.
-    health: ok.length === NEWS_TOPICS.length ? "live" : "curated",
+    health: ok.length === results.length ? "live" : "curated",
     origin: "Google News",
     fetchedAt: new Date().toISOString(),
     error:
-      ok.length === NEWS_TOPICS.length
+      ok.length === results.length
         ? undefined
-        : `${NEWS_TOPICS.length - ok.length} of ${NEWS_TOPICS.length} topics unavailable.`,
+        : `${results.length - ok.length} of ${results.length} sources unavailable.`,
   };
 }

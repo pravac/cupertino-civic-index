@@ -58,6 +58,8 @@ export interface NewsItem {
   source: string;
   publishedAt: string | null;
   topic: string;
+  /** From a publisher's own Cupertino section, so it skips keyword vetting. */
+  trusted?: boolean;
 }
 
 export interface Councilmember {
