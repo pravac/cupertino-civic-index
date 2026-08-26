@@ -21,7 +21,13 @@ import type { Sourced } from "./types";
 
 const TIMEOUT_MS = 15_000;
 const REVALIDATE = 86_400; // Minutes are immutable once approved.
-const MAX_PDFS = 4; // Bounds latency; each PDF is a separate download and parse.
+/** Without a topic, just show the latest meetings. */
+const MAX_RECENT_PDFS = 4;
+/** With a topic, scan deeper: the vote being asked about is usually not in the
+ *  last few meetings, which is the whole reason someone is asking. */
+const MAX_SCANNED_PDFS = 14;
+/** Stop once enough meetings match, so a common word does not read everything. */
+const MAX_MATCHING_PDFS = 4;
 
 export interface Motion {
   /** The full sentence as recorded, so nothing is lost in summarizing. */
@@ -157,7 +163,9 @@ async function extractPdf(url: string): Promise<string> {
 export async function getRecentVotes(
   body = "City Council",
   sinceIso = "2025-01-01",
+  topic?: string,
 ): Promise<Sourced<MinutesRecord[]>> {
+  const needle = topic?.trim().toLowerCase();
   const origin = "Meeting minutes (Legistar attachments)";
   const base = "https://webapi.legistar.com/v1/cupertino";
   const filter = `substringof('Minutes',MatterTitle) and MatterIntroDate gt datetime'${sinceIso}'`;
@@ -166,7 +174,7 @@ export async function getRecentVotes(
     const matters = await fetchJson<RawMatter[]>(
       `${base}/matters?$filter=${encodeURIComponent(filter)}&$orderby=${encodeURIComponent(
         "MatterIntroDate desc",
-      )}&$top=60`,
+      )}&$top=200`,
     );
 
     const wanted = matters.filter((m) =>
@@ -174,8 +182,13 @@ export async function getRecentVotes(
     );
 
     const records: MinutesRecord[] = [];
+    let scanned = 0;
     for (const m of wanted) {
-      if (records.length >= MAX_PDFS) break;
+      if (needle) {
+        if (records.length >= MAX_MATCHING_PDFS || scanned >= MAX_SCANNED_PDFS) break;
+      } else if (records.length >= MAX_RECENT_PDFS) {
+        break;
+      }
       let atts: RawAttachment[];
       try {
         atts = await fetchJson<RawAttachment[]>(`${base}/matters/${m.MatterId}/attachments`);
@@ -186,13 +199,26 @@ export async function getRecentVotes(
       if (!pdf?.MatterAttachmentHyperlink) continue;
 
       let motions: Motion[] = [];
+      let fullText = "";
       try {
-        motions = parseMotions(await extractPdf(pdf.MatterAttachmentHyperlink));
+        fullText = await extractPdf(pdf.MatterAttachmentHyperlink);
+        motions = parseMotions(fullText);
       } catch {
         // A single unreadable PDF should not lose the others.
         continue;
       }
+      scanned++;
       if (motions.length === 0) continue;
+
+      if (needle) {
+        // Keep a meeting only if the topic appears somewhere in it, then keep
+        // the motions that name it. Some motions reference the subject only in
+        // surrounding prose, so fall back to the whole meeting when the
+        // document matches but no single motion does.
+        if (!fullText.toLowerCase().includes(needle)) continue;
+        const hits = motions.filter((mo) => mo.text.toLowerCase().includes(needle));
+        motions = hits.length > 0 ? hits : motions;
+      }
 
       records.push({
         body: m.MatterBodyName ?? body,
@@ -210,7 +236,9 @@ export async function getRecentVotes(
       fetchedAt: new Date().toISOString(),
       error:
         records.length === 0
-          ? "No minutes with recorded votes were found for that body and window."
+          ? needle
+            ? `No approved minutes mentioning "${topic}" were found for that body since ${sinceIso.slice(0, 4)}. It may predate the window, or the minutes may not be adopted yet.`
+            : "No minutes with recorded votes were found for that body and window."
           : undefined,
     };
   } catch (err) {

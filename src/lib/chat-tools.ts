@@ -214,12 +214,17 @@ export const chatTools = [
           type: "number",
           description: "Only minutes introduced on or after this year. Defaults to 2025.",
         },
+        topic: {
+          type: "string",
+          description:
+            "Subject to find votes about, e.g. 'Mary Avenue' or 'Vallco'. Without it you get the most recent meetings. With it, more meetings are scanned to find the ones that discuss it, so always pass a topic when the question is about a specific thing.",
+        },
       },
       additionalProperties: false,
     },
-    run: async ({ body, since_year }) => {
+    run: async ({ body, since_year, topic }) => {
       const since = `${Math.min(Math.max(since_year ?? 2025, 2000), 2100)}-01-01`;
-      const result = await getRecentVotes(body ?? "City Council", since);
+      const result = await getRecentVotes(body ?? "City Council", since, topic);
       if (result.data.length === 0) {
         return `No recorded votes found. ${result.error ?? ""} Minutes are only published after a body approves them at a later meeting, so recent meetings will not have any yet.`;
       }
