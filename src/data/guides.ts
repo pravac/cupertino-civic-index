@@ -1,6 +1,6 @@
 /**
  * Participation guides. These answer the questions that actually stop people
- * from engaging — not "what is a city council" but "how do I say something and
+ * from engaging. Not "what is a city council" but "how do I say something and
  * have it count."
  *
  * Every guide links out to the authoritative city page. Where a detail varies
@@ -23,7 +23,7 @@ export const GUIDES: Guide[] = [
     summary:
       "Any resident can address the council on any agenda item, or on any city topic during oral communications. You do not need to sign up in advance to attend.",
     steps: [
-      "Find the meeting and read the agenda — comment is taken item by item, so note which item you care about.",
+      "Find the meeting and read the agenda. Comment is taken item by item, so note which item you care about.",
       "Attend in person at Community Hall, 10350 Torre Avenue, or join the teleconference link published on the agenda.",
       "Fill out a speaker card before your item is called, or use the raise-hand function if attending remotely.",
       "Speak when called. Time limits are set by the chair and are commonly around three minutes; the agenda states the limit for that meeting.",
@@ -40,7 +40,7 @@ export const GUIDES: Guide[] = [
     steps: [
       "Email the full council at citycouncil@cupertino.gov to reach all five members at once.",
       "Put the agenda item number in the subject line if your message concerns an upcoming decision.",
-      "Send it before the agenda packet closes — messages that arrive early are more likely to be read before the vote.",
+      "Send it before the agenda packet closes. Messages that arrive early are more likely to be read before the vote.",
       "Expect your name and message to appear in the public record and written communications packet.",
     ],
     officialUrl: "https://www.cupertino.gov/Your-City/City-Council",
@@ -53,7 +53,7 @@ export const GUIDES: Guide[] = [
       "Commissions advise the council on planning, parks, housing, libraries, public safety, sustainability and the arts. Members are residents appointed by the council, and seats open regularly.",
     steps: [
       "Browse the commissions below to find one matching what you care about.",
-      "Check the city's vacancy page — recruitments open on a set cycle, usually in the winter, plus mid-term vacancies.",
+      "Check the city's vacancy page. Recruitments open on a set cycle, usually in the winter, plus mid-term vacancies.",
       "Submit an application by the posted deadline.",
       "Interview with the council at a public meeting; appointments are made by council vote.",
       "If you are under 18, the Teen Commission is specifically for Cupertino students.",
@@ -78,7 +78,7 @@ export const GUIDES: Guide[] = [
 ];
 
 /** One-line explanations for the bodies Legistar returns. Anything without an
- *  entry still renders — it just shows without a description. */
+ *  entry still renders and simply shows without a description. */
 export const BODY_DESCRIPTIONS: Record<string, string> = {
   "City Council": "The city's elected governing body. Sets policy, adopts the budget, and makes final land use decisions.",
   "Planning Commission": "Reviews development proposals and zoning, and advises the council on land use.",

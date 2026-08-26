@@ -44,7 +44,7 @@ export function relativeDay(raw: string): string {
   return formatShortDate(raw);
 }
 
-/** Today in Pacific time as YYYY-MM-DD — the city's own clock. */
+/** Today in Pacific time as YYYY-MM-DD, the city's own clock. */
 export function todayInCupertino(): string {
   return new Intl.DateTimeFormat("en-CA", { timeZone: TZ }).format(new Date());
 }

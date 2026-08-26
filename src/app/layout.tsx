@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s · Cupertino Civic Index",
   },
   description:
-    "Meetings, agendas, elections and local news for Cupertino, California — collected in one place, sourced from the city's own public records.",
+    "Meetings, agendas, elections and local news for Cupertino, California, collected in one place, sourced from the city's own public records.",
   openGraph: {
     title: "Cupertino Civic Index",
     description:

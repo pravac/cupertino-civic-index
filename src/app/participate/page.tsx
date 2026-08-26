@@ -20,7 +20,7 @@ export default async function ParticipatePage() {
       <PageHeader
         eyebrow="Get involved"
         title="How to actually be heard"
-        intro="Local government is unusually open to anyone who shows up — the hard part is knowing the mechanics. Here they are."
+        intro="Local government is unusually open to anyone who shows up. The hard part is knowing the mechanics. Here they are."
       />
       <Container className="py-12">
         <section>

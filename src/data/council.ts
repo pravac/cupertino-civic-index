@@ -2,7 +2,7 @@ import type { Councilmember } from "@/lib/types";
 
 /**
  * Cupertino has five councilmembers elected at large to overlapping four-year
- * terms. The Mayor and Vice Mayor are not elected by voters — the council
+ * terms. The Mayor and Vice Mayor are not elected by voters. The council
  * appoints them from its own membership for one-year terms, which is the single
  * most common point of confusion for residents.
  *
@@ -25,7 +25,7 @@ export const COUNCIL_FACTS = [
   {
     label: "How the Mayor is chosen",
     value:
-      "Appointed annually by the council from among its five members — not elected directly by voters.",
+      "Appointed annually by the council from among its five members, not by voters directly.",
   },
   {
     label: "How members are elected",

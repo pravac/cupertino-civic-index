@@ -1,5 +1,5 @@
 /**
- * November 3, 2026 general election — three of five council seats.
+ * November 3, 2026 general election for three of five council seats.
  *
  * Editorial standard: every candidate gets the same fields, priorities are
  * summarized from their own stated platform, and nothing here characterizes a
@@ -26,7 +26,7 @@ export const ELECTION = {
 
 /** The defining policy split in this cycle, stated neutrally. */
 export const ELECTION_CONTEXT =
-  "Candidates divide largely over how Cupertino should meet state-mandated housing targets — how much new housing to approve, and where. Two informal slates have formed around that question.";
+  "Candidates divide largely over how Cupertino should meet state-mandated housing targets: how much new housing to approve, and where. Two informal slates have formed around that question.";
 
 export const CANDIDATES: Candidate[] = [
   {

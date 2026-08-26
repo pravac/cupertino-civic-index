@@ -8,7 +8,7 @@ export const revalidate = 1800;
 export const metadata: Metadata = {
   title: "Local News",
   description:
-    "Recent news about Cupertino, California — city hall, housing, schools and community — linked to the original publishers.",
+    "Recent news about Cupertino, California, covering city hall, housing, schools and community, linked to the original publishers.",
 };
 
 export default async function NewsPage() {
@@ -19,7 +19,7 @@ export default async function NewsPage() {
       <PageHeader
         eyebrow="Local news"
         title="What's being reported about Cupertino"
-        intro="Headlines gathered from local and regional outlets, grouped by topic. Every link goes straight to the publisher — nothing is reproduced here."
+        intro="Headlines gathered from local and regional outlets, grouped by topic. Every link goes straight to the publisher. Nothing is reproduced here."
       />
       <Container className="py-12">
         {NEWS_TOPICS.map((topic) => {

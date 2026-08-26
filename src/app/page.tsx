@@ -7,6 +7,7 @@ import { daysUntil, formatDate, formatWeekday, relativeDay } from "@/lib/format"
 import { MeetingCard } from "@/components/MeetingCard";
 import { Badge, ButtonLink, Card, Container, EmptyState, SectionHeading, SourceNote } from "@/components/ui";
 import { NewsList } from "@/components/NewsList";
+import { EmblemStrip } from "@/components/Emblems";
 
 /** Home is a dashboard: the three things a resident most often needs, answered
  *  before any navigation. Rendered on the server so it is fast and indexable. */
@@ -29,6 +30,7 @@ export default async function HomePage() {
       <section className="border-b border-border bg-surface-2">
         <Container className="py-14 sm:py-20">
           <div className="max-w-3xl">
+            <EmblemStrip className="mb-7" />
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-primary">
               Cupertino, California
             </p>
@@ -36,7 +38,7 @@ export default async function HomePage() {
               Everything happening in your city government, in one place.
             </h1>
             <p className="mt-5 text-lg leading-relaxed text-ink-muted">
-              Council meetings, agendas, commissions, the November election and local news —
+              Council meetings, agendas, commissions, the November election and local news, all
               gathered from the city&rsquo;s own records instead of scattered across a dozen
               portals.
             </p>

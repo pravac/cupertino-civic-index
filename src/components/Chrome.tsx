@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CitySeal } from "./Emblems";
 import { Container } from "./ui";
 
 const NAV = [
@@ -15,7 +16,7 @@ export function SiteHeader() {
       <Container>
         <div className="flex h-16 items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2.5 font-semibold tracking-tight text-ink">
-            <Mark />
+            <CitySeal />
             <span>
               Cupertino <span className="text-ink-muted font-normal">Civic Index</span>
             </span>
@@ -37,20 +38,6 @@ export function SiteHeader() {
         </div>
       </Container>
     </header>
-  );
-}
-
-function Mark() {
-  return (
-    <svg viewBox="0 0 24 24" className="size-6 shrink-0 text-primary" aria-hidden>
-      <path
-        d="M12 2.5 21 8v12.5a1 1 0 0 1-1 1h-5.5V15h-5v6.5H4a1 1 0 0 1-1-1V8z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinejoin="round"
-      />
-    </svg>
   );
 }
 

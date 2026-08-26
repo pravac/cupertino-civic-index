@@ -1,5 +1,5 @@
 /**
- * Client for the Legistar Web API — the same system Cupertino staff use to
+ * Client for the Legistar Web API, the same system Cupertino staff use to
  * publish agendas. It is public and unauthenticated, so everything here is
  * genuinely live city data rather than a copy that drifts out of date.
  *
@@ -176,7 +176,7 @@ export async function getAgendaItems(eventId: number): Promise<Sourced<AgendaIte
         return {
           id: i.EventItemId,
           order: i.EventItemAgendaSequence ?? idx,
-          // Staff prefix substantive items with "Subject:" — drop the label.
+          // Staff prefix substantive items with "Subject:", so drop the label.
           title: title.replace(/^Subject:\s*/i, ""),
           matterFile: i.EventItemMatterFile,
           matterType: i.EventItemMatterType,

@@ -3,7 +3,7 @@
  *
  * Deliberately headline-only: we store and render a title, publisher, date and
  * link straight to the publisher. No article text is copied or cached, which
- * keeps this a referral index rather than a republisher — the right posture for
+ * keeps this a referral index rather than a republisher, which is the right posture for
  * something a city might adopt.
  */
 import type { NewsItem, Sourced } from "./types";
@@ -16,6 +16,10 @@ export interface NewsTopic {
   label: string;
   query: string;
   description: string;
+  /** Accept regional landmarks (freeways, transit) as well as Cupertino
+   *  itself. A Highway 17 repaving affects Cupertino commuters even though
+   *  the headline never mentions the city. */
+  allowRegional?: boolean;
 }
 
 /** Each topic is one RSS query. Add a topic here and it appears in the UI. */
@@ -37,6 +41,22 @@ export const NEWS_TOPICS: NewsTopic[] = [
     label: "Schools",
     query: '"Cupertino" (school OR "school district" OR students)',
     description: "CUSD, FUHSD, and De Anza College",
+  },
+  {
+    key: "getting-around",
+    label: "Getting Around",
+    query:
+      '("Highway 17" OR "Highway 85" OR "Stevens Creek Boulevard" OR "De Anza Boulevard" OR "Interstate 280" OR "Lawrence Expressway" OR "Wolfe Road") (Cupertino OR "Santa Clara" OR "San Jose" OR Campbell OR "Los Gatos" OR Saratoga OR Sunnyvale OR "Santa Cruz Mountains")',
+    description: "Roads, freeways, transit and construction affecting local commutes",
+    allowRegional: true,
+  },
+  {
+    key: "mercury",
+    label: "From The Mercury News",
+    query:
+      'site:mercurynews.com (Cupertino OR "Highway 17" OR "Highway 85" OR "Stevens Creek" OR "De Anza")',
+    description: "Regional coverage from the Bay Area's largest local newsroom",
+    allowRegional: true,
   },
   {
     key: "community",
@@ -103,9 +123,9 @@ function parseRss(xml: string, topic: string, opts: ParseOpts = {}): NewsItem[] 
 
 /**
  * Feeds published directly by local outlets. These beat the Google News search
- * on every axis — the publisher has already decided the story is about
+ * on every axis. The publisher has already decided the story is about
  * Cupertino, the links are canonical rather than redirects, and attribution is
- * exact — so they are fetched first and win deduplication.
+ * exact, so they are fetched first and win deduplication.
  *
  * The city's own newsroom at cupertino.gov is deliberately absent: it sits
  * behind bot protection that returns 403 to any automated request. Working
@@ -174,10 +194,23 @@ async function fetchTopic(t: NewsTopic): Promise<NewsItem[]> {
  */
 const LOCAL = /\bcupertino\b|\bde anza\b|\bvallco\b|\bfuhsd\b|\bcusd\b|\bmonta vista\b/i;
 
+/**
+ * Route numbers are not unique across the country: Highway 17 also runs through
+ * the Carolinas and Highway 85 through Colorado, so a road name alone pulls in
+ * crashes two thousand miles away. Regional stories must also name somewhere in
+ * this corner of the Bay Area.
+ */
+const BAY_AREA =
+  /\b(cupertino|santa clara|san jos[eé]|campbell|los gatos|saratoga|sunnyvale|mountain view|palo alto|milpitas|los altos|santa cruz mountains|bay area|silicon valley|south bay|peninsula)\b/i;
+
+/** Landmarks outside city limits that still shape daily life in Cupertino. */
+const REGIONAL =
+  /\b(highway 17|highway 85|hwy 17|hwy 85|i-280|interstate 280|stevens creek|de anza|wolfe road|homestead road|foothill expressway|lawrence expressway|caltrans|\bvta\b|caltrain|santa clara county)\b/i;
+
 const APPLE_CORPORATE =
   /\b(aapl|iphone|ipad|macbook|imac|apple watch|airpods|vision pro|ios \d|app store|tim cook|earnings|shares?|stock|nasdaq|chip|silicon|wwdc|siri|trade secrets?|lawsuit|openai|execs?|ceo)\b/i;
 
-/** "Cupertino-based X" describes a company headquartered here — the story is
+/** "Cupertino-based X" describes a company headquartered here, so the story is
  *  about the company, not the city. Same for obituaries and entertainment. */
 const NOT_CIVIC =
   /cupertino[- ]based|\bobituary\b|\btrailer\b|\bteaser\b|\bseason \d|\bfilming\b|\blegal drama\b/i;
@@ -186,15 +219,22 @@ const NOT_CIVIC =
 const SPORTS =
   /\b(volleyball|football|basketball|soccer|baseball|softball|lacrosse|water polo|wrestling|track and field|matadors|pioneers|schedule -|box score|athletics)\b/i;
 
-/** Civic words strong enough to keep a story even if Apple is mentioned —
- *  e.g. Apple's campus going before the Planning Commission is real city news. */
+/** Civic words strong enough to keep a story even if Apple is mentioned.
+ *  Apple's campus going before the Planning Commission is real city news. */
 const CIVIC =
   /\b(council|councilmember|city hall|mayor|ordinance|zoning|planning commission|housing element|ballot|election|voters?|budget|residents?|school board|library|permit|general plan)\b/i;
+
+const REGIONAL_TOPICS = new Set(
+  NEWS_TOPICS.filter((t) => t.allowRegional).map((t) => t.key),
+);
 
 function isRelevant(item: NewsItem): boolean {
   const t = item.title;
   // A publisher's own Cupertino section has already made the local call.
-  if (!item.trusted && !LOCAL.test(t)) return false;
+  const localEnough =
+    LOCAL.test(t) ||
+    (REGIONAL_TOPICS.has(item.topic) && REGIONAL.test(t) && BAY_AREA.test(t));
+  if (!item.trusted && !localEnough) return false;
   if (NOT_CIVIC.test(t) || SPORTS.test(t)) return false;
   if (APPLE_CORPORATE.test(t) && !CIVIC.test(t)) return false;
   return true;

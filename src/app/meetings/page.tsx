@@ -19,7 +19,7 @@ export default async function MeetingsPage() {
       <PageHeader
         eyebrow="Public meetings"
         title="Meetings and agendas"
-        intro="Every public meeting of the council, its commissions and its committees — pulled live from the city's official records system as soon as staff publish them."
+        intro="Every public meeting of the council, its commissions and its committees, pulled live from the city's official records system as soon as staff publish them."
       />
       <Container className="py-12">
         <section>

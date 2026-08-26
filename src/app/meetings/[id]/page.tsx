@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { data: meeting } = await getMeeting(Number(id));
   if (!meeting) return { title: "Meeting not found" };
   return {
-    title: `${meeting.body} — ${formatDate(meeting.date)}`,
+    title: `${meeting.body}: ${formatDate(meeting.date)}`,
     description: `Agenda for the ${meeting.body} meeting on ${formatDate(meeting.date)} in Cupertino, California.`,
   };
 }
