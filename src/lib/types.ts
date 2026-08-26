@@ -43,8 +43,12 @@ export interface AgendaItem {
   matterFile: string | null;
   matterType: string | null;
   action: string | null;
-  /** True for procedural rows like "ROLL CALL" that carry no decision. */
-  procedural: boolean;
+  /**
+   * substantive  real business the body will decide
+   * procedural   short structural rows like "ROLL CALL"
+   * boilerplate  multi-page notices repeated verbatim on every agenda
+   */
+  kind: "substantive" | "procedural" | "boilerplate";
 }
 
 export interface GoverningBody {

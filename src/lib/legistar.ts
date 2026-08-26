@@ -211,12 +211,48 @@ const PROCEDURAL = new Set([
   "APPROVAL OF MINUTES",
 ]);
 
-function isProcedural(title: string): boolean {
-  const t = title.trim().toUpperCase();
-  if (PROCEDURAL.has(t)) return true;
-  // Long all-caps blocks are participation boilerplate repeated each meeting.
-  if (t.length > 120 && t === title.trim() && !title.includes("Subject:")) return true;
-  return false;
+/**
+ * Standing notices that appear verbatim on every agenda: how to join the Zoom
+ * webinar, ADA accommodation requests, lobbyist registration, the oral
+ * communications preamble. Together they run to several thousand characters and
+ * push real business below the fold.
+ */
+const BOILERPLATE_MARKERS = [
+  /in-person and teleconference/i,
+  /public participation information/i,
+  /options to observe/i,
+  /americans with disabilities act/i,
+  /lobbyist registration and reporting/i,
+  /this portion of the meeting is reserved for persons/i,
+];
+
+/** Staff prefix real business with "Subject:". Closed session items run long
+ *  legitimately, so length alone must never disqualify one. */
+const SUBSTANTIVE_PREFIX = /^subject:/i;
+
+/** Real items that skip the prefix (ceremonial recognitions) stay short, so
+ *  anything past this without the prefix is a standing notice. */
+const BOILERPLATE_MIN_LENGTH = 400;
+
+/** Section headers are written in full caps ("NEW BUSINESS", "STAFF AND
+ *  COMMISSION REPORTS"). Real items are sentence case, so casing separates a
+ *  divider from business without needing to list every heading staff invent. */
+function isAllCaps(t: string): boolean {
+  return /[A-Z]/.test(t) && t === t.toUpperCase();
+}
+
+function classify(title: string): AgendaItem["kind"] {
+  const t = title.trim();
+  if (SUBSTANTIVE_PREFIX.test(t)) return "substantive";
+  if (PROCEDURAL.has(t.toUpperCase())) return "procedural";
+  if (isAllCaps(t) && t.length < 120) return "procedural";
+  // Headers often carry a trailing detail: "CALL TO ORDER - 5:30 P.M. ..." or
+  // "CEREMONIAL ITEMS - None". Judge the part before the dash.
+  const head = t.split(/\s+-\s+/)[0];
+  if (head !== t && isAllCaps(head) && head.length < 60) return "procedural";
+  if (BOILERPLATE_MARKERS.some((re) => re.test(t))) return "boilerplate";
+  if (t.length > BOILERPLATE_MIN_LENGTH) return "boilerplate";
+  return "substantive";
 }
 
 export async function getAgendaItems(eventId: number): Promise<Sourced<AgendaItem[]>> {
@@ -234,7 +270,7 @@ export async function getAgendaItems(eventId: number): Promise<Sourced<AgendaIte
           matterFile: i.EventItemMatterFile,
           matterType: i.EventItemMatterType,
           action: i.EventItemActionName,
-          procedural: isProcedural(title),
+          kind: classify(title),
         } satisfies AgendaItem;
       })
       .sort((a, b) => a.order - b.order);

@@ -33,8 +33,11 @@ export default async function MeetingPage({ params }: Params) {
   const meeting = meetingResult.data;
   if (!meeting) notFound();
 
-  const substantive = itemsResult.data.filter((i) => !i.procedural);
-  const procedural = itemsResult.data.filter((i) => i.procedural);
+  const substantive = itemsResult.data.filter((i) => i.kind === "substantive");
+  const procedural = itemsResult.data.filter((i) => i.kind === "procedural");
+  // Standing notices are dropped outright. They are identical on every agenda,
+  // run to thousands of characters, and bury the actual business.
+  const omitted = itemsResult.data.filter((i) => i.kind === "boilerplate").length;
 
   // A past meeting with no agenda means something different from a future one,
   // and a canceled meeting explains itself. Saying "not published yet" about a
@@ -135,6 +138,18 @@ export default async function MeetingPage({ params }: Params) {
               {agendaAbsenceReason}
             </EmptyState>
           </div>
+        )}
+
+        {omitted > 0 && (
+          <p className="mt-6 rounded-lg border border-border bg-surface-2 px-4 py-3 text-sm leading-relaxed text-ink-muted">
+            {omitted === 1 ? "One standing notice was" : `${omitted} standing notices were`} left
+            out: the participation, teleconference, accessibility and lobbyist blocks reprinted on
+            every agenda.{" "}
+            <Link href="/participate" className="font-medium text-primary hover:underline">
+              How to take part
+            </Link>{" "}
+            covers the same ground, and the official record has the full text.
+          </p>
         )}
 
         {procedural.length > 0 && (
