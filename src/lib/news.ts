@@ -142,7 +142,8 @@ interface DirectFeed {
 export const DIRECT_FEEDS: DirectFeed[] = [
   {
     name: "San José Spotlight",
-    url: "https://sanjosespotlight.com/category/cupertino/feed",
+    // Canonical path. /category/cupertino/feed still 301s here.
+    url: "https://sanjosespotlight.com/news/cupertino/feed/",
     topic: "city-hall",
   },
 ];
