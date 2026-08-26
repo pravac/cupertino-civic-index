@@ -41,7 +41,7 @@ export default async function MeetingPage({ params }: Params) {
   // meeting that already happened is simply wrong.
   const isPast = daysUntil(meeting.date) < 0;
   const agendaAbsenceReason = meeting.canceled
-    ? "The meeting was canceled, so no agenda was carried out."
+    ? "The meeting was canceled, so no agenda will be carried out."
     : isPast
       ? "No agenda was recorded for this meeting in the city's records system. The official record may still have the packet."
       : "Agenda items appear here once the city publishes the agenda.";
@@ -68,8 +68,10 @@ export default async function MeetingPage({ params }: Params) {
           <div className="mb-8 rounded-xl border border-warning bg-warning-soft p-5">
             <p className="font-semibold text-warning">This meeting was canceled.</p>
             <p className="mt-1.5 text-sm leading-relaxed text-ink">
-              The city canceled this meeting, so no business was conducted and no minutes will
-              follow. Any items that were scheduled are typically carried to a later meeting.
+              {isPast
+                ? "The city canceled this meeting, so no business was conducted and no minutes will follow."
+                : "The city has canceled this meeting. It will not take place, so there is no need to attend."}{" "}
+              Scheduled items are typically carried to a later meeting.
             </p>
           </div>
         )}

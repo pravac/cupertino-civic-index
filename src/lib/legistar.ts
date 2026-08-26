@@ -7,6 +7,7 @@
  */
 import type { AgendaItem, GoverningBody, Meeting, Sourced } from "./types";
 import { todayInCupertino } from "./format";
+import { getCalendarOverlay, meetingKey } from "./legistarCalendar";
 
 const BASE = "https://webapi.legistar.com/v1/cupertino";
 
@@ -93,6 +94,28 @@ function toMeeting(e: RawEvent): Meeting {
   };
 }
 
+/**
+ * Layers the calendar page's cancellation data over the API's. The API misses
+ * cancellations recorded only as a "Cancellation Notice" agenda document, so
+ * without this a canceled meeting renders as though it is still happening.
+ */
+async function withCancellations(meetings: Meeting[]): Promise<Meeting[]> {
+  if (meetings.length === 0) return meetings;
+  const overlay = await getCalendarOverlay();
+  if (overlay.size === 0) return meetings;
+  return meetings.map((m) => {
+    const day = m.date.split("T")[0];
+    const row =
+      overlay.get(meetingKey(m.body, day, m.time)) ?? overlay.get(meetingKey(m.body, day, null));
+    if (!row?.canceled || m.canceled) return m;
+    return {
+      ...m,
+      canceled: true,
+      comment: m.comment ?? "Canceled",
+    };
+  });
+}
+
 function wrap<T>(data: T, error?: unknown): Sourced<T> {
   return {
     data,
@@ -111,7 +134,7 @@ export async function getUpcomingMeetings(limit = 12): Promise<Sourced<Meeting[]
     const raw = await legistarFetch<RawEvent[]>(
       `/events?$filter=${encodeURIComponent(filter)}&$orderby=EventDate&$top=${limit}`,
     );
-    return wrap(raw.map(toMeeting));
+    return wrap(await withCancellations(raw.map(toMeeting)));
   } catch (err) {
     return wrap([] as Meeting[], err);
   }
@@ -127,7 +150,7 @@ export async function getPastMeetings(limit = 12, bodyId?: number): Promise<Sour
     const raw = await legistarFetch<RawEvent[]>(
       `/events?$filter=${encodeURIComponent(filter)}&$orderby=EventDate desc&$top=${limit}`,
     );
-    return wrap(raw.map(toMeeting));
+    return wrap(await withCancellations(raw.map(toMeeting)));
   } catch (err) {
     return wrap([] as Meeting[], err);
   }
@@ -141,7 +164,8 @@ export function excludeCanceled(meetings: Meeting[]): Meeting[] {
 export async function getMeeting(id: number): Promise<Sourced<Meeting | null>> {
   try {
     const raw = await legistarFetch<RawEvent>(`/events/${id}`);
-    return wrap(toMeeting(raw));
+    const [merged] = await withCancellations([toMeeting(raw)]);
+    return wrap(merged);
   } catch (err) {
     return wrap(null, err);
   }
