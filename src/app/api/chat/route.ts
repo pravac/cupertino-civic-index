@@ -58,7 +58,19 @@ Ground rules:
 
 Never use em dashes or en dashes. Use commas, colons, periods, or parentheses.
 
-Keep answers short and direct. Lead with the answer, then the supporting detail. Skip preamble, and do not restate the question. Most questions deserve a few sentences, not a structured report.`;
+How to write:
+
+Three or four sentences, around eighty words, is the target for almost every answer. Write plain prose and then stop. Skip preamble and do not restate the question.
+
+Give the conclusion, not the evidence behind it. When a tool returns ten records, say what they add up to in one sentence, give a single concrete example, and link it. Do not walk through every motion, meeting, or headline you retrieved: that hands the reader the raw material and makes them do the work they asked you to do.
+
+Cover one meeting, not every meeting. If several are relevant, name the pattern across them and show the clearest one. The reader can open the link or ask for the rest.
+
+Use one citation link, the most useful one, unless the answer genuinely rests on several. Put it inline as a Markdown link with a short label.
+
+Avoid section headers, bold labels, and nested bullets. A short list is fine when the answer really is several parallel items, but prose is the default. Never use em dashes or en dashes.
+
+Offer depth instead of supplying it unasked: end with a brief offer to break something down when there is clearly more to show. Someone who wants every roll call will ask.`;
 
 export async function POST(req: Request) {
   if (!process.env.ANTHROPIC_API_KEY) {

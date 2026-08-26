@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Markdown } from "./Markdown";
 
 interface Msg {
   role: "user" | "assistant";
@@ -111,13 +112,7 @@ export function Chat() {
                       Civic Index
                     </p>
                     {m.content ? (
-                      <div className="space-y-3 leading-relaxed text-ink">
-                        {m.content.split("\n\n").map((para, n) => (
-                          <p key={n} className="whitespace-pre-wrap">
-                            {para}
-                          </p>
-                        ))}
-                      </div>
+                      <Markdown text={m.content} />
                     ) : (
                       <p className="flex items-center gap-2 text-ink-muted">
                         <span className="inline-block size-2 animate-pulse rounded-full bg-primary" />
