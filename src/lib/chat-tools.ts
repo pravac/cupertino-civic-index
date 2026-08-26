@@ -19,7 +19,12 @@ import {
 } from "./legistar";
 import { getNews } from "./news";
 import { formatDate, todayInCupertino } from "./format";
-import { COUNCIL, COUNCIL_FACTS, COUNCIL_LAST_VERIFIED } from "@/data/council";
+import {
+  COUNCIL,
+  COUNCIL_FACTS,
+  COUNCIL_LAST_VERIFIED,
+  COUNCIL_SOURCE_URL,
+} from "@/data/council";
 import { CANDIDATES, ELECTION, ELECTION_CONTEXT } from "@/data/election";
 import { BODY_DESCRIPTIONS, GUIDES } from "@/data/guides";
 import type { Meeting } from "./types";
@@ -31,6 +36,7 @@ function describeMeeting(m: Meeting): string {
     m.canceled ? "CANCELED" : "",
     m.comment && !m.canceled ? `(${m.comment})` : "",
     m.location ? `at ${m.location}` : "",
+    `official record: ${m.detailUrl}`,
   ];
   return parts.filter(Boolean).join(" | ");
 }
@@ -130,14 +136,14 @@ export const chatTools = [
         (m) => `${m.name}, ${m.role}${m.termEnds ? `, term ends ${m.termEnds}` : ""}`,
       ).join("\n");
       const facts = COUNCIL_FACTS.map((f) => `${f.label}: ${f.value}`).join("\n");
-      return `Current council (hand-verified ${formatDate(COUNCIL_LAST_VERIFIED)}):\n${roster}\n\nHow it works:\n${facts}`;
+      return `Current council (hand-verified ${formatDate(COUNCIL_LAST_VERIFIED)}):\n${roster}\n\nHow it works:\n${facts}\n\nOfficial council page: ${COUNCIL_SOURCE_URL}`;
     },
   }),
 
   betaTool({
     name: "get_election_info",
     description:
-      "Candidates and details for the November 3, 2026 Cupertino City Council election. Present candidates even-handedly and never recommend one.",
+      "The November 3, 2026 Cupertino City Council election: candidates, what the race is about, and where voting logistics are handled. Use this for anything about the ballot, registering to vote, or deadlines, as well as for candidates. Present candidates even-handedly and never recommend one.",
     inputSchema: { type: "object", properties: {}, additionalProperties: false },
     run: async () => {
       const list = CANDIDATES.map(
@@ -148,7 +154,7 @@ export const chatTools = [
       ).join("\n");
       return `${ELECTION.seats} seats on the ${ELECTION.office}, ${formatDate(
         ELECTION.date,
-      )}. ${CANDIDATES.length} candidates.\n\nContext: ${ELECTION_CONTEXT}\n\n${list}\n\nRegistration and ballots are handled by the Santa Clara County Registrar of Voters, not the city.`;
+      )}. ${CANDIDATES.length} candidates.\n\nContext: ${ELECTION_CONTEXT}\n\n${list}\n\nRegistration, ballots and deadlines are handled by the Santa Clara County Registrar of Voters, not the city: ${ELECTION.registrarUrl}\nIndependent coverage of the race: ${ELECTION.coverageUrl}`;
     },
   }),
 

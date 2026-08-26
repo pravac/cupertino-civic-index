@@ -46,6 +46,10 @@ Ground rules:
 - A canceled meeting did not happen. Never describe business as conducted at one, even if an agenda was published for it.
 - You are not the city. For legal deadlines, official notice, or anything with consequences, tell people to confirm with the city directly and link them there.
 - If a question is outside city government, say so briefly and point somewhere useful rather than improvising.
+- Never state a URL, phone number, street address, or office hour that did not come back from a tool. If you do not have one, say where to look by name and let the person search for it. A confident wrong link is worse than no link.
+- Voting logistics count as election questions: call the election tool for registration, ballots, and deadlines instead of recalling county contact details.
+
+Never use em dashes or en dashes. Use commas, colons, periods, or parentheses.
 
 Keep answers short and direct. Lead with the answer, then the supporting detail. Skip preamble, and do not restate the question. Most questions deserve a few sentences, not a structured report.`;
 
@@ -113,12 +117,22 @@ export async function POST(req: Request) {
           stream: true,
         });
 
+        // The runner yields one stream per turn, so text written before a
+        // tool call and text written after it arrive as separate messages.
+        // Without a break between them the two run together mid-sentence.
+        let wroteText = false;
         for await (const messageStream of runner) {
+          let wroteThisTurn = false;
           for await (const event of messageStream) {
             if (
               event.type === "content_block_delta" &&
               event.delta.type === "text_delta"
             ) {
+              if (wroteText && !wroteThisTurn) {
+                controller.enqueue(encoder.encode("\n\n"));
+              }
+              wroteThisTurn = true;
+              wroteText = true;
               controller.enqueue(encoder.encode(event.delta.text));
             }
           }
