@@ -8,6 +8,7 @@ const NAV = [
   { href: "/election", label: "Election" },
   { href: "/news", label: "News" },
   { href: "/participate", label: "Participate" },
+  { href: "/assistant", label: "Ask" },
 ];
 
 export function SiteHeader() {

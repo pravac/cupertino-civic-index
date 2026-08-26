@@ -64,6 +64,35 @@ belongs in linked coverage, not here.
 returns an empty result with an `unavailable` status rather than throwing. A slow Legistar
 never takes a page down.
 
+## The assistant
+
+`/assistant` answers questions about city government. It runs on Claude
+(`claude-opus-5`) and is grounded in tools that read the same live sources as
+the rest of the site, so it cannot answer from a staler copy of reality than
+the pages beside it.
+
+It needs one environment variable:
+
+```bash
+ANTHROPIC_API_KEY=sk-ant-...   # see .env.example
+```
+
+Without it the route returns a 503 explaining the assistant is unconfigured,
+and every other page works normally.
+
+Guardrails worth knowing:
+
+- **Neutrality is in the system prompt.** The assistant will not recommend a
+  candidate or predict the election, and describes all eight on the same terms.
+- **It corrects the mayor misconception** rather than repeating it, since the
+  mayor is appointed by the council and not elected.
+- **It refuses to treat canceled meetings as having happened.**
+- **Rate limited** to 10 questions per minute per IP. That limit lives in
+  process memory, which bounds one instance and not a distributed abuser; move
+  it to a shared store before a real public launch.
+- **Input is re-validated server side** (roles, types, length, history depth).
+  Nothing about the request is trusted from the browser.
+
 ## Emblems
 
 `public/emblems/` holds the Cupertino city seal and the California state flag,
