@@ -5,17 +5,29 @@ import { Badge, Card, ExternalIcon } from "./ui";
 
 export function MeetingCard({ meeting, showCountdown = false }: { meeting: Meeting; showCountdown?: boolean }) {
   const days = daysUntil(meeting.date);
-  const soon = showCountdown && days >= 0 && days <= 7;
+  const soon = showCountdown && days >= 0 && days <= 7 && !meeting.canceled;
+  // The comment doubles as the cancellation notice, so it is redundant there.
+  const note = meeting.canceled ? null : meeting.comment;
 
   return (
-    <Card as="li" className={`hover:border-border-strong ${soon ? "border-l-4 border-l-primary" : ""}`}>
+    <Card
+      as="li"
+      className={`hover:border-border-strong ${soon ? "border-l-4 border-l-primary" : ""} ${
+        meeting.canceled ? "opacity-75" : ""
+      }`}
+    >
       <div className="flex flex-wrap items-center gap-2">
         <Badge tone={meeting.bodyId === 138 ? "primary" : "neutral"}>{meeting.body}</Badge>
-        {showCountdown && days >= 0 && days <= 7 && <Badge tone="accent">{relativeDay(meeting.date)}</Badge>}
+        {meeting.canceled && <Badge tone="warning">Canceled</Badge>}
+        {soon && <Badge tone="accent">{relativeDay(meeting.date)}</Badge>}
         {meeting.hasMinutes && <Badge tone="success">Minutes</Badge>}
       </div>
 
-      <h3 className="mt-3 text-lg font-semibold leading-snug text-ink">
+      <h3
+        className={`mt-3 text-lg font-semibold leading-snug text-ink ${
+          meeting.canceled ? "line-through decoration-1" : ""
+        }`}
+      >
         <Link href={`/meetings/${meeting.id}`} className="hover:underline">
           {formatWeekday(meeting.date)}, {formatDate(meeting.date)}
         </Link>
@@ -34,11 +46,17 @@ export function MeetingCard({ meeting, showCountdown = false }: { meeting: Meeti
             <dd className="leading-relaxed">{meeting.location}</dd>
           </div>
         )}
+        {note && (
+          <div className="flex gap-2">
+            <dt className="sr-only">Note</dt>
+            <dd className="leading-relaxed">{note}</dd>
+          </div>
+        )}
       </dl>
 
       <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
         <Link href={`/meetings/${meeting.id}`} className="font-medium text-primary hover:underline">
-          What&rsquo;s on the agenda
+          {meeting.canceled ? "Meeting details" : "What\u2019s on the agenda"}
         </Link>
         <a
           href={meeting.detailUrl}

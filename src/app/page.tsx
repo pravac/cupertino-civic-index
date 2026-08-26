@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { getNews } from "@/lib/news";
 import type { Meeting } from "@/lib/types";
-import { COUNCIL_BODY_ID, getPastMeetings, getUpcomingMeetings } from "@/lib/legistar";
+import {
+  COUNCIL_BODY_ID,
+  excludeCanceled,
+  getPastMeetings,
+  getUpcomingMeetings,
+} from "@/lib/legistar";
 import { CANDIDATES, ELECTION } from "@/data/election";
 import { daysUntil, formatDate, formatWeekday, relativeDay } from "@/lib/format";
 import { MeetingCard } from "@/components/MeetingCard";
@@ -16,12 +21,13 @@ export const revalidate = 900;
 export default async function HomePage() {
   const [meetings, pastCouncil, news] = await Promise.all([
     getUpcomingMeetings(20),
-    getPastMeetings(1, COUNCIL_BODY_ID),
+    getPastMeetings(6, COUNCIL_BODY_ID),
     getNews(6),
   ]);
 
   const upcoming = meetings.data;
-  const nextCouncil = upcoming.find((m) => m.bodyId === COUNCIL_BODY_ID);
+  const nextCouncil = excludeCanceled(upcoming).find((m) => m.bodyId === COUNCIL_BODY_ID);
+  const lastCouncil = excludeCanceled(pastCouncil.data)[0];
   const others = upcoming.filter((m) => m.id !== nextCouncil?.id).slice(0, 4);
   const daysToElection = daysUntil(ELECTION.date);
 
@@ -54,7 +60,7 @@ export default async function HomePage() {
 
       <Container className="py-12 sm:py-16">
         <div className="grid gap-6 lg:grid-cols-3">
-          <NextCouncilPanel meeting={nextCouncil} lastMeeting={pastCouncil.data[0]} />
+          <NextCouncilPanel meeting={nextCouncil} lastMeeting={lastCouncil} />
           <ElectionPanel days={daysToElection} />
         </div>
 
@@ -126,6 +132,17 @@ function NextCouncilPanel({
             {shown.time ? `${shown.time} · ` : ""}
             {shown.location ?? "Community Hall, 10350 Torre Avenue"}
           </p>
+          {shown.comment && (
+            <p className="mt-2 text-sm text-ink-muted">
+              {shown.comment}
+              {/closed session/i.test(shown.comment) && (
+                <span className="block mt-1">
+                  Closed sessions are not open to the public, though the council reports out
+                  afterward.
+                </span>
+              )}
+            </p>
+          )}
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <Badge tone={isUpcoming ? "accent" : "neutral"}>{relativeDay(shown.date)}</Badge>
             <Link

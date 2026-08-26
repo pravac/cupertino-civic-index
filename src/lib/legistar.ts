@@ -29,6 +29,7 @@ interface RawEvent {
   EventMinutesFile: string | null;
   EventVideoPath: string | null;
   EventInSiteURL: string;
+  EventComment: string | null;
   EventAgendaStatusName: string | null;
   EventMinutesStatusName: string | null;
 }
@@ -81,6 +82,10 @@ function toMeeting(e: RawEvent): Meeting {
     minutesUrl: e.EventMinutesFile,
     videoUrl: e.EventVideoPath,
     detailUrl: e.EventInSiteURL,
+    comment: e.EventComment?.trim() || null,
+    // Staff record cancellations in the free-text comment rather than in a
+    // status field, so a meeting can be canceled and still carry a full agenda.
+    canceled: /\bcancel(l?ed|lation)?\b/i.test(e.EventComment ?? ""),
     agendaStatus: e.EventAgendaStatusName,
     minutesStatus: e.EventMinutesStatusName,
     hasAgenda: Boolean(e.EventAgendaFile),
@@ -126,6 +131,11 @@ export async function getPastMeetings(limit = 12, bodyId?: number): Promise<Sour
   } catch (err) {
     return wrap([] as Meeting[], err);
   }
+}
+
+/** Meetings actually taking place, for "what is next" style lookups. */
+export function excludeCanceled(meetings: Meeting[]): Meeting[] {
+  return meetings.filter((m) => !m.canceled);
 }
 
 export async function getMeeting(id: number): Promise<Sourced<Meeting | null>> {

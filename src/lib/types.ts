@@ -26,6 +26,9 @@ export interface Meeting {
   minutesUrl: string | null;
   videoUrl: string | null;
   detailUrl: string;
+  /** Free-text staff note, e.g. "Canceled" or "Non-Televised Closed Session". */
+  comment: string | null;
+  canceled: boolean;
   agendaStatus: string | null;
   minutesStatus: string | null;
   hasAgenda: boolean;

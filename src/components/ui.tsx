@@ -72,13 +72,14 @@ export function SectionHeading({
   );
 }
 
-type Tone = "neutral" | "primary" | "accent" | "success";
+type Tone = "neutral" | "primary" | "accent" | "success" | "warning";
 
 const TONES: Record<Tone, string> = {
   neutral: "bg-surface-2 text-ink-muted border-border",
   primary: "bg-primary-soft text-primary border-transparent",
   accent: "bg-accent-soft text-accent border-transparent",
   success: "bg-success-soft text-success border-transparent",
+  warning: "bg-warning-soft text-warning border-transparent",
 };
 
 export function Badge({ children, tone = "neutral" }: { children: ReactNode; tone?: Tone }) {
