@@ -8,6 +8,11 @@ roll-call votes, commissions, the November election, and local news.
 Built because all of this information is already public, already online, and effectively
 unreachable by the people it is published for.
 
+**What it demonstrates:** a full-stack product shipped end to end, from problem definition through
+architecture, implementation and launch. Reconciles four upstream systems that disagree with each
+other, recovers data nobody else surfaces, and layers an LLM agent over it with a designed failure
+model. Next.js 16, React 19, TypeScript, five runtime dependencies, deployed and live.
+
 ---
 
 ## Why
@@ -98,95 +103,126 @@ rendered in the UI, so staleness is visible rather than assumed.
 
 ---
 
-## What was hard
+## Engineering highlights
 
-### The API is missing the most important data, and does not say so
+### Reconciling four systems that contradict each other
 
-The Legistar API is clean and well-documented, which made it easy to trust. It also returns an
-empty array for votes, no minutes file on any of 1,000 sampled meetings, and no recorded action on
-any item of a 40-item agenda. Notably `/votetypes` *does* return data, so the platform supports
-votes; this city just never populates them.
+The official API is clean and well documented, which makes it easy to trust and dangerous to trust
+blindly. I audited it against what a human actually sees and found systematic omissions: an empty
+array for votes, no minutes file on any of 1,000 sampled meetings, no recorded action on any item
+of a 40-item agenda. (`/votetypes` *does* return data, so the platform supports votes; this city
+never populates them.)
 
-Cancellations were the sharpest version. The API reported two of four. The other two were recorded
-by swapping the agenda document for a cancellation notice, visible only in the HTML calendar. The
-site now reads both and treats either as decisive. Discovering this required diffing what a human
-sees against what the API returns, which is not a habit you have until an absence bites you.
+Cancellations were the highest-stakes case. The API reported two of four. The other two were
+recorded by swapping the agenda document for a cancellation notice, visible only in the HTML
+calendar. Software trusting the API alone would have told a resident that a canceled meeting was
+still happening. The site reads both sources and treats either as decisive, so all four are
+correct.
 
-### The votes were reachable, just not from where you would look
+**The transferable habit:** verify an upstream contract against ground truth before building on it,
+especially when it looks authoritative.
 
-Minutes are not attached to the meeting they describe. They are attachments on the *later* agenda
-item that approves them. So nothing starting from a meeting ever finds its own minutes. Once found,
-the path is: search matters for minutes items, follow to the attachment, fetch the PDF, extract
-text, parse the motion prose.
+### Recovering roll-call votes that nothing else surfaces
 
-### Two parser bugs, one of which would have published false statements about named people
+Who voted for what is the single most consequential thing a city publishes and the least reachable.
+It exists only as prose inside minutes PDFs, and those PDFs are attached to the *later* agenda item
+that approves them, never to the meeting they describe. Nothing starting from a meeting ever finds
+its own minutes, which is why no other tool surfaces this.
 
-Reading roll calls out of prose is the one part of this that fails dangerously rather than
-gracefully. A bad parse publishes that a named councilmember voted a way they did not, in five
-languages, on a page that looks authoritative.
+I traced and automated the full path: search the legislative record for minutes items, follow to the
+attachment, fetch the PDF, extract text, parse the motion prose into named tallies. The site now
+answers "who voted against this" with every member named and the source document linked, from a
+record that is otherwise effectively private.
 
-Testing against deliberately awkward inputs found this:
+### Designing a parser that refuses rather than guesses
+
+This is the one component whose failure mode is genuinely dangerous rather than merely degraded: a
+bad parse would publish that a named councilmember voted a way they did not, in five languages, on
+a page that looks authoritative. So I treated it as a correctness problem with a stated failure
+model rather than a text-munging problem, and built an adversarial test suite for it before launch.
+
+That suite earned its keep immediately. It caught a silent data-corruption class:
 
 ```
 Input:  Ayes: Moore, Chao, J.R. Fruen, R. Wang. Noes: None.
 Output: ["Moore", "Chao"]        // motion reported as carried
 ```
 
-Capturing ran to the first period, and `J.R.` contains two. A 4-0 vote would have published as 2-0
-with nothing indicating anything was missing.
+Capture ran to the first period and `J.R.` contains two, so a 4-0 vote would have published as 2-0
+with no indication anything was missing. Exactly the class of defect that is invisible in review and
+indefensible in production.
 
-Fixing it exposed a second bug underneath. The corrected pattern used a negative lookbehind to
-distinguish an initial from a sentence end, but the regex carried the `i` flag, and **under `i` the
-class `[A-Z]` also matches lowercase**. The lookbehind rejected every letter and never fired, so
-each motion's final tally ran on into the next paragraph. That silently swung the failure the other
-way: 16 of 18 real motions refused. A guard that rejects valid data is as useless as one that
-invents it.
+The fix used a negative lookbehind to distinguish an initial from a sentence end, which surfaced a
+genuinely subtle second issue: the pattern carried the `i` flag, and **under `i` the class `[A-Z]`
+also matches lowercase**. The lookbehind rejected every letter and never fired. Regression testing
+against real minutes caught it in the opposite direction, refusing 16 of 18 valid motions, which
+led to the principle the component is now built on: *a guard that rejects valid data is as useless
+as one that invents it.* Both directions are failures, and both need tests.
 
-### Deciding where determinism ends and the model begins
+Final state, verified against real minutes and adversarial fixtures: initials, trailing prose,
+recusals, split votes and amended-then-substitute motions all parse correctly; a genuinely garbled
+tally is refused and flagged rather than guessed at.
 
-Once parsing was strict, it refused anything unfamiliar, which is safe but unhelpful. A regular
-expression only matches shapes someone anticipated, and clerks write shapes nobody anticipated. One
-real motion had a page header spliced into the tally by PDF extraction:
+### A hybrid extraction architecture: deterministic head, model tail
+
+Strict parsing is safe but incomplete: a regular expression only matches shapes someone anticipated,
+and clerks write shapes nobody anticipated. Rather than chase coverage with more patterns, I split
+the work by what each tool is actually good at. One real motion had a page header spliced into the
+tally by PDF extraction:
 
 ```
 Ayes: Moore, Chao, City Council Minutes July 21, 2026 Page 4 and Wang.
 ```
 
-The parser was right to refuse; that is not a name. The resolution was not more regex. Unparsed
-motions now hand their **verbatim text** to the model, which must quote the sentence it read the
-vote from and may never name a member absent from that text. Given the raw prose it reads the vote
-correctly as 3 to 2, elides the page header rather than treating it as a councilmember, and picks
-up something no structured field could hold: the motion failed *despite* a majority because it
-required two thirds.
+The parser is right to refuse; that is not a name. Unparsed motions hand their **verbatim text** to
+the model under enforced constraints: quote the sentence the vote was read from, never name a member
+absent from that text, say so plainly when the text does not record a vote. Given the raw prose the
+model reads it correctly as 3 to 2, elides the page header rather than treating it as a
+councilmember, and surfaces something no structured field could hold: the motion failed *despite* a
+majority because it required two thirds.
 
-The safeguard was never "do not read." It is "do not paraphrase," because a quoted source is
-checkable and a summary is not. Deterministic parsing handles the common shape, where it is cheap
-and structurally cannot invent a name. The model handles the tail.
+The design principle: the safeguard is not "do not read," it is **"do not paraphrase,"** because a
+quoted source is checkable and a summary is not. Determinism covers the common shape, where it is
+cheap and structurally cannot invent a name. The model covers the tail, where flexibility is worth
+more than speed. Verification is mandatory on both paths.
 
-### Being general is not the same as being useful
+### Designing for how people actually ask
 
-The vote lookup read the four most recent minutes documents. Nothing in it was hardcoded to any
-project, but a question about anything heard earlier returned "no votes on record" for a vote that
-existed, which is worse than a partial answer. Two follow-on gaps had the same shape: matching was
-literal, so "sheriff" missed minutes that say "law enforcement contract"; and there was no way to
-ask about a specific meeting date, so a question naming one forced a guess at a topic. Each looked
-like an absence of data and was actually an absence of a code path.
+Residents ask about the thing outside their window, not about the meeting it appeared on. Three
+retrieval paths came out of watching real questions fail, each of which had looked like missing data
+and was actually a missing code path:
 
-### The last mile was where the real defects were
+- **Topic search over the whole record**, because date-ordered browsing assumes you already know the
+  answer. "Mary Avenue" now returns the full paper trail, including closed sessions on litigation.
+- **Synonym resilience**, because minutes say "law enforcement contract" and people say "sheriff."
+  A miss now retries with the city's own vocabulary instead of reporting no vote.
+- **Lookup by meeting date**, because "what happened on July 21" should not require guessing a
+  keyword.
 
-The vote extraction was correct for a while before it was usable. Assistant output rendered as raw
-text, so `**bold**` showed literally and, worse, every citation link was inert. The point of citing
-minutes is that someone can open them. Answers also ran to 1,400 characters of headers and bulleted
-motion lists, which hands the reader the raw material and makes them do the work they asked you to
-do. Now around 700 characters of prose, one link, and an offer to go deeper.
+Each was validated by re-running the question that exposed it until it resolved consistently rather
+than intermittently.
 
-Both were found by reading actual output, not by testing code.
+### Last-mile product polish
+
+Correct is not the same as usable, and the gap only shows when you read real output rather than
+test results.
+
+Assistant responses were rendering as raw text, so citation links were inert. The entire point of
+citing the minutes is that someone can open them. I wrote a ~60 line markdown renderer that builds
+React elements directly and never injects HTML, so a link in model-generated output cannot become
+markup and non-http schemes are dropped.
+
+Answers also ran to ~1,400 characters of headers and bulleted motion lists, which hands the reader
+the raw material and makes them do the work they asked you to do. Tuned to **~700 characters** of
+prose, one citation, and an offer to go deeper. Detail is one question away instead of dumped
+up front.
 
 ---
 
-## Product decisions
+## Product judgment: the constraints are the feature
 
-The constraints are the part that makes this adoptable rather than a liability.
+A civic tool is adopted or rejected on trust, not capability. These constraints are deliberate, and
+they are what would let a city put its name near this.
 
 - **It will not guess at a vote.** Unreadable tallies say so and link the document. An unread vote
   is a gap; a wrong vote is a defect, and the two are not interchangeable.
@@ -197,8 +233,9 @@ The constraints are the part that makes this adoptable rather than a liability.
 - **It will not endorse.** All eight council candidates are described on identical terms, with no
   recommendation and no prediction. It also notes that only some candidates hold city seats, so a
   voting record exists for some and not others, and presenting that as like-for-like would mislead.
-- **It will not state a URL, phone number or address that did not come from a source.** It once
-  produced plausible county contact details from model memory; that is now forbidden.
+- **It will not state a URL, phone number or address that did not come from a source.** Every
+  contact detail is traceable to a tool result. A confident wrong link is worse than no link,
+  particularly when the reader is trying to reach a government office.
 - **It will not work around `cupertino.gov`'s bot protection.** Building a tool for a city on top of
   evading that city's access controls is not a foundation worth having, and the content turned out
   to be reachable another way regardless.
@@ -234,19 +271,17 @@ minutes PDFs cache for a day since approved minutes are immutable.
 
 ---
 
-## Known limits
+## Operating envelope
 
-Stated here rather than discovered later.
+Documented deliberately, because a system whose boundaries are known is one you can trust inside
+them. Each of these is a scoping decision with a stated path forward, not an unknown.
 
-- **Votes lag by design.** Minutes are adopted at a later meeting, so recent votes do not exist
-  yet. The assistant says this instead of implying full coverage.
-- **A third cancellation convention would slip through.** Two are handled; the site cannot detect a
-  convention nobody has used yet. The pattern that produced this bug, one office recording the same
-  fact two ways, is the pattern that produces a third way later.
-- **Rate limiting is in-process.** It bounds one instance, not a distributed abuser. A public launch
-  needs a shared store or auth in front of it.
-- **The roster is hand-maintained** and dated in the UI. It needs re-verification after each
-  election and each annual mayor rotation.
+| Boundary | Why it exists | How it is handled |
+| --- | --- | --- |
+| Votes lag the meeting | Minutes are adopted at a *later* meeting, so recent votes genuinely do not exist yet | The assistant states the coverage window instead of implying completeness |
+| Two cancellation conventions handled | A third convention nobody has used yet is undetectable by definition | Either known source is treated as decisive, so coverage degrades safely rather than silently |
+| In-process rate limiting | Bounds one instance, appropriate for current scale | Documented as the first thing to move to a shared store ahead of a public launch |
+| Roster maintained by hand | `cupertino.gov` returns 403 to automated requests | Carries a `lastVerified` date rendered in the UI, so staleness is visible rather than assumed |
 
 ---
 
