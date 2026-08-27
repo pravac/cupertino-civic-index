@@ -234,10 +234,13 @@ export const chatTools = [
       const out = result.data.map((rec) => {
         const lines = rec.motions.map((m) => {
           if (!m.readable) {
-            // Report the gap rather than a partial tally. Telling a resident a
-            // named member voted a way they did not is the worst thing this
-            // can do, and worse than saying the vote could not be read.
-            return `  - ${m.text.slice(0, 300)}\n    VOTE NOT READ: ${m.problem}. Do not state a tally for this motion. Tell the reader it could not be read and link the minutes so they can check it themselves.`;
+            // The pattern only matches shapes that were anticipated. When it
+            // does not match, hand over the verbatim prose instead of throwing
+            // it away: reading an unusual sentence is the one thing a model is
+            // better at than a regular expression. The safeguard is not
+            // refusing to read, it is refusing to paraphrase. Quoting the
+            // source sentence lets the reader check the claim themselves.
+            return `  - UNPARSED MOTION (${m.problem}). Verbatim text from the minutes follows. Read it yourself and report the vote only if the text plainly states it. Quote the sentence you took it from, word for word, so the reader can verify. Never name a member who does not appear in this text, and if it genuinely does not record who voted how, say so.\n    """${m.text.slice(0, 1200)}"""`;
           }
           const tally = [
             `Ayes: ${m.ayes.join(", ") || "none"}`,
@@ -254,7 +257,7 @@ export const chatTools = [
           "\n",
         )}\n  Source PDF: ${rec.pdfUrl}`;
       });
-      return `${out.join("\n\n")}\n\nThese come from the approved minutes PDF, which is the only place Cupertino records individual votes. Only the most recent few meetings are read per request.`;
+      return `${out.join("\n\n")}\n\nTallies shown as Ayes/Noes were parsed mechanically. Anything marked UNPARSED is raw text for you to read. Both come from the approved minutes PDF, which is the only place Cupertino records individual votes. Only the most recent few meetings are read per request.`;
     },
   }),
 
