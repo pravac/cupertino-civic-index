@@ -214,6 +214,11 @@ export const chatTools = [
           type: "number",
           description: "Only minutes introduced on or after this year. Defaults to 2025.",
         },
+        meeting_date: {
+          type: "string",
+          description:
+            "A specific meeting date as YYYY-MM-DD. Use this whenever the question names a date ('what happened on July 21'), instead of guessing a topic.",
+        },
         topic: {
           type: "string",
           description:
@@ -222,9 +227,9 @@ export const chatTools = [
       },
       additionalProperties: false,
     },
-    run: async ({ body, since_year, topic }) => {
+    run: async ({ body, since_year, topic, meeting_date }) => {
       const since = `${Math.min(Math.max(since_year ?? 2025, 2000), 2100)}-01-01`;
-      const result = await getRecentVotes(body ?? "City Council", since, topic);
+      const result = await getRecentVotes(body ?? "City Council", since, topic, meeting_date);
       if (result.data.length === 0) {
         const retry = topic
           ? ` Matching is literal, so try a broader or different word before concluding there is none: a single distinctive word ("Vallco", "Torre") beats a phrase, and the city's own wording beats the everyday term. Searching the city records will show you how staff titled the item.`

@@ -238,8 +238,10 @@ export async function getRecentVotes(
   body = "City Council",
   sinceIso = "2025-01-01",
   topic?: string,
+  meetingDate?: string,
 ): Promise<Sourced<MinutesRecord[]>> {
   const needle = topic?.trim().toLowerCase();
+  const wantDate = /^\d{4}-\d{2}-\d{2}$/.test(meetingDate ?? "") ? meetingDate : undefined;
   const origin = "Meeting minutes (Legistar attachments)";
   const base = "https://webapi.legistar.com/v1/cupertino";
   const filter = `substringof('Minutes',MatterTitle) and MatterIntroDate gt datetime'${sinceIso}'`;
@@ -251,14 +253,23 @@ export async function getRecentVotes(
       )}&$top=200`,
     );
 
-    const wanted = matters.filter((m) =>
+    let wanted = matters.filter((m) =>
       (m.MatterBodyName ?? "").toLowerCase().includes(body.toLowerCase()),
     );
+
+    // "What happened on July 21" is a common way to ask, and without this the
+    // caller has to invent a topic and hope it matches.
+    if (wantDate) {
+      const onDate = wanted.filter((m) => meetingDateFrom(m.MatterTitle ?? "") === wantDate);
+      if (onDate.length > 0) wanted = onDate;
+    }
 
     const records: MinutesRecord[] = [];
     let scanned = 0;
     for (const m of wanted) {
-      if (needle) {
+      if (wantDate) {
+        if (records.length >= 2) break;
+      } else if (needle) {
         if (records.length >= MAX_MATCHING_PDFS || scanned >= MAX_SCANNED_PDFS) break;
       } else if (records.length >= MAX_RECENT_PDFS) {
         break;
@@ -284,7 +295,7 @@ export async function getRecentVotes(
       scanned++;
       if (motions.length === 0) continue;
 
-      if (needle) {
+      if (needle && !wantDate) {
         // Keep a meeting only if the topic appears somewhere in it, then keep
         // the motions that name it. Some motions reference the subject only in
         // surrounding prose, so fall back to the whole meeting when the
@@ -310,7 +321,9 @@ export async function getRecentVotes(
       fetchedAt: new Date().toISOString(),
       error:
         records.length === 0
-          ? needle
+          ? wantDate
+            ? `No approved minutes found for a ${body} meeting on ${wantDate}. Minutes are adopted at a later meeting, so a recent date may not have any yet.`
+            : needle
             ? `No approved minutes mentioning "${topic}" were found for that body since ${sinceIso.slice(0, 4)}. It may predate the window, or the minutes may not be adopted yet.`
             : "No minutes with recorded votes were found for that body and window."
           : undefined,
