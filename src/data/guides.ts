@@ -62,6 +62,20 @@ export const GUIDES: Guide[] = [
     officialLabel: "Commission vacancies",
   },
   {
+    slug: "events",
+    title: "Find city events and things happening in the parks",
+    summary:
+      "Cupertino runs festivals, summer concerts, movie nights and fitness classes, mostly at Memorial Park. The city does not publish this as a machine-readable calendar, so the official pages are the authoritative source and this site can only point at them.",
+    steps: [
+      "The Parks and Recreation event calendar is the authoritative listing for concerts, movie nights, and classes.",
+      "Large annual festivals such as the Cherry Blossom Festival, Diwali, and the Big Bunny 5K have their own festival information page.",
+      "Recreation classes and camps are published as a seasonal schedule rather than as individual calendar entries.",
+      "City-sponsored events are approved by the council, so an event's approval and its funding appear in the legislative record even when the event itself does not.",
+    ],
+    officialUrl: "https://www.cupertino.gov/Parks-Recreation/Events",
+    officialLabel: "Parks and Recreation events",
+  },
+  {
     slug: "watch",
     title: "Watch or catch up on a meeting",
     summary:

@@ -177,13 +177,13 @@ export const chatTools = [
   betaTool({
     name: "how_to_participate",
     description:
-      "Step-by-step guidance on speaking at a meeting, contacting councilmembers, joining a commission, or watching a meeting.",
+      "Step-by-step guidance on speaking at a meeting, contacting councilmembers, joining a commission, watching a meeting, or finding city events and park programming.",
     inputSchema: {
       type: "object",
       properties: {
         topic: {
           type: "string",
-          enum: ["public-comment", "contact-council", "join-commission", "watch"],
+          enum: ["public-comment", "contact-council", "join-commission", "watch", "events"],
         },
       },
       required: ["topic"],
