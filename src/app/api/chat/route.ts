@@ -176,9 +176,20 @@ export async function POST(req: Request) {
         }
       } catch (err) {
         console.error("chat route failed", err);
-        const message =
-          err instanceof Anthropic.RateLimitError
-            ? "\n\n[The assistant is rate limited right now. Try again shortly.]"
+        // "Try again" is the wrong advice for a fault that retrying cannot
+        // fix. Billing and credential failures need the operator, not the
+        // reader, so say the assistant is unavailable rather than inviting a
+        // retry loop, and keep the account details out of a public response.
+        const permanent =
+          err instanceof Anthropic.AuthenticationError ||
+          err instanceof Anthropic.PermissionDeniedError ||
+          (err instanceof Anthropic.BadRequestError &&
+            /credit balance|billing|quota/i.test(err.message));
+
+        const message = permanent
+          ? "\n\n[The assistant is unavailable right now. The rest of the site still works, and the site owner has been alerted in the logs.]"
+          : err instanceof Anthropic.RateLimitError
+            ? "\n\n[The assistant is busy right now. Try again in a moment.]"
             : "\n\n[The assistant hit an error and stopped. Try again.]";
         controller.enqueue(encoder.encode(message));
       } finally {
