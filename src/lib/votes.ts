@@ -38,7 +38,16 @@ export interface Motion {
   noes: string[];
   abstain: string[];
   absent: string[];
+  recused: string[];
   passed: boolean | null;
+  /**
+   * False when the tally could not be read with confidence. A wrong vote is a
+   * defect; an unread one is only a gap, so anything that does not parse
+   * cleanly is reported as unreadable rather than as a partial tally.
+   */
+  readable: boolean;
+  /** Why it could not be read, shown to the reader instead of a guess. */
+  problem?: string;
 }
 
 export interface MinutesRecord {
@@ -79,17 +88,54 @@ async function fetchJson<T>(url: string): Promise<T> {
   }
 }
 
-/** "Ayes: Moore, Chao, Fruen, and Mohan." -> ["Moore","Chao","Fruen","Mohan"] */
-function names(block: string, label: string): string[] {
-  const m = block.match(new RegExp(`${label}\\s*:?\\s*([^.]*)\\.`, "i"));
-  if (!m) return [];
-  const raw = m[1].trim();
-  if (/^none$/i.test(raw)) return [];
-  return raw
+/**
+ * Every tally label a clerk might use. Matched case-sensitively with an
+ * explicit first-letter class, because the whole pattern cannot use the `i`
+ * flag: under `i`, `[A-Z]` also matches lowercase, which silently disabled the
+ * initial-detection lookbehind below and let the last tally run into the
+ * following paragraph.
+ */
+const LABEL = String.raw`[Aa]yes?|[Nn]oes?|[Nn]ays?|[Aa]bstain(?:ed|ing)?|[Aa]bsent|[Rr]ecus(?:ed|al)`;
+
+/** A name is a surname, optionally preceded by initials ("J.R. Fruen"). */
+const NAME_OK = /^(?:[A-Z]\.\s*){0,3}[A-Z][A-Za-z'’-]{1,30}(?:\s+[A-Z][A-Za-z'’-]{1,30})?$/;
+
+interface Tally {
+  names: string[];
+  /** Present but unreadable, as opposed to absent from the record. */
+  malformed: boolean;
+}
+
+/**
+ * "Ayes: Moore, Chao, J.R. Fruen, and R. Wang." -> the four names.
+ *
+ * Capturing stops at the next tally label or at a sentence-ending period,
+ * never at any period. Periods appear inside names, and an earlier version
+ * that cut at the first one silently truncated the list: a 4-0 vote was
+ * reported as 2 ayes with no sign anything was missing. A period preceded by a
+ * lone capital is an initial, not a sentence end, so the lookbehind keeps it.
+ */
+function tally(block: string, label: string): Tally {
+  const re = new RegExp(
+    `\\b(?:${label})\\s*:\\s*([\\s\\S]*?)(?=(?<![A-Z])\\.|\\b(?:${LABEL})\\s*:|$)`,
+  );
+  const m = block.match(re);
+  if (!m) return { names: [], malformed: false };
+
+  const raw = m[1].trim().replace(/[.;]\s*$/, "");
+  // A tally that runs long has escaped its clause into surrounding prose.
+  if (raw.length > 200) return { names: [], malformed: true };
+  if (/^(none|n\/a)$/i.test(raw)) return { names: [], malformed: false };
+
+  const parts = raw
     .replace(/\band\b/gi, ",")
     .split(",")
-    .map((s) => s.trim())
-    .filter((s) => s.length > 1 && s.length < 40);
+    .map((x) => x.trim().replace(/[.;]$/, ""))
+    .filter(Boolean);
+
+  const good = parts.filter((x) => NAME_OK.test(x));
+  // If any fragment is not name-shaped, the whole tally is suspect.
+  return { names: good, malformed: good.length !== parts.length };
 }
 
 export function parseMotions(text: string): Motion[] {
@@ -112,19 +158,47 @@ export function parseMotions(text: string): Motion[] {
     const sc = one.match(/and\s+([A-Z][\w'-]*)\s+seconded/i);
     const failed = /motion failed/i.test(one);
     const passed = /motion (?:passed|carried)/i.test(one);
+
+    const ayes = tally(one, "[Aa]yes?");
+    const noes = tally(one, "[Nn]oes?|[Nn]ays?");
+    const abstain = tally(one, "[Aa]bstain(?:ed|ing)?");
+    const absent = tally(one, "[Aa]bsent");
+    const recused = tally(one, "[Rr]ecus(?:ed|al)");
+
+    const malformed = [ayes, noes, abstain, absent, recused].some((t) => t.malformed);
+    const anyName =
+      ayes.names.length + noes.names.length + abstain.names.length + absent.names.length + recused.names.length;
+    // A recorded vote states an aye tally. Its absence means this is prose
+    // about a motion, or a shape we do not understand.
+    const hasAyeLabel = /\bAyes?\s*:/i.test(one);
+
+    let problem: string | undefined;
+    if (malformed) problem = "the tally did not match the usual wording";
+    else if (hasAyeLabel && ayes.names.length === 0 && !/Ayes?\s*:\s*None/i.test(one))
+      problem = "the ayes could not be read";
+    else if (!hasAyeLabel && anyName === 0) problem = "no roll call was recorded for this motion";
+
     return {
       text: one,
       moved: mv?.[1],
       seconded: sc?.[1],
-      ayes: names(one, "Ayes"),
-      noes: names(one, "Noes"),
-      abstain: names(one, "Abstain"),
-      absent: names(one, "Absent"),
+      ayes: ayes.names,
+      noes: noes.names,
+      abstain: abstain.names,
+      absent: absent.names,
+      recused: recused.names,
       passed: passed ? true : failed ? false : null,
+      readable: !problem,
+      problem,
     };
   })
-    // Drop prose that merely contains the word "motion" but records no vote.
-    .filter((m) => m.ayes.length + m.noes.length + m.abstain.length + m.absent.length > 0);
+    // Keep anything that looks like a recorded vote, readable or not. Dropping
+    // the unreadable ones would hide exactly the cases worth flagging.
+    .filter(
+      (m) =>
+        m.ayes.length + m.noes.length + m.abstain.length + m.absent.length + m.recused.length > 0 ||
+        (m.problem !== undefined && m.problem !== "no roll call was recorded for this motion"),
+    );
 }
 
 /** Minutes items name the meeting they cover, e.g. "May 20, 2026 minutes". */

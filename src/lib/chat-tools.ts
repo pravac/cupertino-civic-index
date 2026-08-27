@@ -233,11 +233,18 @@ export const chatTools = [
       }
       const out = result.data.map((rec) => {
         const lines = rec.motions.map((m) => {
+          if (!m.readable) {
+            // Report the gap rather than a partial tally. Telling a resident a
+            // named member voted a way they did not is the worst thing this
+            // can do, and worse than saying the vote could not be read.
+            return `  - ${m.text.slice(0, 300)}\n    VOTE NOT READ: ${m.problem}. Do not state a tally for this motion. Tell the reader it could not be read and link the minutes so they can check it themselves.`;
+          }
           const tally = [
             `Ayes: ${m.ayes.join(", ") || "none"}`,
             `Noes: ${m.noes.join(", ") || "none"}`,
             m.abstain.length ? `Abstain: ${m.abstain.join(", ")}` : "",
             m.absent.length ? `Absent: ${m.absent.join(", ")}` : "",
+            m.recused.length ? `Recused: ${m.recused.join(", ")}` : "",
           ]
             .filter(Boolean)
             .join(" | ");
