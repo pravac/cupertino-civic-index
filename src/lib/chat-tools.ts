@@ -220,9 +220,20 @@ export const chatTools = [
       const today = todayInCupertino();
       const wanted = venue?.trim().toLowerCase();
       const lines: string[] = [];
+      const staleLines: string[] = [];
 
       for (const e of result.data) {
         if (wanted && !(e.location ?? "").toLowerCase().includes(wanted)) continue;
+        if (e.stale) {
+          // Say these exist. The city files them under a "future events"
+          // heading, so a resident who finds the page believes it is upcoming.
+          staleLines.push(
+            `${e.title} (city page still lists it, but the newest date shown is ${formatDate(
+              e.occurrences[e.occurrences.length - 1].date,
+            )}, which has passed) ${e.url}`,
+          );
+          continue;
+        }
         const dates =
           upcoming_only === false ? e.occurrences : e.occurrences.filter((o) => o.date >= today);
         if (dates.length === 0) continue;
@@ -234,12 +245,17 @@ export const chatTools = [
         lines.push(`${e.title}\n    Where: ${e.location ?? "not stated"}\n    When: ${when}${more}\n    ${e.url}`);
       }
 
+      const stalePart = staleLines.length
+        ? `\n\nAlso on the city's site, but with only past dates listed. If someone asks about one of these, say the page exists and the date shown has already passed, rather than that the event does not exist:\n${staleLines.join("\n")}`
+        : "";
+
       if (lines.length === 0) {
-        return venue
-          ? `No upcoming city events found at a venue matching "${venue}". Try without a venue to see everything scheduled, or check the Parks and Recreation events page.`
+        const none = venue
+          ? `No upcoming city events found at a venue matching "${venue}".`
           : "No upcoming city events are listed right now.";
+        return `${none}${stalePart}`;
       }
-      return `${lines.join("\n\n")}\n\nRead from the city's event pages. The city's own site remains authoritative if a date has changed.`;
+      return `${lines.join("\n\n")}${stalePart}\n\nRead from the city's event pages. The city's own site remains authoritative if a date has changed.`;
     },
   }),
 

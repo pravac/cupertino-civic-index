@@ -1,6 +1,53 @@
 {
-  "capturedAt": "2026-08-28T00:23:33.120Z",
+  "capturedAt": "2026-08-28T00:43:06.469Z",
   "events": [
+    {
+      "title": "Holidays in Hawaii",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Holidays-in-Hawaii/Holidays-in-Hawaii-Event",
+      "location": "Cupertino Senior Center, 21251 Stevens Creek Boulevard, 95014",
+      "summary": "Holidays in Hawaii Sway with our own LeNani Hula dancers as they celebrate the holidays with Hawaiian songs and dances. When Wednesday, December 04, 2024 | 01:00 PM - 02:30 PM Location Cupertino Senior Center, 21251 Stevens Creek Boulevard, 95014, View Map Skip to below map 37.3232337,-122.04556 21251 Stevens Creek Boulevard , 95014 Cupertino Senior Center 21251 Stevens Creek Boulevard , 95014 Hol",
+      "occurrences": [
+        {
+          "date": "2024-12-04",
+          "start": "13:00",
+          "end": "14:30"
+        }
+      ],
+      "stale": true
+    },
+    {
+      "title": "Cupertino Spelling Bee",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Cupertino-Spelling-Bee/Cupertino-Spelling-Bee-Event",
+      "location": "Cupertino Community Hall, 10350 Torre Ave, Cupertino, CA, 95014",
+      "summary": "Cupertino Spelling Bee Saturday, January 24, 2026 Grades 2 to 3: 1 to 3 p.m. Grades 4 to 5: 3:30 to 5:30 p.m. Cupertino Community Hall 10350 Torre Ave, Cupertino, CA 95014 The Cupertino Spelling Bee is an annual contest for Cupertino students in grades 2-5, and is organized by the Cupertino Parks and Recreation Department and the Cupertino Youth Activity Board. For more information, please visit t",
+      "occurrences": [
+        {
+          "date": "2026-01-24",
+          "start": "13:00",
+          "end": "17:30"
+        }
+      ],
+      "stale": true
+    },
+    {
+      "title": "Preschool Open House",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Preschool-Open-House/Preschool-Open-House-Event",
+      "location": "Quinlan Community Center, 10185 North Stelling Road, 95014",
+      "summary": "Preschool Open House Discover what makes Cupertino Preschool a welcoming, nurturing place for your child to learn and grow! Bring your little ones and explore our classrooms and outdoor play areas, meet our caring teachers and administrators, and get all your questions answered about our program, curriculum, and enrollment process. Kids can experience our play-based environment while parents learn",
+      "occurrences": [
+        {
+          "date": "2026-01-27",
+          "start": "17:30",
+          "end": "19:00"
+        },
+        {
+          "date": "2026-01-31",
+          "start": "10:00",
+          "end": "11:30"
+        }
+      ],
+      "stale": true
+    },
     {
       "title": "Baer Blacksmith Shop Demonstrations",
       "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Baer-Blacksmith-Shop-Demonstrations",
@@ -62,7 +109,92 @@
           "start": "11:00",
           "end": "15:00"
         }
-      ]
+      ],
+      "stale": false
+    },
+    {
+      "title": "Sweetheart Social",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Sweetheart-Social/Sweetheart-Social-Event",
+      "location": "Quinlan Community Center, 10185 North Stelling Road, 95014",
+      "summary": "Sweetheart Social Saturday, February 7 6 to 8 p.m. Quinlan Community Center 10185 North Stelling Road, Cupertino, CA 95014 Celebrate Valentine's Day with a memorable family night out at our Sweetheart Social! This event is the perfect way to make the Valentines Day feel extra special for you and your loved ones. Enjoy an evening filled with: Hands-on Valentine Crafts Fun Games and Activities Sweet",
+      "occurrences": [
+        {
+          "date": "2026-02-07",
+          "start": "18:00",
+          "end": "20:00"
+        }
+      ],
+      "stale": true
+    },
+    {
+      "title": "Big Bunny 5K and Kids Fun Run",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Big-Bunny-5K/Big-Bunny-5K-Event",
+      "location": "Cupertino Civic Center, 10300 Torre Avenue, Cupertino, CA, 95014",
+      "summary": "Big Bunny 5K and Kids Fun Run Lace up and join the fun at the Big Bunny 5K! Run, walk, or hop your way through a 3.1-mile course winding through the streets of Cupertino, starting and finishing at the Cupertino Civic Center . Whether you're racing for a personal best or enjoying a morning out with friends and family, this community fun run is the perfect way to kick off the day. For our youngest p",
+      "occurrences": [
+        {
+          "date": "2026-03-07",
+          "start": "08:30",
+          "end": "11:00"
+        }
+      ],
+      "stale": true
+    },
+    {
+      "title": "Teen Resource Fair",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Teen-Resource-Fair/Teen-Resource-Fair-Event",
+      "location": "Main Street Cupertino, 19401 Stevens Creek Boulevard, 95014",
+      "summary": "Teen Resource Fair This event is focused on helping teens explore City of Cupertino summer job opportunities and volunteer programs that build real-world skills and look great on college and job applications. Learn about opportunities like REV, YAB, LIT, and Techie Teens, and meet the staff who coordinate and recruit for these programs. In addition, the fair will include mental health and wellness",
+      "occurrences": [
+        {
+          "date": "2026-03-21",
+          "start": "12:00",
+          "end": "15:00"
+        }
+      ],
+      "stale": true
+    },
+    {
+      "title": "Earth and Arbor Day Festival",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Earth-and-Arbor-Day-Festival/Earth-and-Arbor-Day-Festival-Event",
+      "location": "Cupertino Civic Center, Torre Avenue, 95014",
+      "summary": "Earth and Arbor Day Festival Cupertino's annual Earth and Arbor Day Festival is an interactive event that invites community members of all ages to learn about environmental issues and solutions in a family-friendly atmosphere. Explore booths, hands-on activities, live entertainment, food trucks, and connect with local organizations working to protect our environment at this free community event. F",
+      "occurrences": [
+        {
+          "date": "2026-04-04",
+          "start": "11:00",
+          "end": "15:00"
+        }
+      ],
+      "stale": true
+    },
+    {
+      "title": "FootGolf Tournament",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/FootGolf-Tournament/FootGolf-Tournament-Event",
+      "location": "Blackberry Farm Golf Course, 22100 Stevens Creek Boulevard, Cupertino, 95014",
+      "summary": "FootGolf Tournament Enjoy a family-friendly evening of 9-hole FootGolf, a fun twist on traditional golf where you kick a soccer ball toward the hole. Check in at 4:30 p.m., then tee off with a 5 p.m. shotgun start. Your registration includes soccer ball rental, green fees, snacks, and prizes for top overall scores. Perfect for all ages and skill levels. Register For more information, visit the Foo",
+      "occurrences": [
+        {
+          "date": "2026-05-02",
+          "start": "16:30",
+          "end": "19:00"
+        }
+      ],
+      "stale": true
+    },
+    {
+      "title": "Live Well Age Well Health Expo",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Live-Well-Age-Well-Health-Expo/Live-Well-Age-Well-Health-Expo-Event",
+      "location": "Cupertino Senior Center, 21251 Stevens Creek Blvd, 95014",
+      "summary": "Live Well Age Well Health Expo Embrace a vibrant life at 50 and beyond! Join the Cupertino Senior Center for the Live Well Age Well Health Expo designed for individuals ages 50 and better. Explore booths, resources, and educational sessions tailored to support a healthy lifestyle as you age. Then get moving with exciting activity demonstrations, perfect for discovering new exercises that will help",
+      "occurrences": [
+        {
+          "date": "2026-05-08",
+          "start": "10:30",
+          "end": "13:30"
+        }
+      ],
+      "stale": true
     },
     {
       "title": "Environmental Education Center Open House",
@@ -235,7 +367,172 @@
           "start": "12:00",
           "end": "16:00"
         }
-      ]
+      ],
+      "stale": false
+    },
+    {
+      "title": "Pooch Plunge",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Pooch-Plunge/Pooch-Plunge-Event",
+      "location": "Blackberry Farm Park, 21979 San Fernando Avenue, Cupertino, CA, 95014",
+      "summary": "Pooch Plunge Next date: Saturday, October 10, 2026 | 09:00 AM to 12:45 PM Let your pup take the plunge during a dog-only swim in the Blackberry Farm pools. It's a paws-itively fun way for your pooch to enjoy the pools before they open for summer swimming&mdash;tail wags are highly encouraged. Swim Sessions (45 minutes of tail-wagging fun ) Block 1 - 9 to 9:45 a.m. Block 2 - 10 to 10:45 a.m. Block ",
+      "occurrences": [
+        {
+          "date": "2026-05-16",
+          "start": "09:00",
+          "end": "12:45"
+        },
+        {
+          "date": "2026-10-10",
+          "start": "09:00",
+          "end": "12:45"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Summer Concert Series",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Summer-Concert-Series/Summer-Concert-Series-Event",
+      "location": "Memorial Park Amphitheater, 21163 Anton Way, Cupertino, CA, 95014",
+      "summary": "Summer Concert Series Spend your Thursday evenings outdoors with free live music at the Memorial Park Amphitheater. Bring a blanket or low-back chair, settle in on the lawn, and enjoy a lineup of bands spanning classic rock, Latin rock, blues, R&B, and more. For more information and band lineup, visit the Summer Concert Series webpage. When Thursday, June 11, 2026 | 06:30 PM - 08:00 PM Thursday, J",
+      "occurrences": [
+        {
+          "date": "2026-06-11",
+          "start": "18:30",
+          "end": "20:00"
+        },
+        {
+          "date": "2026-06-18",
+          "start": "18:30",
+          "end": "20:00"
+        },
+        {
+          "date": "2026-06-25",
+          "start": "18:30",
+          "end": "20:00"
+        },
+        {
+          "date": "2026-07-04",
+          "start": "10:30",
+          "end": "12:00"
+        },
+        {
+          "date": "2026-07-09",
+          "start": "18:30",
+          "end": "20:00"
+        },
+        {
+          "date": "2026-07-16",
+          "start": "18:30",
+          "end": "20:00"
+        },
+        {
+          "date": "2026-07-23",
+          "start": "18:30",
+          "end": "20:00"
+        },
+        {
+          "date": "2026-07-30",
+          "start": "18:30",
+          "end": "20:00"
+        },
+        {
+          "date": "2026-08-06",
+          "start": "18:30",
+          "end": "20:00"
+        },
+        {
+          "date": "2026-08-13",
+          "start": "18:30",
+          "end": "20:00"
+        },
+        {
+          "date": "2026-08-20",
+          "start": "18:30",
+          "end": "20:00"
+        }
+      ],
+      "stale": true
+    },
+    {
+      "title": "Disco at Dusk",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Disco-at-Dusk/Disco-at-Dusk-Event",
+      "location": "Cupertino Community Hall, 10350 Torre Avenue, 95014",
+      "summary": "Disco at Dusk Join us for an unique evening of music at Cupertino Community Hall. Each guest will receive a pair of wireless headphones with three music channels to choose from. Switch between channels and find your groove &mdash; the glowing lights on your headphones will show others which one you're tuned in to. Whether you're dancing with friends or just enjoying the music, this event is fun fo",
+      "occurrences": [
+        {
+          "date": "2026-06-26",
+          "start": "18:30",
+          "end": "20:30"
+        }
+      ],
+      "stale": true
+    },
+    {
+      "title": "Fourth of July",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Fourth-of-July/Fourth-of-July-Event",
+      "location": null,
+      "summary": "Fourth of July Join the City of Cupertino for a festive and fun-filled morning celebrating Independence Day! The celebration includes a pancake breakfast, flag-raising ceremony, children's parade, and live concert. There's something for everyone to enjoy. For full event details, visit the Fourth of July event page . When Saturday, July 04, 2026 | 07:30 AM Tagged as: Kids & family Major events City",
+      "occurrences": [
+        {
+          "date": "2026-07-04",
+          "start": "07:30",
+          "end": null
+        }
+      ],
+      "stale": true
+    },
+    {
+      "title": "Cupertino Campout",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Cupertino-Campout/Cupertino-Campout-Event",
+      "location": "Creekside Park, 10455 Miller Avenue, Cupertino, CA, 95014",
+      "summary": "Cupertino Campout The Cupertino Campout is a weekend to remember! Families are invited to pitch a tent at Creekside Park and join us for a night under the stars, filled with recreational activities. This campout is a fantastic way to gather with family, neighbors, and friends or make new ones, all while enjoying all kinds of fun. Pre-registration is required. For more information, please visit the",
+      "occurrences": [
+        {
+          "date": "2026-07-18",
+          "start": "16:00",
+          "end": "10:00"
+        }
+      ],
+      "stale": true
+    },
+    {
+      "title": "Free Shakespeare in the Park Event",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Free-Shakespeare-in-the-Park/Free-Shakespeare-in-the-Park-Event",
+      "location": "Memorial Park Amphitheater, 21163 Anton Way, 95014",
+      "summary": "Free Shakespeare in the Park Event Free Shakespeare in the Park brings you Anthony and Cleopatra directed by Katja Rivera. Set against the backdrop of the Roman Empire and Egypt, For show details, Anthony and Cleopatra examines the conflict between duty and desire, and the impact of personal relationships. Visit sfshakes.org . When Saturday, July 25, 2026 | 06:00 PM - 08:30 PM Sunday, July 26, 202",
+      "occurrences": [
+        {
+          "date": "2026-07-25",
+          "start": "18:00",
+          "end": "20:30"
+        },
+        {
+          "date": "2026-07-26",
+          "start": "18:00",
+          "end": "20:30"
+        },
+        {
+          "date": "2026-08-01",
+          "start": "18:00",
+          "end": "20:30"
+        },
+        {
+          "date": "2026-08-02",
+          "start": "18:00",
+          "end": "20:30"
+        },
+        {
+          "date": "2026-08-08",
+          "start": "18:00",
+          "end": "20:30"
+        },
+        {
+          "date": "2026-08-09",
+          "start": "18:00",
+          "end": "20:30"
+        }
+      ],
+      "stale": true
     },
     {
       "title": "Movies in the Park",
@@ -263,7 +560,22 @@
           "start": "20:00",
           "end": "22:15"
         }
-      ]
+      ],
+      "stale": false
+    },
+    {
+      "title": "Senior Center Open House",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Senior-Center-Open-House/Senior-Center-Open-House-Event",
+      "location": "Cupertino Senior Center, 21251 Stevens Creek Boulevard, 95014",
+      "summary": "Senior Center Open House Learn about senior classes, activities, and resources through demos and informational tabling. See how you can be active through weekly socials, fitness classes, trips, and more! Meet the staff in a small mixer to learn who oversees which of the center's programs. For more information and band lineup, visit the Senior Center Open House webpage. When Friday, August 21, 2026",
+      "occurrences": [
+        {
+          "date": "2026-08-21",
+          "start": "10:30",
+          "end": "12:30"
+        }
+      ],
+      "stale": true
     },
     {
       "title": "Rotary Fall Festival",
@@ -276,7 +588,8 @@
           "start": "10:00",
           "end": "19:00"
         }
-      ]
+      ],
+      "stale": false
     },
     {
       "title": "Join-A-Ranger: IDs for the Trees",
@@ -289,7 +602,8 @@
           "start": "09:00",
           "end": "10:30"
         }
-      ]
+      ],
+      "stale": false
     },
     {
       "title": "Join-A-Ranger: Bird ID and Guided Hike",
@@ -307,7 +621,92 @@
           "start": "08:00",
           "end": "10:00"
         }
-      ]
+      ],
+      "stale": false
+    },
+    {
+      "title": "Pizza and Politics",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Pizza-and-Politics/Pizza-and-Politics-Event",
+      "location": "Cupertino Community Hall, 10350 Torre Ave, Cupertino, CA, 95014",
+      "summary": "Pizza and Politics Next date: Thursday, October 15, 2026 | 06:30 PM to 08:00 PM Pizza and Politics is an award-winning, youth-led biannual pre-election political forum coordinated by youth for youth. The event encourages youth and teen civic engagement, makes politics more accessible, and provides young people with the opportunity to connect directly with politicians. For more information, please ",
+      "occurrences": [
+        {
+          "date": "2026-10-15",
+          "start": "18:30",
+          "end": "20:00"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Hidden Treasures",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Hidden-Treasures/Hidden-Treasures-Event",
+      "location": "Cupertino Senior Center, 21251 Stevens Creek Boulevard, Cupertino, CA, 95014",
+      "summary": "Hidden Treasures Next date: Thursday, October 22, 2026 | 09:00 AM to 02:00 PM Join us at the Senior Center for Hidden Treasures! With hundreds of items to choose from, this event is the perfect opportunity to discover unique antiques, artwork, handknits, toys, glassware, housewares, jewelry, and more. For more information, please visit the Hidden Treasures event page. When Thursday, October 22, 20",
+      "occurrences": [
+        {
+          "date": "2026-10-22",
+          "start": "09:00",
+          "end": "14:00"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Monster Mash",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Monster-Mash/Monster-Mash-Event",
+      "location": "Quinlan Community Center, 10185 North Stelling Road, Cupertino, CA, 95014",
+      "summary": "Monster Mash Next date: Saturday, October 24, 2026 | 05:00 PM to 08:00 PM Get ready for a fang-tastic good time at Cupertino Parks and Recreation's annual Monster Mash Halloween event at the Quinlan Community Center. Put on your favorite costume and enjoy an evening of games, trick-or-treating, spooky crafts, and pumpkin decorating. It's a fun-filled night of Halloween activities for the whole fam",
+      "occurrences": [
+        {
+          "date": "2026-10-24",
+          "start": "17:00",
+          "end": "20:00"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Tree Lighting",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Tree-Lighting/Tree-Lighting-Event",
+      "location": "Quinlan Community Center, 10185 North Stelling Road, Cupertino, CA, 95014",
+      "summary": "Tree Lighting Next date: Friday, December 04, 2026 | 06:00 PM to 08:00 PM Kick off the holiday season at the City's annual Community Tree Lighting! Enjoy the moment the tree is illuminated with hundreds of twinkling lights, live music from a local choir, and festive holiday cheer. After the tree lighting, families can visit Santa and take photos. For more information, please visit the Tree Lightin",
+      "occurrences": [
+        {
+          "date": "2026-12-04",
+          "start": "18:00",
+          "end": "20:00"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Breakfast with Santa",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Breakfast-with-Santa/Breakfast-with-Santa-Event",
+      "location": "Quinlan Community Center, 10185 North Stelling Road, 95014",
+      "summary": "Breakfast with Santa Next date: Sunday, December 06, 2026 | 08:30 AM to 11:30 AM You and your family are invited to a festive breakfast celebration with Santa! Enjoy delicious North Pole pancakes prepared by Santa's elves, take photos with Santa, and explore a holiday workshop filled with crafts and activities for children. Three seatings: 8:30 a.m., 9:30 a.m., 10:30 a.m. Register Registration ope",
+      "occurrences": [
+        {
+          "date": "2026-12-06",
+          "start": "08:30",
+          "end": "11:30"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Signing Santa",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Signing-Santa/Signing-Santa-Event",
+      "location": "Quinlan Community Center, 10185 North Stelling Road, 95014",
+      "summary": "Signing Santa Next date: Saturday, December 12, 2026 | 10:00 AM to 12:00 PM Deaf and hard of hearing children, along with their families, are invited to spend time with a Santa who understands sign language! Santa only communicates using sign language but an interpreter will be on-site to help translate for friends and family. Register Registration opens in late July. For more information, please ",
+      "occurrences": [
+        {
+          "date": "2026-12-12",
+          "start": "10:00",
+          "end": "12:00"
+        }
+      ],
+      "stale": false
     }
   ]
 }

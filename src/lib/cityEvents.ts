@@ -26,11 +26,16 @@ import snapshot from "@/data/events-snapshot.json";
 const BASE = "https://www.cupertino.gov";
 /** The calendar page links to the individual dated event pages. The Events
  *  landing page links only to their parents, which carry no dates. */
-const INDEX = `${BASE}/Parks-Recreation/Events/Parks-and-Recreation-Event-Calendar`;
+const INDEXES = [
+  `${BASE}/Parks-Recreation/Events/Parks-and-Recreation-Event-Calendar`,
+  `${BASE}/Parks-Recreation/Events`,
+  `${BASE}/Parks-Recreation/Senior-Center/Events`,
+  `${BASE}/Our-Community/Annual-Events`,
+];
 
 const TIMEOUT_MS = 12_000;
 const REVALIDATE = 21_600; // Six hours. Programming changes seasonally.
-const MAX_PAGES = 12; // Bounds fan-out; each event is its own page fetch.
+const MAX_PAGES = 40; // Bounds fan-out; each event is its own page fetch.
 
 /** A browser's ordinary request headers. Omitting these is what the CDN rejects. */
 const BROWSER_HEADERS: Record<string, string> = {
@@ -61,6 +66,17 @@ export interface CityEvent {
   location: string | null;
   summary: string | null;
   occurrences: EventOccurrence[];
+  /**
+   * True when the city still publishes this event but every date it lists has
+   * passed. Worth surfacing rather than hiding: the city files these under a
+   * "future events" heading, so a resident reading the same page is being told
+   * something upcoming is happening when it is not.
+   */
+  stale: boolean;
+}
+
+function todayIso(): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Los_Angeles" }).format(new Date());
 }
 
 async function getPage(url: string): Promise<string> {
@@ -175,19 +191,37 @@ function parseEvent(html: string, url: string): CityEvent | null {
     location,
     summary,
     occurrences,
+    stale: false, // set by the caller, which knows today's date
   };
 }
 
-/** Event pages linked from the Parks and Recreation events index. */
+/**
+ * Event pages linked from any of the index pages.
+ *
+ * An earlier version required two path segments under /Parks-Recreation/Events/
+ * and so silently dropped every single-segment event page, which is where a
+ * good share of them live. "Mooncakes & Mah Jongg" was invisible for exactly
+ * that reason. The rule is now about the section a page sits in, not how deep
+ * its URL happens to be.
+ */
+const EVENT_SECTION =
+  /\/(?:Parks-Recreation\/Events|Parks-Recreation\/Senior-Center\/Events|Our-Community\/Annual-Events|Parks-Recreation\/Events\/[^"?#]+)\//i;
+
+/** Index and landing pages, which list events but are not events themselves. */
+const NOT_AN_EVENT =
+  /Event-Calendar|Festival-Information|Sponsorship|\/Events\/?$|\/Annual-Events\/?$|Attend-City-Meetings/i;
+
 function discover(indexHtml: string): string[] {
   const hrefs = indexHtml.match(/href="([^"]+)"/gi) ?? [];
   const urls = new Set<string>();
   for (const h of hrefs) {
-    const raw = h.slice(6, -1);
-    if (!/\/Parks-Recreation\/Events\/[^"?#]+\/[^"?#]+/i.test(raw)) continue;
-    if (/Event-Calendar|Festival-Information|Sponsorship/i.test(raw)) continue;
+    const raw = h.slice(6, -1).split("#")[0];
+    if (!/\/(?:Parks-Recreation|Our-Community)\//i.test(raw)) continue;
+    if (!EVENT_SECTION.test(raw + "/")) continue;
+    if (NOT_AN_EVENT.test(raw)) continue;
+    if (/\?oc_lang=/i.test(raw)) continue; // translated duplicates of the same page
     const abs = raw.startsWith("http") ? raw : `${BASE}${raw.startsWith("/") ? "" : "/"}${raw}`;
-    if (abs.startsWith(BASE)) urls.add(abs.split("#")[0]);
+    if (abs.startsWith(BASE)) urls.add(abs);
   }
   return [...urls];
 }
@@ -211,19 +245,58 @@ function fromSnapshot(reason: string): Sourced<CityEvent[]> {
 export async function getCityEvents(): Promise<Sourced<CityEvent[]>> {
   const origin = "cupertino.gov Parks and Recreation";
   try {
-    const links = discover(await getPage(INDEX)).slice(0, MAX_PAGES);
+    const indexes = await Promise.allSettled(INDEXES.map(getPage));
+    const found = new Set<string>();
+    for (const r of indexes) {
+      if (r.status === "fulfilled") for (const u of discover(r.value)) found.add(u);
+    }
+    if (found.size === 0) throw new Error("no index page could be read");
+    const links = [...found].slice(0, MAX_PAGES);
+
+    // The site is inconsistent about depth. Some pages under /Events/ are the
+    // event itself and carry dates; others are landing pages whose dated
+    // content sits on a "<slug>/<slug>-Event" child. Try the page, and follow
+    // to the child when it has no dates rather than assuming either shape.
     const settled = await Promise.allSettled(
-      links.map(async (u) => parseEvent(await getPage(u), u)),
+      links.map(async (u) => {
+        const html = await getPage(u);
+        const direct = parseEvent(html, u);
+        if (direct && direct.occurrences.length > 0) return direct;
+
+        const slug = u.split("/").filter(Boolean).pop();
+        if (!slug) return direct;
+        const childUrl = `${u.replace(/\/$/, "")}/${slug}-Event`;
+        try {
+          const child = parseEvent(await getPage(childUrl), childUrl);
+          return child && child.occurrences.length > 0 ? child : direct;
+        } catch {
+          return direct;
+        }
+      }),
     );
     const events = settled
       .filter((r): r is PromiseFulfilledResult<CityEvent | null> => r.status === "fulfilled")
       .map((r) => r.value)
-      .filter((e): e is CityEvent => e !== null && e.occurrences.length > 0);
+      .filter((e): e is CityEvent => e !== null && e.occurrences.length > 0)
+      .map((e) => ({
+        ...e,
+        stale: e.occurrences.every((o) => o.date < todayIso()),
+      }));
 
-    if (events.length === 0) return fromSnapshot("no event pages returned");
+    // A landing page and its "-Event" child describe the same event, so the
+    // same thing can be reached by two URLs.
+    const byTitle = new Map<string, CityEvent>();
+    for (const e of events) {
+      const key = e.title.toLowerCase().replace(/\s+event$/, "").trim();
+      const existing = byTitle.get(key);
+      if (!existing || e.occurrences.length > existing.occurrences.length) byTitle.set(key, e);
+    }
+    const deduped = [...byTitle.values()];
+
+    if (deduped.length === 0) return fromSnapshot("no event pages returned");
 
     return {
-      data: events.sort((a, b) =>
+      data: deduped.sort((a, b) =>
         (a.occurrences[0]?.date ?? "").localeCompare(b.occurrences[0]?.date ?? ""),
       ),
       health: "live",
