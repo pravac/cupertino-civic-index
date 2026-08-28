@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "snapshot:events": "npx tsx scripts/snapshot-events.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",

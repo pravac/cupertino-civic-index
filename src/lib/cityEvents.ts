@@ -11,8 +11,17 @@
  * The event pages carry machine-readable date attributes, so the parsing here
  * reads those rather than the rendered prose, which is both more reliable and
  * less likely to break on a redesign of the visible layout.
+ *
+ * The CDN does block datacenter address ranges, so the live fetch succeeds from
+ * an ordinary connection and fails from a serverless host. Rerouting around an
+ * address block would be working around a control rather than sending complete
+ * headers, so instead the live fetch is attempted and a dated snapshot is used
+ * when it fails. The snapshot is refreshed by `npm run snapshot:events` from a
+ * machine that can reach the site, and its age is reported to the reader rather
+ * than hidden.
  */
 import type { Sourced } from "./types";
+import snapshot from "@/data/events-snapshot.json";
 
 const BASE = "https://www.cupertino.gov";
 /** The calendar page links to the individual dated event pages. The Events
@@ -183,6 +192,22 @@ function discover(indexHtml: string): string[] {
   return [...urls];
 }
 
+interface Snapshot {
+  capturedAt: string;
+  events: CityEvent[];
+}
+
+function fromSnapshot(reason: string): Sourced<CityEvent[]> {
+  const snap = snapshot as Snapshot;
+  return {
+    data: snap.events ?? [],
+    health: "curated",
+    origin: `cupertino.gov Parks and Recreation, captured ${snap.capturedAt?.slice(0, 10) ?? "unknown"}`,
+    fetchedAt: snap.capturedAt ?? new Date().toISOString(),
+    error: `Live fetch unavailable (${reason}); showing the last capture. Confirm dates on the city's page.`,
+  };
+}
+
 export async function getCityEvents(): Promise<Sourced<CityEvent[]>> {
   const origin = "cupertino.gov Parks and Recreation";
   try {
@@ -195,22 +220,17 @@ export async function getCityEvents(): Promise<Sourced<CityEvent[]>> {
       .map((r) => r.value)
       .filter((e): e is CityEvent => e !== null && e.occurrences.length > 0);
 
+    if (events.length === 0) return fromSnapshot("no event pages returned");
+
     return {
       data: events.sort((a, b) =>
         (a.occurrences[0]?.date ?? "").localeCompare(b.occurrences[0]?.date ?? ""),
       ),
-      health: events.length > 0 ? "live" : "unavailable",
+      health: "live",
       origin,
       fetchedAt: new Date().toISOString(),
-      error: events.length === 0 ? "No event pages could be read." : undefined,
     };
   } catch (err) {
-    return {
-      data: [],
-      health: "unavailable",
-      origin,
-      fetchedAt: new Date().toISOString(),
-      error: String(err),
-    };
+    return fromSnapshot(String(err).slice(0, 90));
   }
 }
