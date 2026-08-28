@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CitySeal } from "./Emblems";
+import { VisitCount } from "./VisitCount";
 import { Container } from "./ui";
 
 const NAV = [
@@ -21,7 +22,9 @@ export function SiteHeader() {
               Cupertino <span className="text-ink-muted font-normal">Civic Index</span>
             </span>
           </Link>
-          <nav aria-label="Primary">
+          <div className="flex items-center gap-4">
+            <VisitCount />
+            <nav aria-label="Primary">
             <ul className="flex items-center gap-1 text-sm">
               {NAV.map((item) => (
                 <li key={item.href}>
@@ -33,8 +36,9 @@ export function SiteHeader() {
                   </Link>
                 </li>
               ))}
-            </ul>
-          </nav>
+              </ul>
+            </nav>
+          </div>
         </div>
       </Container>
     </header>
