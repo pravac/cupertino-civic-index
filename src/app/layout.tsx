@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import { SiteFooter, SiteHeader } from "@/components/Chrome";
 
 const inter = Inter({
@@ -34,6 +35,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteHeader />
         <main id="main">{children}</main>
         <SiteFooter />
+        {/* Aggregate page views only. No cookies, no cross-site identifiers,
+            and nothing tying a visit to a person, which is the right default
+            for a site about local government. */}
+        <Analytics />
       </body>
     </html>
   );
