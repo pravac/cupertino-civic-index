@@ -10,9 +10,10 @@ import {
 import { CANDIDATES, ELECTION } from "@/data/election";
 import { daysUntil, formatDate, formatWeekday, relativeDay } from "@/lib/format";
 import { MeetingCard } from "@/components/MeetingCard";
-import { Badge, ButtonLink, Card, Container, EmptyState, SectionHeading, SourceNote } from "@/components/ui";
+import { Badge, Card, Container, EmptyState, SectionHeading, SourceNote } from "@/components/ui";
 import { NewsList } from "@/components/NewsList";
 import { EmblemStrip } from "@/components/Emblems";
+import { Chat } from "@/components/Chat";
 
 /** Home is a dashboard: the three things a resident most often needs, answered
  *  before any navigation. Rendered on the server so it is fast and indexable. */
@@ -34,26 +35,23 @@ export default async function HomePage() {
   return (
     <>
       <section className="border-b border-border bg-surface-2">
-        <Container className="py-14 sm:py-20">
+        <Container className="py-12 sm:py-16">
           <div className="max-w-3xl">
-            <EmblemStrip className="mb-7" />
+            <EmblemStrip className="mb-6" />
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-primary">
               Cupertino, California
             </p>
-            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-ink sm:text-5xl">
-              Everything happening in your city government, in one place.
+            <h1 className="text-3xl font-bold leading-[1.12] tracking-tight text-ink sm:text-4xl">
+              Ask anything about your city government.
             </h1>
-            <p className="mt-5 text-lg leading-relaxed text-ink-muted">
-              Council meetings, agendas, commissions, the November election and local news, all
-              gathered from the city&rsquo;s own records instead of scattered across a dozen
-              portals.
+            <p className="mt-3 text-lg leading-relaxed text-ink-muted">
+              Meetings, agendas, roll-call votes, commissions, the November election and local
+              news, answered from the city&rsquo;s own records.
             </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <ButtonLink href="/meetings">See upcoming meetings</ButtonLink>
-              <ButtonLink href="/participate" variant="secondary">
-                How to get involved
-              </ButtonLink>
-            </div>
+          </div>
+
+          <div className="mt-8 max-w-3xl">
+            <Chat compact />
           </div>
         </Container>
       </section>

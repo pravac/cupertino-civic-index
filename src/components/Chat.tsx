@@ -9,7 +9,7 @@ interface Msg {
   content: string;
 }
 
-export function Chat() {
+export function Chat({ compact = false }: { compact?: boolean } = {}) {
   const [lang, setLang] = useState<LanguageCode>("en");
   const t = STRINGS[lang];
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -91,7 +91,11 @@ export function Chat() {
       </div>
 
       <div
-        className="min-h-[22rem] rounded-xl border border-border bg-surface p-5"
+        className={`rounded-xl border border-border bg-surface p-5 ${
+          // On the home page the box leads, so it starts short and grows with
+          // the conversation. A tall empty box there reads as a dead area.
+          compact && empty ? "min-h-0" : "min-h-[22rem]"
+        }`}
         aria-live="polite"
         aria-busy={busy}
       >
