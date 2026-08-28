@@ -16,11 +16,17 @@ export function Chat({ compact = false }: { compact?: boolean } = {}) {
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const endRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  /** Whether the reader was at the bottom before this update landed. */
+  const pinned = useRef(true);
 
+  // Follow the answer as it streams, but only while the reader is already at
+  // the bottom. Someone who has scrolled up to reread an earlier answer should
+  // not be yanked back down every time a token arrives.
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    const el = scrollRef.current;
+    if (el && pinned.current) el.scrollTop = el.scrollHeight;
   }, [messages, busy]);
 
   async function send(text: string) {
@@ -91,11 +97,18 @@ export function Chat({ compact = false }: { compact?: boolean } = {}) {
       </div>
 
       <div
-        className={`rounded-xl border border-border bg-surface p-5 ${
+        ref={scrollRef}
+        onScroll={(e) => {
+          // Within a few pixels of the bottom counts as being at the bottom,
+          // since fractional scroll heights rarely land exactly.
+          const el = e.currentTarget;
+          pinned.current = el.scrollHeight - el.scrollTop - el.clientHeight < 24;
+        }}
+        className={`overflow-y-auto overscroll-contain rounded-xl border border-border bg-surface p-5 ${
           // On the home page the box leads, so it starts short and grows with
           // the conversation. A tall empty box there reads as a dead area.
           compact && empty ? "min-h-0" : "min-h-[22rem]"
-        }`}
+        } ${empty ? "" : "max-h-[70vh]"}`}
         aria-live="polite"
         aria-busy={busy}
       >
@@ -149,7 +162,7 @@ export function Chat({ compact = false }: { compact?: boolean } = {}) {
             ))}
           </ul>
         )}
-        <div ref={endRef} />
+
       </div>
 
       {error && (
