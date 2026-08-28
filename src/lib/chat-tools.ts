@@ -20,6 +20,7 @@ import {
 } from "./legistar";
 import { getNews, searchNews } from "./news";
 import { getRecentVotes } from "./votes";
+import { getCityEvents } from "./cityEvents";
 import { formatDate, todayInCupertino } from "./format";
 import {
   COUNCIL,
@@ -43,7 +44,25 @@ function describeMeeting(m: Meeting): string {
   return parts.filter(Boolean).join(" | ");
 }
 
+/**
+ * Anthropic's hosted web search, for the things Cupertino does not publish in
+ * any machine-readable form. The clearest case is events: the city's calendar
+ * sits behind a host-wide block that refuses even robots.txt, and its own park
+ * events map has been frozen on 2018 data for years. Summer concerts and movie
+ * nights are real, well covered, and invisible to every other tool here.
+ *
+ * Ranked below the city's own record deliberately. The record is authoritative
+ * and the web is corroboration, never the other way round.
+ */
+const webSearch = {
+  type: "web_search_20260209" as const,
+  name: "web_search" as const,
+  max_uses: 4,
+};
+
 export const chatTools = [
+  webSearch,
+
   betaTool({
     name: "find_meetings",
     description:
@@ -171,6 +190,56 @@ export const chatTools = [
       return bodies
         .map((b) => `${b.name} (${b.type})${BODY_DESCRIPTIONS[b.name] ? `: ${BODY_DESCRIPTIONS[b.name]}` : ""}`)
         .join("\n");
+    },
+  }),
+
+  betaTool({
+    name: "find_city_events",
+    description:
+      "Concerts, movie nights, festivals, ranger walks and other city programming, with real dates, times and venues, read from the city's own event pages. Use this FIRST for any question about what is happening at a park or venue, or what is on this week. Covers city-run events only, so a farmers market or a private booking will not appear.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        venue: {
+          type: "string",
+          description:
+            "Optional venue filter, e.g. 'Memorial Park' or 'Quinlan'. Matched against the event's address.",
+        },
+        upcoming_only: {
+          type: "boolean",
+          description: "Drop dates already past. Defaults to true.",
+        },
+      },
+      additionalProperties: false,
+    },
+    run: async ({ venue, upcoming_only }) => {
+      const result = await getCityEvents();
+      if (result.data.length === 0) {
+        return `The city's event pages could not be read right now. ${result.error ?? ""} The Parks and Recreation events page is the authoritative listing.`;
+      }
+      const today = todayInCupertino();
+      const wanted = venue?.trim().toLowerCase();
+      const lines: string[] = [];
+
+      for (const e of result.data) {
+        if (wanted && !(e.location ?? "").toLowerCase().includes(wanted)) continue;
+        const dates =
+          upcoming_only === false ? e.occurrences : e.occurrences.filter((o) => o.date >= today);
+        if (dates.length === 0) continue;
+        const when = dates
+          .slice(0, 4)
+          .map((o) => `${formatDate(o.date)}${o.start ? ` at ${o.start}` : ""}`)
+          .join("; ");
+        const more = dates.length > 4 ? ` (and ${dates.length - 4} more)` : "";
+        lines.push(`${e.title}\n    Where: ${e.location ?? "not stated"}\n    When: ${when}${more}\n    ${e.url}`);
+      }
+
+      if (lines.length === 0) {
+        return venue
+          ? `No upcoming city events found at a venue matching "${venue}". Try without a venue to see everything scheduled, or check the Parks and Recreation events page.`
+          : "No upcoming city events are listed right now.";
+      }
+      return `${lines.join("\n\n")}\n\nRead from the city's event pages. The city's own site remains authoritative if a date has changed.`;
     },
   }),
 
