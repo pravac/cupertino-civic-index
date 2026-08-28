@@ -15,9 +15,15 @@
  */
 const KEY = "cupertino-civic:visits";
 
+/**
+ * Credentials arrive under different names depending on how the store was
+ * provisioned: Vercel's marketplace integration sets KV_REST_API_*, while
+ * connecting Upstash directly sets UPSTASH_REDIS_REST_*. Accept either rather
+ * than depending on which path was taken.
+ */
 function config(): { url: string; token: string } | null {
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  const url = process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
   return url && token ? { url: url.replace(/\/$/, ""), token } : null;
 }
 
