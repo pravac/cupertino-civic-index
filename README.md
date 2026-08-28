@@ -285,6 +285,26 @@ them. Each of these is a scoping decision with a stated path forward, not an unk
 
 ---
 
+## Data freshness
+
+Meetings, agendas, roll-call votes, commissions, matter search and news are
+read from their sources on request and cached briefly, so the site reflects
+what the city published minutes ago. Nothing there is transcribed or stored.
+
+City events are the one exception. `cupertino.gov` refuses requests from
+hosting providers, so the deploy host cannot fetch them and a dated capture is
+committed instead, refreshed daily by `.github/workflows/refresh-events.yml`.
+Runners use datacenter addresses too, so whether that job can reach the site is
+an open question its first runs will answer; if it reports the fetch was
+blocked, run `npm run snapshot:events` from an ordinary connection. The capture
+script refuses to overwrite itself unless the fetch was genuinely live, so a
+blocked run cannot replace real data with nothing.
+
+Because deploys are not wired to Git, the workflow also pings a Vercel deploy
+hook so a refreshed capture actually reaches the site. Set
+`VERCEL_DEPLOY_HOOK` as a repository secret; without it the workflow still
+commits and simply skips the deploy step.
+
 ## Adapting this for another city
 
 Legistar is used by hundreds of US cities. Change the namespace in `src/lib/legistar.ts`, update

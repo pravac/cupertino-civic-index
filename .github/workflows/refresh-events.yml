@@ -1,0 +1,58 @@
+name: Refresh city events
+
+# Everything else on the site reads live sources on each request. City events
+# are the exception: cupertino.gov's CDN refuses requests from hosting
+# providers, so the deploy host cannot fetch them and a capture is committed
+# instead. This keeps that capture current.
+#
+# Whether a GitHub runner can reach the site is not knowable in advance, since
+# runners use datacenter addresses too. If this job reports the fetch was
+# blocked, run `npm run snapshot:events` from an ordinary connection instead.
+
+on:
+  schedule:
+    - cron: "17 13 * * *" # 06:17 Pacific daily, before most people look
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Capture events
+        id: capture
+        run: npm run snapshot:events
+
+      - name: Commit if the capture changed
+        id: commit
+        run: |
+          if git diff --quiet -- src/data/events-snapshot.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No change in the city's listings."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/events-snapshot.json
+          git commit -m "Refresh city events capture"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      # Deploys are not wired to Git, so a commit alone does not reach the site.
+      # Skipped automatically when the hook secret is absent.
+      - name: Trigger a deploy
+        if: steps.commit.outputs.changed == 'true' && env.HOOK != ''
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: curl -fsS -X POST "$HOOK" -o /dev/null && echo "Deploy triggered."
