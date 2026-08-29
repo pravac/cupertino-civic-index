@@ -5,9 +5,10 @@ name: Refresh city events
 # providers, so the deploy host cannot fetch them and a capture is committed
 # instead. This keeps that capture current.
 #
-# Whether a GitHub runner can reach the site is not knowable in advance, since
-# runners use datacenter addresses too. If this job reports the fetch was
-# blocked, run `npm run snapshot:events` from an ordinary connection instead.
+# GitHub runners can reach the site, confirmed by the runs on Aug 28 and 29.
+# If that ever stops being true the capture step fails loudly rather than
+# writing a stale file, and `npm run snapshot:events` from an ordinary
+# connection is the fallback.
 
 on:
   schedule:
@@ -17,9 +18,19 @@ on:
 permissions:
   contents: write
 
+# The scheduler occasionally fires a cron twice. Without this, both runs race
+# to push and the loser fails on a non-fast-forward.
+concurrency:
+  group: refresh-events
+  cancel-in-progress: true
+
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    env:
+      # Read at the job level so the deploy step's `if` can see it. A step's own
+      # `env` block is not in scope for that step's condition.
+      HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
     steps:
       - uses: actions/checkout@v4
 
@@ -31,7 +42,6 @@ jobs:
       - run: npm ci
 
       - name: Capture events
-        id: capture
         run: npm run snapshot:events
 
       - name: Commit if the capture changed
@@ -46,13 +56,21 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add src/data/events-snapshot.json
           git commit -m "Refresh city events capture"
-          git push
-          echo "changed=true" >> "$GITHUB_OUTPUT"
+          # Someone else may have landed a commit since checkout. Rebase onto
+          # whatever is there and try again rather than failing the run.
+          for attempt in 1 2 3; do
+            if git push; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "Push rejected, rebasing (attempt $attempt)."
+            git pull --rebase origin main
+          done
+          echo "Could not push after three attempts."
+          exit 1
 
       # Deploys are not wired to Git, so a commit alone does not reach the site.
       # Skipped automatically when the hook secret is absent.
       - name: Trigger a deploy
         if: steps.commit.outputs.changed == 'true' && env.HOOK != ''
-        env:
-          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
         run: curl -fsS -X POST "$HOOK" -o /dev/null && echo "Deploy triggered."
