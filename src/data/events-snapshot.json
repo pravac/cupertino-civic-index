@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-08-28T23:04:04.977Z",
+  "capturedAt": "2026-08-29T17:13:22.101Z",
   "events": [
     {
       "title": "Holidays in Hawaii",
@@ -538,7 +538,7 @@
       "title": "Movies in the Park",
       "url": "https://www.cupertino.gov/Parks-Recreation/Events/Movies-in-the-Park/Movies-in-the-Park-Event",
       "location": "Creekside Park, 10455 Miller Avenue, Cupertino, CA, 95014",
-      "summary": "Movies in the Park Next date: Friday, August 28, 2026 | 08:00 PM to 10:15 PM Enjoy popular releases of new, modern, and classic films to enjoy on a projector-screen at Creekside Park. Watch from genres of fantasy, comedy, drama, and action under the stars. For more information, visit the Movies in the Park webpage. When Friday, August 07, 2026 | 08:00 PM - 09:45 PM Friday, August 14, 2026 | 08:00 ",
+      "summary": "Movies in the Park Enjoy popular releases of new, modern, and classic films to enjoy on a projector-screen at Creekside Park. Watch from genres of fantasy, comedy, drama, and action under the stars. For more information, visit the Movies in the Park webpage. When Friday, August 07, 2026 | 08:00 PM - 09:45 PM Friday, August 14, 2026 | 08:00 PM - 09:45 PM Friday, August 21, 2026 | 08:00 PM - 09:45 P",
       "occurrences": [
         {
           "date": "2026-08-07",
@@ -561,7 +561,7 @@
           "end": "22:15"
         }
       ],
-      "stale": false
+      "stale": true
     },
     {
       "title": "Senior Center Open House",
@@ -620,6 +620,20 @@
           "date": "2026-11-07",
           "start": "08:00",
           "end": "10:00"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Pumpkin Pool-ooza",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Pumpkin-Pool-ooza/Pumpkin-Pool-ooza",
+      "location": null,
+      "summary": "Pumpkin Pool-ooza Next date: Sunday, September 27, 2026 | 10:00 AM to 11:30 AM Celebrate fall with a festive morning at the Blackberry Farm Pools. Pumpkin Pool-ooza features a floating pumpkin patch, swimming, pumpkin decorating, games, music, and seasonal activities for the whole family. Each registered participant can choose a pumpkin from the pool to take home. Costumes are encouraged on the po",
+      "occurrences": [
+        {
+          "date": "2026-09-27",
+          "start": "10:00",
+          "end": "11:30"
         }
       ],
       "stale": false
