@@ -13,7 +13,7 @@ export default function AssistantPage() {
     <>
       <PageHeader
         eyebrow="Assistant"
-        title="Ask about your city government"
+        title="Ask about Cupertino"
         intro="A question box for the things that are hard to look up: when a body meets, what it decided, who represents you, and how to be heard."
       />
       <Container className="py-12">
