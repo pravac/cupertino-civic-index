@@ -42,7 +42,7 @@ export default async function HomePage() {
               Cupertino, California
             </p>
             <h1 className="text-3xl font-bold leading-[1.12] tracking-tight text-ink sm:text-4xl">
-              Ask anything about your city government.
+              Ask anything about Cupertino.
             </h1>
             <p className="mt-3 text-lg leading-relaxed text-ink-muted">
               Meetings, agendas, roll-call votes, commissions, the November election and local
