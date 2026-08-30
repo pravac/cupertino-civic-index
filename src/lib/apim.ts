@@ -25,28 +25,45 @@ export const LIMITS = {
   messages: 20,
   perCallerPerMinute: 10,
   totalPerMinute: 120,
+  // A beta quota, counted only against questions that actually reach the
+  // model. Rolling 24 hours rather than a calendar day, so it frees up as the
+  // oldest question ages out instead of everything unlocking at midnight.
+  perCallerPerDay: 15,
   windowMs: 60_000,
+  dayMs: 86_400_000,
 };
 
 const hits = new Map<string, number[]>();
 
-function overLimit(key: string, max: number): boolean {
+function within(key: string, windowMs: number): number[] {
   const now = Date.now();
-  const recent = (hits.get(key) ?? []).filter((t) => now - t < LIMITS.windowMs);
-  recent.push(now);
+  const recent = (hits.get(key) ?? []).filter((t) => now - t < windowMs);
   hits.set(key, recent);
-  // Drop only callers whose window has expired. Clearing the whole map would
-  // hand an abuser a way to reset everyone else's count by growing it.
-  if (hits.size > 5_000) {
-    for (const [k, v] of hits) if (now - v[v.length - 1] >= LIMITS.windowMs) hits.delete(k);
+  return recent;
+}
+
+function record(key: string, windowMs: number): number {
+  const recent = within(key, windowMs);
+  recent.push(Date.now());
+  // Evict the least recently active callers. Clearing the whole map, as this
+  // used to, let anyone forge enough x-forwarded-for values to trip the clear
+  // and wipe their own count. Sorting by last hit never evicts an active
+  // caller, which is exactly the one whose count has to survive.
+  if (hits.size > 20_000) {
+    const cold = [...hits].sort((a, b) => a[1][a[1].length - 1] - b[1][b[1].length - 1]);
+    for (const [k] of cold.slice(0, 5_000)) hits.delete(k);
   }
-  return recent.length > max;
+  return recent.length;
 }
 
 const deny = (status: number, error: string) => Response.json({ error }, { status });
 
-/** Returns the parsed body, or the response to send instead. */
-export async function gate(req: Request): Promise<{ body: unknown } | Response> {
+/** The parsed body plus `charge`, or the response to send instead. Call
+ *  `charge()` once the request is about to reach the model: the daily quota is
+ *  spent on answered questions, so a malformed body does not cost a resident
+ *  one of their fifteen. Per-minute limits still count every request, since
+ *  those exist to stop hammering rather than to allocate a budget. */
+export async function gate(req: Request): Promise<{ body: unknown; charge: () => void } | Response> {
   const leaked = Object.keys(process.env).find((k) => k.startsWith("NEXT_PUBLIC_") && /ANTHROPIC/i.test(k));
   if (leaked) console.error(`${leaked} would ship the API key to the browser. Refusing to serve.`);
   if (leaked || !process.env.ANTHROPIC_API_KEY) {
@@ -57,8 +74,17 @@ export async function gate(req: Request): Promise<{ body: unknown } | Response> 
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     req.headers.get("x-real-ip") ||
     "unknown";
-  if (overLimit(caller, LIMITS.perCallerPerMinute) || overLimit("*", LIMITS.totalPerMinute)) {
+  if (
+    record(`m:${caller}`, LIMITS.windowMs) > LIMITS.perCallerPerMinute ||
+    record("m:*", LIMITS.windowMs) > LIMITS.totalPerMinute
+  ) {
     return deny(429, "Too many questions in a short time. Wait a minute and try again.");
+  }
+  if (within(`d:${caller}`, LIMITS.dayMs).length >= LIMITS.perCallerPerDay) {
+    return deny(
+      429,
+      `This beta answers ${LIMITS.perCallerPerDay} questions a day per visitor, and you have used them. Try again tomorrow, or read the meetings and council pages in the meantime.`,
+    );
   }
 
   // Check the declared length first so an oversized body is refused before it
@@ -70,7 +96,7 @@ export async function gate(req: Request): Promise<{ body: unknown } | Response> 
   if (raw.length > LIMITS.bodyBytes) return deny(413, "That request is too long.");
 
   try {
-    return { body: JSON.parse(raw) };
+    return { body: JSON.parse(raw), charge: () => void record(`d:${caller}`, LIMITS.dayMs) };
   } catch {
     return deny(400, "Malformed request.");
   }

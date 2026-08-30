@@ -71,7 +71,7 @@ export async function POST(req: Request) {
   // nothing below runs until a request has cleared them.
   const gated = await gate(req);
   if (gated instanceof Response) return gated;
-  const { body } = gated;
+  const { body, charge } = gated;
 
   const requested = (body as { language?: unknown })?.language;
   const language: LanguageCode =
@@ -102,6 +102,10 @@ export async function POST(req: Request) {
   if (messages.length === 0 || messages[messages.length - 1].role !== "user") {
     return Response.json({ error: "The last message must be from the user." }, { status: 400 });
   }
+
+  // The question is well formed and about to reach the model, so it costs the
+  // asker one of their fifteen for the day.
+  charge();
 
   const client = new Anthropic();
   const encoder = new TextEncoder();
