@@ -6,31 +6,17 @@
  * drift toward zero overnight. A shared store is the only way to make the
  * number mean anything.
  *
- * Uses plain fetch against the REST endpoint rather than a client library:
- * two calls are needed, both are one line, and a dependency for that is not
- * worth the install.
- *
  * With no credentials configured the counter reports null and the header
  * renders nothing, so the site is unaffected either way.
  */
+import { redisConfig } from "./redis";
+
 // Deliberately keeps the project's original slug. The site has been renamed
 // twice since, but renaming this key would orphan the running total.
 const KEY = "cupertino-civic:visits";
 
-/**
- * Credentials arrive under different names depending on how the store was
- * provisioned: Vercel's marketplace integration sets KV_REST_API_*, while
- * connecting Upstash directly sets UPSTASH_REDIS_REST_*. Accept either rather
- * than depending on which path was taken.
- */
-function config(): { url: string; token: string } | null {
-  const url = process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
-  return url && token ? { url: url.replace(/\/$/, ""), token } : null;
-}
-
 async function call(path: string): Promise<number | null> {
-  const cfg = config();
+  const cfg = redisConfig();
   if (!cfg) return null;
 
   const controller = new AbortController();

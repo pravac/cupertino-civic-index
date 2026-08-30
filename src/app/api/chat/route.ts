@@ -105,7 +105,7 @@ export async function POST(req: Request) {
 
   // The question is well formed and about to reach the model, so it costs the
   // asker one of their fifteen for the day.
-  charge();
+  await charge();
 
   const client = new Anthropic();
   const encoder = new TextEncoder();
