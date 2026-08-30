@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { CitySeal } from "./Emblems";
 import { VisitCount } from "./VisitCount";
 import { Container } from "./ui";
 
@@ -16,8 +15,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-border bg-bg/85 backdrop-blur">
       <Container>
         <div className="flex h-16 items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-2.5 font-semibold tracking-tight text-ink">
-            <CitySeal />
+          <Link href="/" className="font-semibold tracking-tight text-ink">
             <span>
               <span className="text-ink-muted font-normal">Care for</span> Cupertino
             </span>
