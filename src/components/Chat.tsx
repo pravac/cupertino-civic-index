@@ -43,7 +43,9 @@ export function Chat({ compact = false }: { compact?: boolean } = {}) {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next, language: lang }),
+        // The server keeps only the last 20 turns (LIMITS.messages in
+        // src/lib/apim.ts), so sending more just pads the request.
+        body: JSON.stringify({ messages: next.slice(-20), language: lang }),
       });
 
       if (!res.ok || !res.body) {

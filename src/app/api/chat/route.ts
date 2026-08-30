@@ -1,4 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { LIMITS, gate } from "@/lib/apim";
 import { chatTools } from "@/lib/chat-tools";
 import { formatDate, todayInCupertino } from "@/lib/format";
 import { LANGUAGE_NAMES, type LanguageCode } from "@/data/chat-i18n";
@@ -12,28 +13,6 @@ const MODEL = "claude-opus-5";
 /** Thinking is on by default on this model and shares the max_tokens ceiling
  *  with the reply, so the budget has to cover both or answers truncate. */
 const MAX_TOKENS = 16_000;
-
-const MAX_MESSAGES = 20;
-const MAX_CHARS = 4_000;
-
-/**
- * Rate limiting, in memory. This bounds one server instance, which is enough
- * to stop a single visitor hammering the endpoint, and explicitly not enough
- * to stop a distributed abuser. A public deployment on serverless gets a fresh
- * map per cold start, so move this to a shared store before relying on it.
- */
-const WINDOW_MS = 60_000;
-const MAX_PER_WINDOW = 10;
-const hits = new Map<string, number[]>();
-
-function rateLimited(key: string): boolean {
-  const now = Date.now();
-  const recent = (hits.get(key) ?? []).filter((t) => now - t < WINDOW_MS);
-  recent.push(now);
-  hits.set(key, recent);
-  if (hits.size > 5_000) hits.clear();
-  return recent.length > MAX_PER_WINDOW;
-}
 
 function systemFor(language: LanguageCode): string {
   if (language === "en") return SYSTEM;
@@ -88,30 +67,11 @@ Avoid section headers, bold labels, and nested bullets. A short list is fine whe
 Offer depth instead of supplying it unasked: end with a brief offer to break something down when there is clearly more to show. Someone who wants every roll call will ask.`;
 
 export async function POST(req: Request) {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return Response.json(
-      { error: "The assistant is not configured. Set ANTHROPIC_API_KEY to enable it." },
-      { status: 503 },
-    );
-  }
-
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    req.headers.get("x-real-ip") ??
-    "unknown";
-  if (rateLimited(ip)) {
-    return Response.json(
-      { error: "Too many questions in a short time. Wait a minute and try again." },
-      { status: 429 },
-    );
-  }
-
-  let body: unknown;
-  try {
-    body = await req.json();
-  } catch {
-    return Response.json({ error: "Malformed request." }, { status: 400 });
-  }
+  // Key custody, rate limiting and body size all live in the gateway, so
+  // nothing below runs until a request has cleared them.
+  const gated = await gate(req);
+  if (gated instanceof Response) return gated;
+  const { body } = gated;
 
   const requested = (body as { language?: unknown })?.language;
   const language: LanguageCode =
@@ -125,14 +85,19 @@ export async function POST(req: Request) {
   }
 
   // Trust nothing from the client: roles, shapes and sizes are all re-checked.
+  // Walking backwards keeps the newest turns when the character budget runs
+  // out, since dropping the question being asked would be the wrong trade.
   const messages: Anthropic.Beta.BetaMessageParam[] = [];
-  for (const m of raw.slice(-MAX_MESSAGES)) {
+  let chars = 0;
+  for (const m of raw.slice(-LIMITS.messages).reverse()) {
     const role = (m as { role?: unknown }).role;
     const content = (m as { content?: unknown }).content;
     if ((role !== "user" && role !== "assistant") || typeof content !== "string") continue;
-    const text = content.trim().slice(0, MAX_CHARS);
+    const text = content.trim().slice(0, LIMITS.messageChars);
     if (text.length === 0) continue;
-    messages.push({ role, content: text });
+    if (chars + text.length > LIMITS.conversationChars) break;
+    chars += text.length;
+    messages.unshift({ role, content: text });
   }
   if (messages.length === 0 || messages[messages.length - 1].role !== "user") {
     return Response.json({ error: "The last message must be from the user." }, { status: 400 });
