@@ -15,11 +15,18 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-border bg-bg/85 backdrop-blur">
       <Container>
         <div className="flex h-16 items-center justify-between gap-4">
-          <Link href="/" className="font-semibold tracking-tight text-ink">
-            <span>
-              Cupertino <span className="text-ink-muted font-normal">Eye</span>
+          <div className="flex items-baseline gap-2">
+            <Link href="/" className="font-semibold tracking-tight text-ink">
+              <span>
+                Cupertino <span className="text-ink-muted font-normal">Eye</span>
+              </span>
+            </Link>
+            {/* Inverted rather than a fixed dark: a box that stays near-black
+                in dark mode reads as a hole in the header. */}
+            <span className="rounded bg-ink px-1.5 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wider text-bg">
+              Beta
             </span>
-          </Link>
+          </div>
           <div className="flex items-center gap-4">
             <VisitCount />
             <nav aria-label="Primary">

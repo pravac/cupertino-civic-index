@@ -18,6 +18,8 @@ export interface ChatStrings {
   thinking: string;
   disclaimer: string;
   inputLabel: string;
+  /** The beta message allowance. {left} and {total} are substituted. */
+  quota: string;
   suggestions: string[];
 }
 
@@ -54,6 +56,7 @@ export const STRINGS: Record<LanguageCode, ChatStrings> = {
     disclaimer:
       "Answers are generated and can be wrong. This site is not the City of Cupertino. Confirm anything with legal or financial consequences against the city's official records.",
     inputLabel: "Ask a question about Cupertino city government",
+    quota: "{left}/{total} messages left today",
     suggestions: [
       "What's happening in the parks this week?",
       "Is there a city meeting coming up?",
@@ -76,6 +79,7 @@ export const STRINGS: Record<LanguageCode, ChatStrings> = {
     disclaimer:
       "答案由 AI 生成，可能有誤。本網站並非庫比蒂諾市政府。涉及法律或財務後果的事項，請以市府官方紀錄為準。",
     inputLabel: "詢問庫比蒂諾市政府相關問題",
+    quota: "今日尚餘 {left}/{total} 則訊息",
     suggestions: [
       "這星期公園有什麼活動？",
       "最近有市府會議嗎？",
@@ -98,6 +102,7 @@ export const STRINGS: Record<LanguageCode, ChatStrings> = {
     disclaimer:
       "答案由 AI 生成，可能有误。本网站并非库比蒂诺市政府。涉及法律或财务后果的事项，请以市府官方记录为准。",
     inputLabel: "询问库比蒂诺市政府相关问题",
+    quota: "今日剩余 {left}/{total} 条消息",
     suggestions: [
       "这星期公园有什么活动？",
       "最近有市府会议吗？",
@@ -120,6 +125,7 @@ export const STRINGS: Record<LanguageCode, ChatStrings> = {
     disclaimer:
       "उत्तर AI द्वारा तैयार किए जाते हैं और गलत हो सकते हैं। यह साइट क्यूपर्टिनो शहर की आधिकारिक साइट नहीं है। कानूनी या वित्तीय असर वाली किसी भी बात की पुष्टि शहर के आधिकारिक रिकॉर्ड से करें।",
     inputLabel: "क्यूपर्टिनो नगर सरकार के बारे में प्रश्न पूछें",
+    quota: "आज {left}/{total} संदेश शेष",
     suggestions: [
       "इस हफ़्ते पार्कों में क्या हो रहा है?",
       "क्या आने वाले दिनों में कोई शहर की बैठक है?",
@@ -142,6 +148,7 @@ export const STRINGS: Record<LanguageCode, ChatStrings> = {
     disclaimer:
       "Las respuestas son generadas y pueden contener errores. Este sitio no es la Ciudad de Cupertino. Confirma cualquier asunto con consecuencias legales o financieras en los registros oficiales de la ciudad.",
     inputLabel: "Haz una pregunta sobre el gobierno municipal de Cupertino",
+    quota: "Quedan {left}/{total} mensajes hoy",
     suggestions: [
       "¿Qué hay en los parques esta semana?",
       "¿Hay alguna reunión municipal próximamente?",

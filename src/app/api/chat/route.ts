@@ -104,8 +104,9 @@ export async function POST(req: Request) {
   }
 
   // The question is well formed and about to reach the model, so it costs the
-  // asker one of their fifteen for the day.
-  await charge();
+  // asker one of their fifteen for the day. The count comes back from the same
+  // write, so the counter in the interface is free.
+  const left = await charge();
 
   const client = new Anthropic();
   const encoder = new TextEncoder();
@@ -174,6 +175,7 @@ export async function POST(req: Request) {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
       "Cache-Control": "no-store",
+      "X-Questions-Left": String(left),
     },
   });
 }

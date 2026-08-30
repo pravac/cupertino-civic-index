@@ -104,15 +104,36 @@ function localCheck(caller: string): Verdict {
   return within(`d:${caller}`, LIMITS.dayMs).length >= LIMITS.perCallerPerDay ? "day" : "ok";
 }
 
-async function spendDaily(caller: string): Promise<void> {
+/** Spends one question and returns how many the caller has left, so the
+ *  counter in the interface costs no extra round trip. */
+async function spendDaily(caller: string): Promise<number> {
   const day = dayKey(caller);
   // Two days of expiry so the key certainly outlives the day it counts,
   // whatever the clock does around a daylight saving change.
   const res = await pipeline([["INCR", day], ["EXPIRE", day, "172800"]]);
-  if (!res) record(`d:${caller}`, LIMITS.dayMs);
+  const used = res ? Number(res[0]) : record(`d:${caller}`, LIMITS.dayMs);
+  return Math.max(0, LIMITS.perCallerPerDay - used);
 }
 
-const deny = (status: number, error: string) => Response.json({ error }, { status });
+/** Which visitor a request is from. The first x-forwarded-for hop only: the
+ *  rest are client supplied and would let anyone claim a fresh identity. */
+export function callerFrom(req: Request): string {
+  return (
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("x-real-ip") ||
+    "unknown"
+  );
+}
+
+/** How many questions this visitor has left today, without spending one. */
+export async function questionsLeft(caller: string): Promise<number> {
+  const res = await pipeline([["GET", dayKey(caller)]]);
+  const used = res ? Number(res[0] ?? 0) : within(`d:${caller}`, LIMITS.dayMs).length;
+  return Math.max(0, LIMITS.perCallerPerDay - used);
+}
+
+const deny = (status: number, error: string, headers?: HeadersInit) =>
+  Response.json({ error }, { status, headers });
 
 /** The parsed body plus `charge`, or the response to send instead. Call
  *  `charge()` once the request is about to reach the model: the daily quota is
@@ -121,17 +142,14 @@ const deny = (status: number, error: string) => Response.json({ error }, { statu
  *  those exist to stop hammering rather than to allocate a budget. */
 export async function gate(
   req: Request,
-): Promise<{ body: unknown; charge: () => Promise<void> } | Response> {
+): Promise<{ body: unknown; charge: () => Promise<number> } | Response> {
   const leaked = Object.keys(process.env).find((k) => k.startsWith("NEXT_PUBLIC_") && /ANTHROPIC/i.test(k));
   if (leaked) console.error(`${leaked} would ship the API key to the browser. Refusing to serve.`);
   if (leaked || !process.env.ANTHROPIC_API_KEY) {
     return deny(503, "The assistant is not configured. Set ANTHROPIC_API_KEY (server side only) to enable it.");
   }
 
-  const caller =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-real-ip") ||
-    "unknown";
+  const caller = callerFrom(req);
   const verdict = (await sharedCheck(caller)) ?? localCheck(caller);
   if (verdict === "minute") {
     return deny(429, "Too many questions in a short time. Wait a minute and try again.");
@@ -140,6 +158,7 @@ export async function gate(
     return deny(
       429,
       `This beta answers ${LIMITS.perCallerPerDay} questions a day per visitor, and you have used them. Try again tomorrow, or read the meetings and council pages in the meantime.`,
+      { "X-Questions-Left": "0" },
     );
   }
 

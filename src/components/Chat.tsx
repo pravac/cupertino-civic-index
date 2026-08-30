@@ -16,6 +16,9 @@ export function Chat({ compact = false }: { compact?: boolean } = {}) {
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  /** Questions left today, or null until the first read comes back. */
+  const [left, setLeft] = useState<number | null>(null);
+  const [limit, setLimit] = useState(15);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   /** Whether the reader was at the bottom before this update landed. */
@@ -29,9 +32,26 @@ export function Chat({ compact = false }: { compact?: boolean } = {}) {
     if (el && pinned.current) el.scrollTop = el.scrollHeight;
   }, [messages, busy]);
 
+  // The allowance is per visitor, not per browser tab, so it has to come from
+  // the server rather than from anything this component counts locally.
+  useEffect(() => {
+    let live = true;
+    fetch("/api/quota")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d: { left?: number; limit?: number } | null) => {
+        if (!live || !d || typeof d.left !== "number") return;
+        setLeft(d.left);
+        if (typeof d.limit === "number") setLimit(d.limit);
+      })
+      .catch(() => {});
+    return () => {
+      live = false;
+    };
+  }, []);
+
   async function send(text: string) {
     const question = text.trim();
-    if (!question || busy) return;
+    if (!question || busy || left === 0) return;
 
     setError(null);
     setInput("");
@@ -47,6 +67,9 @@ export function Chat({ compact = false }: { compact?: boolean } = {}) {
         // src/lib/apim.ts), so sending more just pads the request.
         body: JSON.stringify({ messages: next.slice(-20), language: lang }),
       });
+
+      const remaining = res.headers.get("X-Questions-Left");
+      if (remaining !== null) setLeft(Number(remaining));
 
       if (!res.ok || !res.body) {
         const detail = await res.json().catch(() => null);
@@ -96,6 +119,17 @@ export function Chat({ compact = false }: { compact?: boolean } = {}) {
             {l.name}
           </button>
         ))}
+        {left !== null && (
+          <p
+            lang={lang}
+            aria-live="polite"
+            className={`ml-auto rounded-full border px-2.5 py-1 text-xs font-medium tabular-nums ${
+              left === 0 ? "border-warning text-warning" : "border-border text-ink-muted"
+            }`}
+          >
+            {t.quota.replace("{left}", String(left)).replace("{total}", String(limit))}
+          </p>
+        )}
       </div>
 
       <div
@@ -128,8 +162,9 @@ export function Chat({ compact = false }: { compact?: boolean } = {}) {
                   <button
                     type="button"
                     onClick={() => send(s)}
+                    disabled={left === 0}
                     lang={lang}
-                    className="rounded-full border border-border-strong px-3 py-1.5 text-sm text-ink transition-colors hover:bg-surface-2"
+                    className="rounded-full border border-border-strong px-3 py-1.5 text-sm text-ink transition-colors hover:bg-surface-2 disabled:opacity-50 disabled:hover:bg-transparent"
                   >
                     {s}
                   </button>
@@ -188,7 +223,7 @@ export function Chat({ compact = false }: { compact?: boolean } = {}) {
           ref={inputRef}
           rows={2}
           value={input}
-          disabled={busy}
+          disabled={busy || left === 0}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
@@ -202,7 +237,7 @@ export function Chat({ compact = false }: { compact?: boolean } = {}) {
         />
         <button
           type="submit"
-          disabled={busy || input.trim().length === 0}
+          disabled={busy || left === 0 || input.trim().length === 0}
           className="rounded-lg bg-primary px-4 py-2.5 font-medium text-primary-fg transition-colors hover:bg-primary-hover disabled:opacity-50"
         >
           {busy ? t.working : t.ask}
