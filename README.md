@@ -1,4 +1,4 @@
-# Cupertino Civic Index
+# Care for Cupertino
 
 A single place to find what Cupertino's city government is actually doing: meetings, agendas,
 roll-call votes, commissions, the November election, and local news.

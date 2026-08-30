@@ -12,13 +12,13 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Cupertino Civic Index",
-    template: "%s · Cupertino Civic Index",
+    default: "Care for Cupertino",
+    template: "%s · Care for Cupertino",
   },
   description:
     "Meetings, agendas, elections and local news for Cupertino, California, collected in one place, sourced from the city's own public records.",
   openGraph: {
-    title: "Cupertino Civic Index",
+    title: "Care for Cupertino",
     description:
       "Meetings, agendas, elections and local news for Cupertino, California, in one place.",
     type: "website",

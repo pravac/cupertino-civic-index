@@ -13,6 +13,8 @@
  * With no credentials configured the counter reports null and the header
  * renders nothing, so the site is unaffected either way.
  */
+// Deliberately keeps the project's original slug. The site was renamed to
+// Care for Cupertino, but renaming this key would orphan the running total.
 const KEY = "cupertino-civic:visits";
 
 /**

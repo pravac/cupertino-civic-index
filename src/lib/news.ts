@@ -190,7 +190,7 @@ async function fetchTopic(t: NewsTopic): Promise<NewsItem[]> {
 /**
  * Cupertino is Apple's mailing address, so a naive "Cupertino" search returns
  * mostly AAPL stock moves and iPhone rumors. Precision matters more than volume
- * for a civic index, so a story must name Cupertino (or a local institution)
+ * on a civic site, so a story must name Cupertino (or a local institution)
  * and must not be corporate Apple coverage.
  */
 const LOCAL = /\bcupertino\b|\bde anza\b|\bvallco\b|\bfuhsd\b|\bcusd\b|\bmonta vista\b/i;
