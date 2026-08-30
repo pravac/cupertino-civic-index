@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { LIMITS, gate } from "@/lib/apim";
+import { emptyUsage, logUsage } from "@/lib/usage";
 import { chatTools } from "@/lib/chat-tools";
 import { formatDate, todayInCupertino } from "@/lib/format";
 import { LANGUAGE_NAMES, type LanguageCode } from "@/data/chat-i18n";
@@ -14,16 +15,25 @@ const MODEL = "claude-opus-5";
  *  with the reply, so the budget has to cover both or answers truncate. */
 const MAX_TOKENS = 16_000;
 
-function systemFor(language: LanguageCode): string {
-  if (language === "en") return SYSTEM;
-  return `${SYSTEM}
+/** One cached block. The prefix the API caches runs tools then system, so a
+ *  single breakpoint here covers both: about 4,600 tokens of schemas and
+ *  instructions that would otherwise be re-sent, at full price, on every one of
+ *  the several calls the tool runner makes per question. The only volatile part
+ *  is today's date, which changes the prefix once a day. */
+function systemFor(language: LanguageCode): Anthropic.Beta.BetaTextBlockParam[] {
+  return [{ type: "text", text: systemText(language), cache_control: { type: "ephemeral" } }];
+}
+
+function systemText(language: LanguageCode): string {
+  if (language === "en") return SYSTEM();
+  return `${SYSTEM()}
 
 Reply in ${LANGUAGE_NAMES[language]}. The reader chose that language, so use it for your whole answer even though the records you are reading are in English.
 
 Quote official text (agenda titles, motion wording, headlines) in its original language and translate it alongside, rather than replacing it. Someone acting on a record needs the words the city actually used, and a name or file number they can match. Keep proper nouns, street names, and file numbers as they appear.`;
 }
 
-const SYSTEM = `You are the assistant for Cupertino Eye, an independent guide to local government in Cupertino, California. Today is ${formatDate(todayInCupertino())}.
+const SYSTEM = () => `You are the assistant for Cupertino Eye, an independent guide to local government in Cupertino, California. Today is ${formatDate(todayInCupertino())}.
 
 Answer questions about Cupertino's city government using your tools. The tools read the city's live records, so prefer calling one over answering from memory, and say plainly when the records do not cover something.
 
@@ -110,6 +120,7 @@ export async function POST(req: Request) {
 
   const client = new Anthropic();
   const encoder = new TextEncoder();
+  const usage = emptyUsage();
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
@@ -134,6 +145,17 @@ export async function POST(req: Request) {
         for await (const messageStream of runner) {
           let wroteThisTurn = false;
           for await (const event of messageStream) {
+            // Input and cache counts arrive once per call; output accrues in
+            // the deltas. Taking each from one place avoids double counting.
+            if (event.type === "message_start") {
+              const u = event.message.usage;
+              usage.calls += 1;
+              usage.input += u.input_tokens ?? 0;
+              usage.cacheRead += u.cache_read_input_tokens ?? 0;
+              usage.cacheWrite += u.cache_creation_input_tokens ?? 0;
+            } else if (event.type === "message_delta") {
+              usage.output += event.usage.output_tokens ?? 0;
+            }
             if (
               event.type === "content_block_delta" &&
               event.delta.type === "text_delta"
@@ -166,6 +188,9 @@ export async function POST(req: Request) {
             : "\n\n[The assistant hit an error and stopped. Try again.]";
         controller.enqueue(encoder.encode(message));
       } finally {
+        // Logged even when the answer failed part way: a question that cost
+        // money and then broke is exactly the one worth seeing in the logs.
+        if (usage.calls > 0) logUsage(usage);
         controller.close();
       }
     },
