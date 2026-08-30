@@ -42,7 +42,7 @@ export const LANGUAGE_NAMES: Record<LanguageCode, string> = {
 
 export const STRINGS: Record<LanguageCode, ChatStrings> = {
   en: {
-    label: "Care for Cupertino",
+    label: "Cupertino Eye",
     intro:
       "Ask about meetings, agendas, the council, commissions, the November election, or local news. Answers come from the city's own records.",
     recordsNote:
@@ -64,7 +64,7 @@ export const STRINGS: Record<LanguageCode, ChatStrings> = {
     ],
   },
   "zh-Hant": {
-    label: "Care for Cupertino",
+    label: "Cupertino Eye",
     intro:
       "可詢問會議、議程、市議會、委員會、十一月選舉或地方新聞。答案來自市府本身的公開紀錄。",
     recordsNote:
@@ -86,7 +86,7 @@ export const STRINGS: Record<LanguageCode, ChatStrings> = {
     ],
   },
   "zh-Hans": {
-    label: "Care for Cupertino",
+    label: "Cupertino Eye",
     intro:
       "可询问会议、议程、市议会、委员会、十一月选举或地方新闻。答案来自市府本身的公开记录。",
     recordsNote:
@@ -108,7 +108,7 @@ export const STRINGS: Record<LanguageCode, ChatStrings> = {
     ],
   },
   hi: {
-    label: "Care for Cupertino",
+    label: "Cupertino Eye",
     intro:
       "बैठकों, एजेंडा, काउंसिल, आयोगों, नवंबर के चुनाव या स्थानीय समाचार के बारे में पूछें। उत्तर शहर के अपने सार्वजनिक रिकॉर्ड से आते हैं।",
     recordsNote:
@@ -130,7 +130,7 @@ export const STRINGS: Record<LanguageCode, ChatStrings> = {
     ],
   },
   es: {
-    label: "Care for Cupertino",
+    label: "Cupertino Eye",
     intro:
       "Pregunta sobre reuniones, agendas, el concejo, las comisiones, las elecciones de noviembre o noticias locales. Las respuestas provienen de los registros oficiales de la ciudad.",
     recordsNote:

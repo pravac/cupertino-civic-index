@@ -17,7 +17,7 @@ export function SiteHeader() {
         <div className="flex h-16 items-center justify-between gap-4">
           <Link href="/" className="font-semibold tracking-tight text-ink">
             <span>
-              <span className="text-ink-muted font-normal">Care for</span> Cupertino
+              Cupertino <span className="text-ink-muted font-normal">Eye</span>
             </span>
           </Link>
           <div className="flex items-center gap-4">
@@ -49,7 +49,7 @@ export function SiteFooter() {
       <Container className="py-10">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div className="max-w-md">
-            <p className="font-semibold text-ink">Care for Cupertino</p>
+            <p className="font-semibold text-ink">Cupertino Eye</p>
             <p className="mt-2 text-sm leading-relaxed text-ink-muted">
               An independent, open-source guide to local government in Cupertino, California.
               Meeting and agenda data comes directly from the city&rsquo;s own public records

@@ -1,9 +1,9 @@
-# Care for Cupertino
+# Cupertino Eye
 
 A single place to find what Cupertino's city government is actually doing: meetings, agendas,
 roll-call votes, commissions, the November election, and local news.
 
-**Live: https://cupertino-civic.vercel.app**
+**Live: https://cupertinoeye.vercel.app**
 
 Built because all of this information is already public, already online, and effectively
 unreachable by the people it is published for.
@@ -264,7 +264,7 @@ npm run lint
 
 ## Deployment
 
-Deployed on Vercel at **https://cupertino-civic.vercel.app**. `ANTHROPIC_API_KEY` is set as a
+Deployed on Vercel at **https://cupertinoeye.vercel.app**. `ANTHROPIC_API_KEY` is set as a
 sensitive environment variable on production and preview. Pages use incremental static
 regeneration (15 to 60 minutes) so traffic does not translate into load on the city's systems, and
 minutes PDFs cache for a day since approved minutes are immutable.
