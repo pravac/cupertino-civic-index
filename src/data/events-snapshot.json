@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-08-29T17:13:22.101Z",
+  "capturedAt": "2026-08-30T17:32:35.296Z",
   "events": [
     {
       "title": "Holidays in Hawaii",
@@ -47,70 +47,6 @@
         }
       ],
       "stale": true
-    },
-    {
-      "title": "Baer Blacksmith Shop Demonstrations",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Baer-Blacksmith-Shop-Demonstrations",
-      "location": "McClellan Ranch Preserve, 22221 McClellan Road, 95014",
-      "summary": "Baer Blacksmith Shop Demonstrations Next date: Saturday, August 29, 2026 | 11:00 AM to 03:00 PM Community members are invited to visit the Baer Blacksmith Shop from 11 a.m. to 3 p.m. and learn about early Cupertino history, the craft of blacksmithing, and learn from our experienced blacksmith, who will be firing the forge to give demonstrations. When Saturday, January 31, 2026 | 11:00 AM - 03:00 P",
-      "occurrences": [
-        {
-          "date": "2026-01-31",
-          "start": "11:00",
-          "end": "15:00"
-        },
-        {
-          "date": "2026-02-28",
-          "start": "11:00",
-          "end": "15:00"
-        },
-        {
-          "date": "2026-03-28",
-          "start": "11:00",
-          "end": "15:00"
-        },
-        {
-          "date": "2026-04-25",
-          "start": "11:00",
-          "end": "15:00"
-        },
-        {
-          "date": "2026-05-30",
-          "start": "11:00",
-          "end": "15:00"
-        },
-        {
-          "date": "2026-06-27",
-          "start": "11:00",
-          "end": "15:00"
-        },
-        {
-          "date": "2026-07-25",
-          "start": "11:00",
-          "end": "15:00"
-        },
-        {
-          "date": "2026-08-29",
-          "start": "11:00",
-          "end": "15:00"
-        },
-        {
-          "date": "2026-10-31",
-          "start": "11:00",
-          "end": "15:00"
-        },
-        {
-          "date": "2026-11-28",
-          "start": "11:00",
-          "end": "15:00"
-        },
-        {
-          "date": "2026-12-26",
-          "start": "11:00",
-          "end": "15:00"
-        }
-      ],
-      "stale": false
     },
     {
       "title": "Sweetheart Social",
@@ -200,7 +136,7 @@
       "title": "Environmental Education Center Open House",
       "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Environmental-Education-Center-Open-House",
       "location": "McClellan Ranch Preserve, 22221 McClellan Road, 95014",
-      "summary": "Environmental Education Center Open House Next date: Saturday, August 29, 2026 | 11:00 AM to 03:00 PM Drop by the Environmental Education Center (EEC) at McClellan Ranch Preserve every Saturday from 11 a.m. to 3 p.m. for family fun and discovery. Meet the City's animal ambassadors, explore local wildlife, engage with preserve staff and park rangers, and enjoy hands-on activities that bring nature ",
+      "summary": "Environmental Education Center Open House Next date: Saturday, September 05, 2026 | 11:00 AM to 03:00 PM Drop by the Environmental Education Center (EEC) at McClellan Ranch Preserve every Saturday from 11 a.m. to 3 p.m. for family fun and discovery. Meet the City's animal ambassadors, explore local wildlife, engage with preserve staff and park rangers, and enjoy hands-on activities that bring natu",
       "occurrences": [
         {
           "date": "2026-05-09",
@@ -634,6 +570,20 @@
           "date": "2026-09-27",
           "start": "10:00",
           "end": "11:30"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Family Friendly Introduction to Nature Journaling",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Family-Friendly-Introduction-to-Nature-Journaling",
+      "location": "McClellan Ranch Preserve, 22221 McClellan Rd, 95014",
+      "summary": "Family Friendly Introduction to Nature Journaling Next date: Sunday, September 27, 2026 | 11:00 AM to 02:00 PM Explore McClellan Ranch Preserve through nature journaling. Participants will have an opportunity to develop keen observation skills and learn more about the natural world through journaling. Learn the fundamentals of nature journaling and practice sketching and writing about what you see",
+      "occurrences": [
+        {
+          "date": "2026-09-27",
+          "start": "11:00",
+          "end": "14:00"
         }
       ],
       "stale": false
