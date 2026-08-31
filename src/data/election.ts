@@ -5,10 +5,23 @@
  * summarized from their own stated platform, and nothing here characterizes a
  * candidate positively or negatively. Anything beyond that belongs in the
  * linked coverage, not in a city-facing resource.
+ *
+ * Slates are self-declared only. A slate appears here when the candidates
+ * themselves declared one and named it; groupings that only an outside
+ * observer has drawn do not appear, however widely they are repeated. This
+ * page previously carried "Slow-growth group" on three cards, which was a
+ * press description rather than anything those candidates called themselves,
+ * while the other three carried the name their own slate chose. Labeling one
+ * group by its self-description and another by an outsider's is not a small
+ * inconsistency in an election guide: it hands the reader a characterization
+ * and the site's authority behind it. Requiring self-declaration is symmetric,
+ * checkable, and needs no judgment call from whoever edits this file next.
  */
 export interface Candidate {
   name: string;
   background: string;
+  /** The slate's own name, where the candidates declared one. Never a
+   *  grouping assigned from outside. */
   slate: string | null;
   incumbent: boolean;
   priorities: string[];
@@ -24,9 +37,10 @@ export const ELECTION = {
   lastVerified: "2026-08-25",
 };
 
-/** The defining policy split in this cycle, stated neutrally. */
+/** The defining policy split in this cycle, stated neutrally. Describes the
+ *  question before the city, not the people answering it. */
 export const ELECTION_CONTEXT =
-  "Candidates divide largely over how Cupertino should meet state-mandated housing targets: how much new housing to approve, and where. Two informal slates have formed around that question.";
+  "Candidates divide largely over how Cupertino should meet state-mandated housing targets: how much new housing to approve, and where. Read each candidate's stated priorities below and their own campaign materials before deciding where any of them stands.";
 
 export const CANDIDATES: Candidate[] = [
   {
@@ -53,7 +67,7 @@ export const CANDIDATES: Candidate[] = [
   {
     name: "Tracy Kosolcharoen",
     background: "Chair, Cupertino Planning Commission",
-    slate: "Slow-growth group",
+    slate: null,
     incumbent: false,
     priorities: [
       "Preserve neighborhood quality of life",
@@ -64,7 +78,7 @@ export const CANDIDATES: Candidate[] = [
   {
     name: "Gopal Kumarappan",
     background: "Technology executive; chair, Parks and Recreation Commission",
-    slate: "Slow-growth group",
+    slate: null,
     incumbent: false,
     priorities: [
       "Balanced growth",
@@ -86,7 +100,7 @@ export const CANDIDATES: Candidate[] = [
   {
     name: "Santosh Rao",
     background: "Technology executive; chaired the Planning Commission in 2025",
-    slate: "Slow-growth group",
+    slate: null,
     incumbent: false,
     priorities: [
       "Government efficiency",

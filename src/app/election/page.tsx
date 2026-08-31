@@ -35,8 +35,13 @@ export default function ElectionPage() {
           <p className="text-sm font-semibold text-ink">What this election is about</p>
           <p className="mt-2 leading-relaxed text-ink-muted">{ELECTION_CONTEXT}</p>
           <p className="mt-3 text-sm text-ink-muted">
-            Two informal slates have formed: {slates.join(" and ")}. Slate membership is
-            self-declared and does not appear on the ballot.
+            {slates.length > 0 && (
+              <>
+                Declared {slates.length === 1 ? "slate" : "slates"}: {slates.join(" and ")}.{" "}
+              </>
+            )}
+            Only slates the candidates declared themselves are shown, and slate membership
+            does not appear on the ballot.
           </p>
         </Card>
 
