@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SiteFooter, SiteHeader } from "@/components/Chrome";
+import { SITE_URL } from "@/lib/site";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,6 +12,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  // Without this, the generated link-preview image resolves as a relative path
+  // and social cards come back blank.
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Cupertino Eye",
     template: "%s · Cupertino Eye",

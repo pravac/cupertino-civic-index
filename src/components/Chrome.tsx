@@ -14,8 +14,12 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-bg/85 backdrop-blur">
       <Container>
-        <div className="flex h-16 items-center justify-between gap-4">
-          <div className="flex items-baseline gap-2">
+        {/* Two rows on a phone, one from sm up. Five links, a wordmark and a
+            badge do not fit across 390px, and forcing them into one row made
+            the header wider than the viewport, which dragged every page on the
+            site sideways with it. */}
+        <div className="flex flex-col gap-1 py-2.5 sm:h-16 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:py-0">
+          <div className="flex shrink-0 items-baseline gap-2 whitespace-nowrap">
             <Link href="/" className="font-semibold tracking-tight text-ink">
               <span>
                 Cupertino <span className="text-ink-muted font-normal">Eye</span>
@@ -27,20 +31,22 @@ export function SiteHeader() {
               Beta
             </span>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex min-w-0 items-center gap-4">
             <VisitCount />
-            <nav aria-label="Primary">
-            <ul className="flex items-center gap-1 text-sm">
-              {NAV.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="rounded-md px-2.5 py-1.5 text-ink-muted transition-colors hover:bg-surface-2 hover:text-ink sm:px-3"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+            {/* Scrolls rather than collapsing behind a menu button: five links
+                stay one tap away, and nothing depends on JavaScript. */}
+            <nav aria-label="Primary" className="-mx-1 min-w-0 overflow-x-auto px-1">
+              <ul className="flex items-center gap-1 text-sm">
+                {NAV.map((item) => (
+                  <li key={item.href} className="shrink-0">
+                    <Link
+                      href={item.href}
+                      className="block whitespace-nowrap rounded-md px-2.5 py-1.5 text-ink-muted transition-colors hover:bg-surface-2 hover:text-ink sm:px-3"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </nav>
           </div>
