@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-08-31T19:31:34.066Z",
+  "capturedAt": "2026-09-01T17:20:44.337Z",
   "events": [
     {
       "title": "Holidays in Hawaii",
@@ -542,6 +542,20 @@
       "stale": false
     },
     {
+      "title": "Teen Movie Night - Jurassic Park (1993)",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Teen-Movie-Night-Jurassic-Park-1993",
+      "location": "Quinlan Community Center, 10185 N Stelling Road, 95014",
+      "summary": "Teen Movie Night - Jurassic Park (1993) Next date: Friday, September 25, 2026 | 06:00 PM to 08:30 PM Cupertino teens, get ready for movie night! Join us at the Quinlan Community Center on Friday, September 25 for a free screening of Jurassic Park on the big screen. Bring your friends, grab some free food and snacks, and enjoy the movie together. Doors open at 6 p.m., movie starts at 6:30 p.m. Admi",
+      "occurrences": [
+        {
+          "date": "2026-09-25",
+          "start": "18:00",
+          "end": "20:30"
+        }
+      ],
+      "stale": false
+    },
+    {
       "title": "Join-A-Ranger: Bird ID and Guided Hike",
       "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Join-A-Ranger-Bird-ID-and-Guided-Hike",
       "location": "McClellan Ranch Preserve, 22221 McClellan Rd, 95014",
@@ -570,20 +584,6 @@
           "date": "2026-09-27",
           "start": "10:00",
           "end": "11:30"
-        }
-      ],
-      "stale": false
-    },
-    {
-      "title": "Family Friendly Introduction to Nature Journaling",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Family-Friendly-Introduction-to-Nature-Journaling",
-      "location": "McClellan Ranch Preserve, 22221 McClellan Rd, 95014",
-      "summary": "Family Friendly Introduction to Nature Journaling Next date: Sunday, September 27, 2026 | 11:00 AM to 02:00 PM Explore McClellan Ranch Preserve through nature journaling. Participants will have an opportunity to develop keen observation skills and learn more about the natural world through journaling. Learn the fundamentals of nature journaling and practice sketching and writing about what you see",
-      "occurrences": [
-        {
-          "date": "2026-09-27",
-          "start": "11:00",
-          "end": "14:00"
         }
       ],
       "stale": false
