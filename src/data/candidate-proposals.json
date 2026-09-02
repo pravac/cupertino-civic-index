@@ -1,0 +1,162 @@
+{
+  "proposedAt": "2026-09-02T20:08:02.105Z",
+  "cycle": "2026-11-03",
+  "results": {
+    "J.R. Fruen": {
+      "proposals": [
+        {
+          "url": "https://cupertinotogether.org/jr-fruen/",
+          "label": "Cupertino Together — JR Fruen candidate page (three-candidate slate site)",
+          "pageKind": "campaign_site",
+          "namesThisOfficeAndCycle": false,
+          "hasPaidForByDisclosure": false,
+          "evidence": [
+            "Page text states he is running for re-election to the Cupertino City Council, i.e. the correct office and an active candidacy rather than an incumbent bio.",
+            "Independent local reporting confirms a slate of this exact name exists for this exact contest: Fruen, Seema Sharma Lindskog and John Tang formed a slate called Cupertino Together for the three seats on the Nov. 3 ballot.",
+            "Third-party corroboration of the same three-name grouping: a local PAC endorsed Fruen, Lindskog and Tang 'running as a slate' for Cupertino City Council, and the South Bay AFL-CIO Labor Council lists sole endorsements for all three.",
+            "Site has parallel per-candidate pages (/seema-lindskog/, /john-tang/) and a /candidates/ page, consistent with a purpose-built site for this cycle."
+          ],
+          "risks": [
+            "Written in the third person about Fruen ('JR Fruen is running for re-election... He has spent his whole life here'), which fails the first-person test for a candidate's own site.",
+            "It is a shared slate property, so it may be controlled by a joint slate committee rather than by Fruen's own candidate-controlled committee — this is exactly the committee/independent-expenditure trap.",
+            "I could not retrieve any 'Paid for by ... FPPC #' disclosure text from this domain; searches for that string returned only Better Cupertino's disclosure, not this site's.",
+            "I could not verify the literal election date 'November 3, 2026' appears on the page, only the office and the re-election framing.",
+            "No WHOIS/registration date available in this environment, so 'registered for this cycle' is unverified."
+          ],
+          "confidence": "medium"
+        },
+        {
+          "url": "https://www.jr4cupertino.com",
+          "label": "JR4Cupertino.com — Fruen's prior personal campaign domain",
+          "pageKind": "campaign_site",
+          "namesThisOfficeAndCycle": false,
+          "hasPaidForByDisclosure": false,
+          "evidence": [
+            "Multiple independent sources attribute this domain to him personally as his campaign site: a 2022 California Local profile describes priorities he outlines 'on his campaign site, JR4Cupertino.com'.",
+            "A 2022 student-newspaper candidate profile and a Santa Clara County voter guide both link to jr4cupertino.com as his campaign site.",
+            "His X/Twitter account links a campaign donation page and carries FPPC # 1447662, showing a real candidate-controlled committee behind the JR4Cupertino branding."
+          ],
+          "risks": [
+            "Every citation I found is from the 2020 and 2022 cycles — this is the classic 'old cycle site still online' trap; a 2020 Cupertino Matters newsletter already listed JR4Cupertino.com.",
+            "The associated ActBlue page is titled 'Support JR Fruen for Cupertino City Council 2022' with FPPC #1447662, i.e. the prior-cycle committee, not a verified 2026 committee.",
+            "I could not load the live page in this environment, so I cannot confirm it is still online, redirects to the slate site, or has been refreshed for 2026.",
+            "No evidence it names the November 3, 2026 election; no 2026 'Paid for by' disclosure observed."
+          ],
+          "confidence": "low"
+        },
+        {
+          "url": "https://www.facebook.com/JR4Cupertino/",
+          "label": "Facebook page 'JR Fruen for Cupertino City Council'",
+          "pageKind": "social",
+          "namesThisOfficeAndCycle": false,
+          "hasPaidForByDisclosure": false,
+          "evidence": [
+            "Page name matches the candidate and the exact office, and matches the JR4Cupertino handle used across his other accounts."
+          ],
+          "risks": [
+            "Content is behind a login wall; search returned only Facebook's generic sign-in boilerplate, so nothing about this office, this cycle, authorship, or disclosure could be verified.",
+            "Page name appears to date from an earlier campaign; not evidence of a 2026 candidacy."
+          ],
+          "confidence": "low"
+        },
+        {
+          "url": "https://www.instagram.com/jr4cupertino/",
+          "label": "Instagram @jr4cupertino, displayed as 'Councilmember JR Fruen'",
+          "pageKind": "social",
+          "namesThisOfficeAndCycle": false,
+          "hasPaidForByDisclosure": false,
+          "evidence": [
+            "Handle matches the campaign branding used elsewhere."
+          ],
+          "risks": [
+            "The display name is 'Councilmember JR Fruen', which reads as an officeholder account rather than a campaign account.",
+            "No post content, disclosure, or cycle reference was retrievable."
+          ],
+          "confidence": "low"
+        }
+      ],
+      "notes": "No standalone, first-person, 2026-specific campaign website for J.R. Fruen was confirmed. The single strongest candidate is the slate site cupertinotogether.org, and its weakness is structural: it covers three candidates, is written about Fruen in the third person, and may be a slate/joint-committee property rather than his own. Verification limits you should know about: this environment has no direct web fetch and no WHOIS, so every judgment above rests on search snippets. I could not confirm any 'Paid for by ... FPPC #' text on any proposed page, could not confirm the string 'November 3, 2026' on any proposed page, and could not confirm a 2026 candidate committee ID (the only FPPC number found, 1447662, is tied to his 2022 committee). Context that makes 2026 plausible: he was elected in 2022 with a term through Dec. 31, 2026, a 2023 profile reported he planned to seek re-election, an August 2026 local newsletter reported he is running, and a San Jose Spotlight piece from roughly a week ago reports eight candidates for three seats on the Nov. 3 ballot with one incumbent. Look-alikes I deliberately excluded: cupertinofacts.org (an opposition blog that mentions him constantly and frames him as tied to the real estate lobby); bettercupertino.org (rival faction, carries its own 'Paid for by Better Cupertino, FPPC #1395411' disclosure, which is easy to mistake for his); cupertinoforall.org (his own advocacy group's 2022 endorsement page, not a campaign site); news and profile pages (californialocal.com, sanjosespotlight.com, queersiliconvalley.org, elestoque.org, cupertinomatters.org); endorsement listings (southbaylabor.org, fafhda.org, anthonyforsanjose.com); the city's official cupertino.gov councilmember bio and cupertino.legistar.com, which are government pages, not campaign pages; secure.actblue.com/donate/cupertino, a 2022-committee donation page; and directory entries (BallotReady, theballotbook.com, Justia, Avvo, LinkedIn). One identity note: the LinkedIn profile for 'Joseph \"J.R.\" Fruen' shows a Cupertino location and Santa Clara University law degree matching the councilmember, but lists a San Jose City Council chief-of-staff role — probably the same person, though I did not confirm it, and a same-name mixup cannot be ruled out. Recommended human checks: open cupertinotogether.org and look for a footer FPPC disclosure and whether it names a joint slate committee or three separate candidate committees; run WHOIS on cupertinotogether.org and jr4cupertino.com; check the Santa Clara County Registrar's certified candidate list for the Nov. 3, 2026 Cupertino contest; and search the county Netfile portal for a Fruen 2026 committee Form 410."
+    },
+    "Mark Fantozzi": {
+      "proposals": [],
+      "notes": "No official campaign page for Mark Fantozzi could be found, so the proposals list is intentionally empty rather than filled with a plausible guess.\n\nCandidate identity is confirmed. He is a real, qualified candidate for the office and cycle in question: San José Spotlight reports that eight candidates qualified for three Cupertino City Council seats on the Nov. 3 ballot, and describes him as a 75-year-old structural civil engineer who objects to state housing laws limiting local control and who sued the city in May over a 51-home Linda Vista Drive townhome project across from his home. He also appears in Cupertino City Council draft minutes (March 4, 2025) speaking on fire hazard severity zones, and in NBC Bay Area and Local News Matters coverage as a neighbor/plaintiff. None of this is a campaign page.\n\nSearches run: name + office; name + office + 2026; name + 'campaign website'; slogan-style domain patterns ('Fantozzi for Cupertino', 'Fantozzi 4 Cupertino', 'Vote Fantozzi', 'fantozziforcupertino', 'fantozzi2026', 'markfantozzi.com'); 'Paid for by' + name + committee; Voter's Edge / Smart Voter / League of Women Voters of Cupertino-Sunnyvale guides; the city's campaign finance portal; and candidate-forum roundups (YMCA Silicon Valley, Better Cupertino, Cupertino Matters). No first-person candidate site with a California 'Paid for by' committee disclosure surfaced in any of them.\n\nNear-misses deliberately excluded, since each superficially looks like a hit:\n- sanjosespotlight.com 'Eight candidates compete for Cupertino council seats' — names the exact office and cycle and even carries a photo credited to him, but it is third-person news reporting about all eight candidates, not his page.\n- gopal4cupertino.org — a genuine, correctly formatted 2026 Cupertino council campaign site, but for a different candidate (Gopal Kumarappan). It is the template of what his site would look like, not his site.\n- bettercupertino.org — carries a real California disclosure ('Paid for by Better Cupertino, FPPC #1395411'), which is exactly the signal that could be mistaken for a candidate disclosure. It is a PAC/advocacy group, and its election page lists candidates from an earlier cycle (Moore, Scharf, Wei).\n- cupertinomatters.org — a local newsletter that names him and the 2026 race, but it is commentary, and it identifies him by the lawsuit rather than as its own candidate voice.\n- LinkedIn 'Mark Fantozzi' results, including a CGI consulting executive in the Pittsburgh region — a clear same-name-different-person trap.\n- The Fantozzi Company Incorporated (bizprofile.net, macraesbluebook.com), registered 1984 at 10915 Linda Vista Dr, Cupertino — likely the same family and the same street as the disputed project, but a 1984 business filing, not a campaign entity.\n\nWhat a reviewer should check next, offline from search: the Cupertino City Clerk's certified candidate list and candidate statements for the Nov. 3, 2026 election, the city's campaign finance portal (apps.cupertino.org/campaignfinance) for a Form 410/460 committee name and FPPC ID under his name, and the Santa Clara County Registrar of Voters filing record. A committee name from those filings is the most reliable way to find a domain if one exists. It is entirely possible he is running a low-budget or offline campaign with no website; absence of a site is not evidence against his candidacy, which is well documented."
+    },
+    "Seema Sharma Lindskog": {
+      "proposals": [
+        {
+          "url": "https://cupertinotogether.org/seema-lindskog/",
+          "label": "Seema Lindskog | Cupertino Together (slate site candidate page)",
+          "pageKind": "committee_or_pac",
+          "namesThisOfficeAndCycle": false,
+          "hasPaidForByDisclosure": false,
+          "evidence": [
+            "Dedicated page for this candidate on a site whose homepage presents a three-candidate Cupertino City Council slate; the homepage text says of her 'Now she's running for City Council to do even more — responsible housing for all life stages, innovative economic growth, and a safe, livable, vibrant city.'",
+            "Page carries a platform/proposals section (Vallco town center, permit-fee reduction, block leader program, business diversification) consistent with an active council campaign rather than a biography or news write-up.",
+            "Biography matches the person in question: Cupertino Planning Commissioner since 2023, 20+ year marketing career, husband Erik, long-time Cupertino resident.",
+            "Independent reporting corroborates the slate's existence for this exact race: San José Spotlight reports 'Three pro-growth candidates — Fruen, Seema Sharma Lindskog and John Tang — have formed a slate called Cupertino Together' for three seats on the Nov. 3 ballot.",
+            "Walk Bike Cupertino (which she chaired) states she 'is running for Cupertino City Council in the November 2026 election,' confirming the office and cycle are current."
+          ],
+          "risks": [
+            "This is a shared slate site covering three candidates (Fruen, Lindskog, Tang), not a solo candidate site — it fits the 'committee that supports the candidate without being theirs' failure mode. Whether it is candidate-controlled, a joint slate committee, or an independent expenditure vehicle is not established.",
+            "Written entirely in the third person about her ('Seema Lindskog's story spans continents...'), which is the opposite of the first-person marker for an official page.",
+            "I could not confirm a California 'Paid for by' / FPPC ID disclosure anywhere on the site; searches for that footer text returned only other Cupertino groups' disclosures (e.g., Better Cupertino).",
+            "No on-page text naming the specific election date (November 3, 2026) or the seat was visible in what I could retrieve; the cycle is inferred from outside reporting, not from the page itself.",
+            "Domain registration date for cupertinotogether.org was not verifiable with the tools available; 'Cupertino Together' is close in style to earlier-cycle slate names in this city (e.g., a 2018 'Cupertino Getting Things Done Together' committee appears in FPPC records), so name-collision with an older vehicle is possible."
+          ],
+          "confidence": "low"
+        },
+        {
+          "url": "https://www.instagram.com/seemaforcupertino/",
+          "label": "Instagram account @seemaforcupertino",
+          "pageKind": "social",
+          "namesThisOfficeAndCycle": false,
+          "hasPaidForByDisclosure": false,
+          "evidence": [
+            "Handle matches the standard 'candidate-first-name for city' campaign naming pattern and surfaced in a search restricted to Cupertino campaign-domain strings.",
+            "Existence of such a handle suggests a matching campaign domain (e.g., seemaforcupertino.com) may exist even though no search result returned one."
+          ],
+          "risks": [
+            "I could not retrieve the account's bio, posts, or linked website, so I cannot confirm it belongs to this Seema Lindskog rather than another person or a supporter/parody account.",
+            "'Seema' is a common given name; the handle alone does not tie the account to this candidate, this office, or this cycle.",
+            "A social profile is not an official campaign page and would not carry a 'Paid for by' disclosure in the required form.",
+            "Could be left over from a prior effort; no date evidence was available."
+          ],
+          "confidence": "low"
+        }
+      ],
+      "notes": "I did not find a standalone official campaign website for Seema Sharma Lindskog. No domain such as seemalindskog.com or seemaforcupertino.com appeared in any search; a direct query on 'seemaforcupertino.com' returned only unrelated results. The strongest lead is the Cupertino Together slate site, and it fails two of the four distinguishing tests as far as I can verify: it is third-person, and I could find no California 'Paid for by'/FPPC disclosure or on-page naming of the November 3, 2026 election. Treat both entries above as unconfirmed leads, not as an identified official page. Method limits: I had search snippets only — I could not load the pages directly, view footers, or run WHOIS, so 'hasPaidForByDisclosure: false' means 'not confirmed,' not 'confirmed absent.' Items I deliberately excluded as look-alikes: the San José Spotlight article 'Eight candidates compete for Cupertino council seats' (news profile, mentions her repeatedly); walkbikecupertino.org pages including her author archive and the 'Passing the Baton' post (advocacy nonprofit she chaired, useful as corroboration of office and cycle but not a campaign site); cupertinomatters.org newsletters and bettercupertino.org (local advocacy/opinion outlets); LinkedIn and theorg.com (professional listings); Cupertino legistar minutes and the city's 2026 candidate handbook (government records). For a human to close this out: check the cupertinotogether.org footer for an FPPC committee ID and whether the committee is candidate-controlled; search Santa Clara County NetFile for a committee such as 'Seema Lindskog for Cupertino City Council 2026'; and check the city clerk's certified candidate list, which often records the candidate-supplied campaign URL."
+    },
+    "John Tang": {
+      "proposals": [
+        {
+          "url": "https://cupertinotogether.org/john-tang/",
+          "label": "John Tang — Cupertino Together (candidate page within a three-candidate slate site)",
+          "pageKind": "unclear",
+          "namesThisOfficeAndCycle": false,
+          "hasPaidForByDisclosure": false,
+          "evidence": [
+            "The page is a dedicated John Tang biography/platform page that states he is running for Cupertino City Council, matching the named office.",
+            "Independent reporting ties this candidate and this site's slate to the current cycle: San José Spotlight reports that eight candidates qualified for three Cupertino council seats on the Nov. 3 ballot, and that Fruen, Seema Sharma Lindskog and John Tang 'have formed a slate called Cupertino Together.'",
+            "Biographical details on the page (child refugee from Vietnam, Deputy Director of Water Resources for the City of San Jose, former San Jose Water regulatory affairs/government relations VP, SJSU civil engineering degrees, Columbia MBA) match the John Tang described in the San José Spotlight candidate coverage, which reduces the same-name risk.",
+            "The site carries campaign-operations features consistent with an active 2026 effort: Donate, Volunteer, Get a lawn sign, and 'Our priorities' navigation.",
+            "A companion Instagram account (@cupertinotogether) posts candidate introduction video content referencing John Tang, consistent with an active current-cycle presence."
+          ],
+          "risks": [
+            "This is a shared slate site covering three candidates (Fruen, Lindskog, Tang), not a candidate-controlled site solely for John Tang. It may be run by a slate/joint committee rather than by his own campaign committee, which is exactly the 'committee page that supports the candidate without being theirs' failure mode.",
+            "Retrieved text is written in the third person about John ('He fled Vietnam...', 'John is running...'), not in the candidate's first-person voice, which cuts against the official-candidate-site test.",
+            "I could not verify a California 'Paid for by ... FPPC #' disclosure anywhere on the site from the retrieved text. Its absence in my evidence is not proof of absence — the footer was not readable to me — but it is unverified.",
+            "I could not confirm the page itself names the specific election ('November 3, 2026' / 'General Election'); the cycle link comes from outside reporting, not from the page text I saw.",
+            "I could not check WHOIS/domain registration date, so 'registered for this cycle' is inferred from the slate's reported 2026 formation, not verified.",
+            "No separate John-Tang-only domain (e.g., a 'John Tang for Cupertino City Council' site) was found; if one exists, this slate page would be a supporting page, not the official one."
+          ],
+          "confidence": "medium"
+        }
+      ],
+      "notes": "Bottom line: I found no standalone, candidate-controlled 'John Tang for Cupertino City Council 2026' website. The only credible candidate-specific page is the slate page at cupertinotogether.org/john-tang, and its status is genuinely ambiguous — it is his content and clearly this cycle, but it lives on a three-candidate slate domain, is written in third person, and I could not verify the required California 'Paid for by' committee disclosure or the domain registration date. A human should open the site footer and check for an FPPC ID, and check the Cupertino City Clerk / Santa Clara County filings (Form 501/410) for the exact name of Tang's controlled committee and any candidate website listed there. Cupertino's campaign finance dashboard (apps.cupertino.org/campaignfinance) and the 2026 candidate handbook page on cupertino.gov are the right places to confirm.\n\nExplicit non-matches I checked and rejected: (1) sanjosespotlight.com 'Eight candidates compete for Cupertino council seats' — news profile, third-party reporting, not his page; also an earlier 2024 Spotlight election article exists and is still online, which is the stale-cycle trap. (2) southbaylabor.org — South Bay AFL-CIO endorsement listing showing 'John Tang — Sole Endorsement' for Cupertino City Council at-large; an endorsement page, not his. (3) bettercupertino.org — an opposing-faction local committee site with its own 'Paid for by Better Cupertino, FPPC #1395411' disclosure; a real disclosure but the wrong entity. (4) cupertinomatters.org — a local newsletter that lists candidates who pulled nomination papers; journalism, not a campaign page. (5) Same-name risks I ruled out: a Dr. John Tang (cosmetic/anti-aging physician, Saratoga), a John Y.C. Tang DDS in San Francisco, a John Tong DDS in Cupertino, and Tang Acupuncture Clinic — none are the candidate. (6) actblue.com/donate/cupertino carries 'Paid for by J.R. Fruen for Cupertino City Council FPPC #1447662' — a genuine disclosure for a different, earlier (2022) campaign. I found no opposition or parody site for Tang, but I also cannot rule one out. If the human's standard is a first-person, candidate-controlled site with a visible California committee disclosure naming this office and this election, my honest answer is that I did not confirm one exists."
+    },
+    "J.Z. Wang": {
+      "proposals": [],
+      "notes": "No page that meets the bar for an official J.Z. Wang campaign site was found, so the proposals list is intentionally empty. Confirmed context: San José Spotlight (article dated Aug. 22, 2026, 'Eight candidates compete for Cupertino council seats') reports eight candidates qualified for three Cupertino City Council seats on the Nov. 3 ballot, and identifies the candidate as 'J.Z. \"Jane\" Wang'; the other seven are Mark Fantozzi, J.R. Fruen, Tracy Kosolcharoen, Gopal Kumarappan, Seema Sharma Lindskog, Santosh Rao and John Tang. So the candidacy is real, but I could not locate a first-person site for her. Searches run: name plus office/cycle variants ('J.Z. Wang', 'JZ Wang', 'Jane Wang' + Cupertino City Council 2026), guessed domain patterns (jzwang4cupertino, jz4cupertino, wang4cupertino, wangforcupertino, votejzwang, jane4cupertino, janewangforcupertino, votejanewang), committee/FPPC and 'paid for by' phrasings, Santa Clara County Registrar and City of Cupertino clerk election pages, Ballotpedia, Voter's Edge, LWV Cupertino-Sunnyvale, Better Cupertino and Cupertino Matters. None returned a site attributable to her. Near-misses I deliberately rejected: (1) ray4cupertino.org — 'Ray Wang for Cupertino City Council 2024'; this is R \"Ray\" Wang, a different person (now a sitting councilmember elected in the 2024 recount), wrong cycle and wrong candidate, and it dominates every 'Wang + Cupertino council' search; (2) cupertinotogether.org, votetracyk.com, gopal4cupertino.org, rodsinks.com — real 2026-cycle or prior-cycle sites belonging to other candidates/slates, not hers; (3) bettercupertino.org — an advocacy group that endorses slow-growth candidates; it is a third-party organization with its own 'Paid for by Better Cupertino, FPPC #1395411' disclosure, so a page there would be committee content, not the candidate's; (4) San José Spotlight, La Voz News, Cupertino Today, Patch, Ballotpedia — news profiles or directory entries, useful for verifying the race but never an official page; (5) LinkedIn profiles for 'JZ Wang' and 'Jane Wang' in the Cupertino area, and academic hits for 'James Z. Wang' — same-name people with no shown link to this race. Also note the identity-verification hazard specific to this candidate: 'Jane Wang' is a common name and there is separate litigation ('Jane Wang v. City of Cupertino') that news coverage ties to her, so any page found later should be matched on office, cycle, and a California 'Paid for by [committee name], FPPC ID#' disclosure before being accepted. Suggested next step for the human reviewer, which I could not do here (no page-fetch or database access): pull the Santa Clara County Registrar certified candidate list for the Nov. 3, 2026 Cupertino contest and the city's Form 501/460 filings, which will give the exact committee name and FPPC ID; a site carrying that exact disclosure, written in first person about this seat, is the only thing I would call a match. Absent that, my finding is: no official page located."
+    }
+  }
+}
