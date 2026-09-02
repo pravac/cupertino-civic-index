@@ -24,7 +24,7 @@ const CHROME =
 const PORT = 9333;
 /** Enough to quote from, small enough that the whole file stays reviewable in
  *  a diff and a tool result stays inside a sane context budget. */
-const MAX_CHARS = 6_000;
+const MAX_CHARS = 24_000;
 
 interface Capture {
   candidate: string;

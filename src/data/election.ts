@@ -128,10 +128,16 @@ const CANDIDATES_2026: Candidate[] = [
     background: "Technology executive; chaired the Planning Commission in 2025",
     slate: null,
     incumbent: false,
+    // The six pillars his site names, in his own headings and his own order.
+    // Picking three of them would be us deciding which of a candidate's
+    // priorities count.
     priorities: [
-      "Government efficiency",
-      "Taxpayer accountability",
-      "Reduce regulations on small business",
+      "Quality of life",
+      "Fiscal discipline",
+      "Sensible development",
+      "Pro-business",
+      "Education and schools",
+      "Public safety",
     ],
     sources: [
       { url: "https://rao4residents.org/", label: "Campaign website", confirmedOn: "2026-08-31" },
