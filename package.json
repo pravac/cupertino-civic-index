@@ -9,7 +9,8 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "snapshot:events": "npx tsx scripts/snapshot-events.mts",
-    "snapshot:candidates": "npx tsx scripts/snapshot-candidates.mts"
+    "snapshot:candidates": "npx tsx scripts/snapshot-candidates.mts",
+    "propose:candidates": "npx tsx scripts/propose-candidates.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",

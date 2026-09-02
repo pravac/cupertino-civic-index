@@ -314,17 +314,31 @@ rather than edited in place.
    picks the next cycle still to happen automatically, so nothing else changes
    over. Between elections it falls back to the most recent one rather than
    going blank.
-2. Add each candidate with their `sources`: the pages they publish themselves.
-   **Confirm every URL by hand before adding it**, and record the date you did
-   in `confirmedOn`. A search result that looks right is not a confirmation.
-   Attaching the wrong website to a candidate's name is the worst error this
-   file can make, which is why nothing discovers URLs automatically.
-3. Run `npm run snapshot:candidates`. It drives the Chrome already on your
+2. Run `npm run propose:candidates`. For every candidate without a source it
+   searches the web and reports what it found: the URL, the evidence that it
+   belongs to that person, and the reasons to doubt it. It writes
+   `src/data/candidate-proposals.json` after each candidate, so an interrupted
+   run resumes instead of starting over, and it skips names already in the file
+   unless you pass `--force`.
+3. **Read the doubts and confirm each URL yourself**, then paste the printed
+   `sources:` line into that candidate in `src/data/election.ts`. This step is
+   deliberately manual. The proposal step is genuinely useful and it is not
+   sufficient: on the first real run it turned up a candidate's campaign
+   domain where every citation dated from the 2020 and 2022 cycles, with a
+   prior-cycle FPPC committee behind the donation link. That is a site that
+   would have passed any automated check and attributed a four-year-old
+   platform to a current candidate. The other traps look the same from a
+   distance: a different person with the same name, a committee that supports
+   a candidate without speaking for them, an opposition page, a news profile.
+   An empty `sources: []` is a correct and visible answer. A wrong URL is a
+   quote published under the wrong person's name.
+4. Run `npm run snapshot:candidates`. It drives the Chrome already on your
    machine, because campaign sites are client rendered and a plain fetch of one
    returns an empty shell that looks like a successful capture. It refuses to
    write if nothing usable came back, checks that each page actually names the
    candidate it is filed under, and prints who still has no source.
-4. Commit `src/data/candidate-snapshot.json` alongside the config.
+5. Commit `src/data/candidate-snapshot.json` and the proposals file alongside
+   the config, so the next person can see what was considered and rejected.
 
 A candidate with no confirmed page is not a problem to paper over. The card
 says so, and the assistant says so when asked, because an uneven comparison
