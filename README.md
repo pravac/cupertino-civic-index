@@ -305,6 +305,34 @@ hook so a refreshed capture actually reaches the site. Set
 `VERCEL_DEPLOY_HOOK` as a repository secret; without it the workflow still
 commits and simply skips the deploy step.
 
+## Refreshing the election, cycle by cycle
+
+Candidates change every two years, so the election data is built to be replaced
+rather than edited in place.
+
+1. Add the new cycle to `ELECTION_CYCLES` in `src/data/election.ts`. The site
+   picks the next cycle still to happen automatically, so nothing else changes
+   over. Between elections it falls back to the most recent one rather than
+   going blank.
+2. Add each candidate with their `sources`: the pages they publish themselves.
+   **Confirm every URL by hand before adding it**, and record the date you did
+   in `confirmedOn`. A search result that looks right is not a confirmation.
+   Attaching the wrong website to a candidate's name is the worst error this
+   file can make, which is why nothing discovers URLs automatically.
+3. Run `npm run snapshot:candidates`. It drives the Chrome already on your
+   machine, because campaign sites are client rendered and a plain fetch of one
+   returns an empty shell that looks like a successful capture. It refuses to
+   write if nothing usable came back, checks that each page actually names the
+   candidate it is filed under, and prints who still has no source.
+4. Commit `src/data/candidate-snapshot.json` alongside the config.
+
+A candidate with no confirmed page is not a problem to paper over. The card
+says so, and the assistant says so when asked, because an uneven comparison
+presented as an even one would mislead a voter. The capture stores each
+candidate's own text verbatim with its URL and capture date, and nothing in the
+pipeline summarizes or characterizes: summarizing is where a neutral pipeline
+stops being neutral.
+
 ## Adapting this for another city
 
 Legistar is used by hundreds of US cities. Change the namespace in `src/lib/legistar.ts`, update

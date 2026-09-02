@@ -74,6 +74,28 @@ export default function ElectionPage() {
                     </li>
                   ))}
                 </ul>
+                <div className="mt-4 border-t border-border pt-3 text-xs text-ink-muted">
+                  {c.sources.length > 0 ? (
+                    <>
+                      In their own words:{" "}
+                      {c.sources.map((src, i) => (
+                        <span key={src.url}>
+                          {i > 0 && ", "}
+                          <a
+                            className="text-primary hover:underline"
+                            href={src.url}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {src.label}
+                          </a>
+                        </span>
+                      ))}
+                    </>
+                  ) : (
+                    <>No confirmed campaign page on file for this candidate.</>
+                  )}
+                </div>
               </Card>
             ))}
           </ul>

@@ -29,6 +29,25 @@ import {
   COUNCIL_SOURCE_URL,
 } from "@/data/council";
 import { CANDIDATES, ELECTION, ELECTION_CONTEXT } from "@/data/election";
+import rawCandidateSnapshot from "@/data/candidate-snapshot.json";
+
+/** The snapshot's shape. Declared rather than inferred from the JSON: a
+ *  capture that failed carries an `error`, and today's file happens to have
+ *  none, so inference would drop the field and the filter below with it. */
+interface CandidateCapture {
+  candidate: string;
+  url: string;
+  label: string;
+  title: string;
+  text: string;
+  namePresent: boolean;
+  error?: string;
+}
+const candidateSnapshot = rawCandidateSnapshot as {
+  capturedAt: string;
+  cycle: string;
+  captures: CandidateCapture[];
+};
 import { BODY_DESCRIPTIONS, GUIDES } from "@/data/guides";
 import type { Meeting } from "./types";
 
@@ -171,7 +190,11 @@ export const chatTools = [
         (c) =>
           `${c.name}${c.incumbent ? " (incumbent)" : ""}: ${c.background}. ${
             c.slate ? `Slate: ${c.slate}. ` : ""
-          }Stated priorities: ${c.priorities.join("; ")}.`,
+          }Stated priorities: ${c.priorities.join("; ")}.${
+            c.sources.length > 0
+              ? ` In their own words: ${c.sources.map((x) => `${x.label} ${x.url}`).join(", ")}`
+              : " No confirmed campaign page on file for this candidate."
+          }`,
       ).join("\n");
       return `${ELECTION.seats} seats on the ${ELECTION.office}, ${formatDate(
         ELECTION.date,
@@ -256,6 +279,59 @@ export const chatTools = [
         return `${none}${stalePart}`;
       }
       return `${lines.join("\n\n")}${stalePart}\n\nRead from the city's event pages. The city's own site remains authoritative if a date has changed.`;
+    },
+  }),
+
+  betaTool({
+    name: "read_candidate_materials",
+    description:
+      "What a candidate publishes about themselves, captured verbatim from their own campaign page. Use this whenever someone asks what a candidate stands for, wants to compare candidates, or asks to learn more about one, so the answer rests on the candidate's own words rather than on a summary or on coverage. Quote a short passage and link the page. Not every candidate has a confirmed page: say so plainly rather than filling the gap from elsewhere.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        name: {
+          type: "string",
+          description: "Candidate name, or part of it. Omit to list who has a page on file.",
+        },
+      },
+      additionalProperties: false,
+    },
+    run: async ({ name }: { name?: string }) => {
+      const captures = candidateSnapshot.captures.filter((c) => !c.error && c.namePresent);
+      const captured = new Date(candidateSnapshot.capturedAt).toISOString().slice(0, 10);
+      const withoutPage = CANDIDATES.filter((c) => c.sources.length === 0).map((c) => c.name);
+
+      const matches = name
+        ? captures.filter((c) => c.candidate.toLowerCase().includes(name.toLowerCase().trim()))
+        : captures;
+
+      if (matches.length === 0) {
+        const known = CANDIDATES.find((c) =>
+          c.name.toLowerCase().includes((name ?? "").toLowerCase().trim()),
+        );
+        return known
+          ? `${known.name} is a candidate in this race, but no campaign page has been confirmed for them, so there is nothing here in their own words. Say that plainly. Their stated priorities on this site are a summary: ${known.priorities.join("; ")}. Candidates with a confirmed page: ${captures.map((c) => c.candidate).join(", ")}.`
+          : `No candidate matches "${name ?? ""}". Candidates in this race: ${CANDIDATES.map((c) => c.name).join(", ")}.`;
+      }
+
+      const body = matches
+        .map(
+          (c) =>
+            `${c.candidate}
+${c.label}: ${c.url}
+Captured ${captured}. Their own words follow, verbatim and possibly truncated:
+"""
+${c.text}
+"""`,
+        )
+        .join("\n\n");
+
+      const gap =
+        withoutPage.length > 0
+          ? `\n\nNo confirmed campaign page on file for: ${withoutPage.join(", ")}. If asked to compare, say which candidates you have direct material for and which you do not, because an uneven comparison presented as even would mislead.`
+          : "";
+
+      return `${body}${gap}`;
     },
   }),
 

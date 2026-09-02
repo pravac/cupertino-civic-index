@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "snapshot:events": "npx tsx scripts/snapshot-events.mts"
+    "snapshot:events": "npx tsx scripts/snapshot-events.mts",
+    "snapshot:candidates": "npx tsx scripts/snapshot-candidates.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",
