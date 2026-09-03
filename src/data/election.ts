@@ -43,6 +43,32 @@ export interface Candidate {
   sources: CandidateSource[];
 }
 
+/**
+ * An order for the candidate cards other than the file's own alphabetical one.
+ *
+ * Pinning is deliberately awkward to use: naming candidates puts the site's
+ * authority behind putting them first, which is exactly the kind of
+ * characterization the rest of this file refuses to make by accident. So the
+ * reason travels with the names, it is required, and the page prints it above
+ * the cards. A reader who disagrees with the order can see what it claims and
+ * check it. An editor who cannot finish the sentence "these are first
+ * because..." has their answer: leave `featured` off and the list stays
+ * alphabetical.
+ */
+export interface FeaturedOrder {
+  /** Candidate names, exactly as spelled in `candidates`, in the order they
+   *  should appear. Everyone else keeps the file's order behind them. A name
+   *  that matches no candidate is a build error, not a silent no-op. */
+  names: string[];
+  /** Why they are first, in the words the page shows the reader. If it is a
+   *  checkable fact, name it ("Incumbents seeking re-election, first."). If it
+   *  is the site's own judgment about who the race has centered on, say that
+   *  too, in the same sentence. What this field must never do is dress a
+   *  judgment up as a measurement, which is the one version a reader cannot
+   *  argue with. */
+  basis: string;
+}
+
 export interface ElectionCycle {
   date: string;
   label: string;
@@ -55,6 +81,9 @@ export interface ElectionCycle {
    *  than the people answering it. */
   context: string;
   candidates: Candidate[];
+  /** Optional. Omit it and the cards run in this file's order, which is
+   *  alphabetical by surname. */
+  featured?: FeaturedOrder;
 }
 
 
@@ -182,6 +211,12 @@ export const ELECTION_CYCLES: ElectionCycle[] = [
     context:
       "Candidates divide largely over how Cupertino should meet state-mandated housing targets: how much new housing to approve, and where. Read each candidate's stated priorities below and their own campaign materials before deciding where any of them stands.",
     candidates: CANDIDATES_2026,
+    featured: {
+      names: ["J.R. Fruen", "Santosh Rao"],
+      basis:
+        "The two candidates this race has centered on come first, then everyone else alphabetically. " +
+        "That order is this site's judgment, not a measured result.",
+    },
   },
 ];
 
@@ -194,6 +229,34 @@ function currentCycle(): ElectionCycle {
   return sorted.find((c) => c.date >= today) ?? sorted[sorted.length - 1];
 }
 
+/**
+ * The cycle's candidates in the order the cards should appear: pinned names
+ * first, in the order `featured.names` lists them, then everyone else in this
+ * file's order. The sort compares only the pinned rank, and `Array#sort` is
+ * stable, so the unpinned tail keeps its alphabetical order rather than being
+ * re-sorted into first-name order.
+ */
+export function orderedCandidates(cycle: ElectionCycle): Candidate[] {
+  const pinned = cycle.featured?.names ?? [];
+  const unknown = pinned.filter((n) => !cycle.candidates.some((c) => c.name === n));
+  if (unknown.length > 0) {
+    throw new Error(
+      `Election ${cycle.date}: featured.names has no candidate called ${unknown.join(", ")}. ` +
+        `Candidates in this cycle: ${cycle.candidates.map((c) => c.name).join(", ")}.`,
+    );
+  }
+  const rank = (c: Candidate) => {
+    const i = pinned.indexOf(c.name);
+    return i === -1 ? pinned.length : i;
+  };
+  return [...cycle.candidates].sort((a, b) => rank(a) - rank(b));
+}
+
 export const ELECTION = currentCycle();
+/** Source order: alphabetical by surname. What every non-display consumer
+ *  should use, so a display choice never reads as a ranking in the chat
+ *  answers or anywhere else. */
 export const CANDIDATES = ELECTION.candidates;
+/** Display order for the election page's cards. */
+export const CANDIDATES_ORDERED = orderedCandidates(ELECTION);
 export const ELECTION_CONTEXT = ELECTION.context;

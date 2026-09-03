@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CANDIDATES, ELECTION, ELECTION_CONTEXT } from "@/data/election";
+import { CANDIDATES, CANDIDATES_ORDERED, ELECTION, ELECTION_CONTEXT } from "@/data/election";
 import { daysUntil, formatDate } from "@/lib/format";
 import { Badge, ButtonLink, Card, Container, PageHeader, SectionHeading } from "@/components/ui";
 
@@ -48,10 +48,10 @@ export default function ElectionPage() {
         <section className="mt-14">
           <SectionHeading
             title="The candidates"
-            description="Listed alphabetically. Priorities are summarized from each candidate's own stated platform."
+            description={`${ELECTION.featured ? ELECTION.featured.basis : "Listed alphabetically."} Priorities are summarized from each candidate's own stated platform.`}
           />
           <ul className="grid gap-4 lg:grid-cols-2">
-            {CANDIDATES.map((c) => (
+            {CANDIDATES_ORDERED.map((c) => (
               <Card as="li" key={c.name} className="flex flex-col">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <p className="text-lg font-semibold tracking-tight text-ink">{c.name}</p>
