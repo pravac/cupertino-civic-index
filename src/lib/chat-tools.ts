@@ -31,6 +31,7 @@ import {
 } from "@/data/council";
 import { CANDIDATES, ELECTION, ELECTION_CONTEXT } from "@/data/election";
 import rawCandidateSnapshot from "@/data/candidate-snapshot.json";
+import { FINANCE_FACTS, FINANCE_PORTALS } from "@/data/campaign-finance";
 
 /** The snapshot's shape. Declared rather than inferred from the JSON: a
  *  capture that failed carries an `error`, and today's file happens to have
@@ -200,6 +201,26 @@ export const chatTools = [
       return `${ELECTION.seats} seats on the ${ELECTION.office}, ${formatDate(
         ELECTION.date,
       )}. ${CANDIDATES.length} candidates.\n\nContext: ${ELECTION_CONTEXT}\n\n${list}\n\nRegistration, ballots and deadlines are handled by the Santa Clara County Registrar of Voters, not the city: ${ELECTION.registrarUrl}\nIndependent coverage of the race: ${ELECTION.coverageUrl}`;
+    },
+  }),
+
+  betaTool({
+    name: "get_campaign_finance",
+    description:
+      "Campaign money in Cupertino elections: who funded which committees, developer and PAC spending, and where the official filings live. Use for ANY question about money flow, donors, contributions, developer funding, PACs, or independent expenditures, past or present. State each fact with its verification status and sources exactly as given: what a filing supports and what a provided summary claims are different strengths of statement, and the reader gets to know which is which.",
+    inputSchema: { type: "object", properties: {}, additionalProperties: false },
+    run: async () => {
+      const facts = FINANCE_FACTS.map((f) => {
+        const sources = f.sources
+          .map(
+            (src) =>
+              `  - [${src.kind}${src.confirmedOn ? `, confirmed ${src.confirmedOn}` : ""}] ${src.label}${src.url ? ` ${src.url}` : ""}${src.caveat ? ` (caveat: ${src.caveat})` : ""}`,
+          )
+          .join("\n");
+        return `${f.subject} (${f.cycle} cycle, ${f.verification}):\n${f.fact}\nSources:\n${sources}`;
+      }).join("\n\n");
+      const portals = FINANCE_PORTALS.map((p) => `- ${p.label}: ${p.url}`).join("\n");
+      return `${facts}\n\nOfficial records, for checking any of this or for anything not covered above:\n${portals}\n\nCandidates' current-cycle filings (Form 460) are in the filing archive under the November 3, 2026 election. This site has not yet tabulated the 2026 filings.`;
     },
   }),
 
