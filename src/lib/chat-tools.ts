@@ -19,6 +19,7 @@ import {
   searchMatters,
 } from "./legistar";
 import { getNews, searchNews } from "./news";
+import { ARCHIVE_FROM, searchArchive } from "./news-archive";
 import { getRecentVotes } from "./votes";
 import { getCityEvents } from "./cityEvents";
 import { formatDate, todayInCupertino } from "./format";
@@ -467,7 +468,7 @@ ${c.text}
   betaTool({
     name: "search_local_news",
     description:
-      "News headlines about Cupertino from local outlets. With a query it searches the past two years; without one it returns recent headlines. Use it for public reaction, lawsuits, and context that never reaches the city's own record. Headlines only: attribute to the outlet, never state one as established fact.",
+      "News headlines about Cupertino from local outlets. With a query it searches the live index plus this site's archive of council-relevant coverage back to 2016, so history like the Vallco measures or the 2023 district attorney investigation is findable. Without a query it returns recent headlines. Use it for public reaction, lawsuits, and context that never reaches the city's own record. Headlines only: attribute to the outlet, never state one as established fact.",
     inputSchema: {
       type: "object",
       properties: {
@@ -479,18 +480,34 @@ ${c.text}
       additionalProperties: false,
     },
     run: async ({ query }) => {
-      // With a query, search live over two years. Without one, show the
-      // recent topic feeds. Filtering the 60-day feeds by keyword missed
-      // anything older, which is usually the thing being asked about.
-      const items = query ? await searchNews(query) : (await getNews(40)).data;
+      // With a query: the live index for the recent past, plus the archive
+      // snapshot for everything back to 2016. The archive goes first in
+      // deduplication because its links have already been vetted into the
+      // capture; the live search fills in whatever broke since. Without a
+      // query: the recent topic feeds.
+      if (!query) {
+        const recent = (await getNews(40)).data;
+        return recent.length === 0
+          ? "No recent headlines available."
+          : recent.slice(0, 15).map((i) => `${i.title} (${i.source}) ${i.url}`).join("\n");
+      }
+      const [archived, live] = await Promise.all([
+        Promise.resolve(searchArchive(query, 10)),
+        searchNews(query),
+      ]);
+      const seen = new Set<string>();
+      const items = [...archived, ...live].filter((i) => {
+        const key = i.title.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 60);
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
       if (items.length === 0) {
-        return query
-          ? `No headlines found about "${query}" in the last two years.`
-          : "No recent headlines available.";
+        return `No headlines found about "${query}" in coverage back to ${ARCHIVE_FROM.slice(0, 4)}. Try a different word: matching is literal against headlines.`;
       }
       return items
         .slice(0, 15)
-        .map((i) => `${i.title} (${i.source}) ${i.url}`)
+        .map((i) => `${(i.publishedAt ?? "").slice(0, 10)} ${i.title} (${i.source}) ${i.url}`)
         .join("\n");
     },
   }),

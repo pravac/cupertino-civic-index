@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { NEWS_TOPICS, getNews } from "@/lib/news";
+import { ARCHIVE, ARCHIVE_CAPTURED_AT, ARCHIVE_FROM, archiveByYear } from "@/lib/news-archive";
+import { formatDate } from "@/lib/format";
 import { NewsList } from "@/components/NewsList";
 import { Container, PageHeader, SectionHeading, SourceNote } from "@/components/ui";
 
@@ -36,6 +38,27 @@ export default async function NewsPage() {
         {news.data.length === 0 && (
           <NewsList items={[]} />
         )}
+
+        <section className="mb-14">
+          <SectionHeading
+            title="The record"
+            description={`Council-relevant coverage back to ${ARCHIVE_FROM.slice(0, 4)}: elections and measures, Vallco and housing, investigations and budgets. ${ARCHIVE.length} headlines, captured ${formatDate(ARCHIVE_CAPTURED_AT.slice(0, 10))}.`}
+          />
+          <div className="space-y-3">
+            {archiveByYear().map(([year, items], idx) => (
+              <details
+                key={year}
+                open={idx === 0}
+                className="group rounded-xl border border-border bg-surface"
+              >
+                <summary className="cursor-pointer select-none px-4 py-3 font-medium text-ink transition-colors hover:bg-surface-2 group-open:border-b group-open:border-border">
+                  {year} <span className="text-sm font-normal text-ink-muted">({items.length})</span>
+                </summary>
+                <NewsList items={items} flat />
+              </details>
+            ))}
+          </div>
+        </section>
 
         <SourceNote source={news} className="mt-6" />
         <p className="mt-4 text-xs leading-relaxed text-ink-muted">

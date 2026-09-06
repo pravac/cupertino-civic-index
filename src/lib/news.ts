@@ -101,7 +101,7 @@ interface ParseOpts {
   splitTitles?: boolean;
 }
 
-function parseRss(xml: string, topic: string, opts: ParseOpts = {}): NewsItem[] {
+export function parseRss(xml: string, topic: string, opts: ParseOpts = {}): NewsItem[] {
   const items: NewsItem[] = [];
   const blocks = xml.match(/<item>[\s\S]*?<\/item>/g) ?? [];
   for (const block of blocks) {
@@ -225,6 +225,26 @@ const SPORTS =
 const CIVIC =
   /\b(council|councilmember|city hall|mayor|ordinance|zoning|planning commission|housing element|ballot|election|voters?|budget|residents?|school board|library|permit|general plan)\b/i;
 
+/**
+ * Whether a headline belongs in the long-term council archive. Stricter than
+ * the live-page test: no regional-landmark allowance, because a 2019 Highway
+ * 85 lane closure is commute news, not council history. It must name the city
+ * or a local institution, not be sports or entertainment, and not be corporate
+ * Apple coverage unless it is also plainly about city government.
+ */
+export function archiveRelevant(title: string): boolean {
+  if (!LOCAL.test(title)) return false;
+  if (NOT_CIVIC.test(title) || SPORTS.test(title)) return false;
+  if (APPLE_CORPORATE.test(title) && !CIVIC.test(title)) return false;
+  if (BLOTTER.test(title) && !CIVIC.test(title)) return false;
+  return true;
+}
+
+/** Crime and accident coverage. Real Cupertino news, but not council history,
+ *  unless the headline itself ties it to city government. */
+const BLOTTER =
+  /\b(fatal|fatally|shooting|shot|killed|kills|dies|death|crash|collision|fire|arson|stabb|homicide|robbery|burglar|missing (man|woman|teen)|arrested|sentenced|dui\b)/i;
+
 const REGIONAL_TOPICS = new Set(
   NEWS_TOPICS.filter((t) => t.allowRegional).map((t) => t.key),
 );
@@ -242,7 +262,7 @@ function isRelevant(item: NewsItem): boolean {
 }
 
 /** Same story often appears under several topics; keep the first sighting. */
-function dedupe(items: NewsItem[]): NewsItem[] {
+export function dedupe(items: NewsItem[]): NewsItem[] {
   const seen = new Set<string>();
   return items.filter((i) => {
     const key = i.title.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 60);

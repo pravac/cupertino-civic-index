@@ -8,10 +8,19 @@ function timeAgo(iso: string | null): string | null {
   if (hrs < 24) return `${hrs}h ago`;
   const days = Math.round(hrs / 24);
   if (days < 30) return `${days}d ago`;
-  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(new Date(iso));
+  const d = new Date(iso);
+  // Archive entries reach back a decade; "Nov 4" with no year would read as
+  // this year's news.
+  const opts: Intl.DateTimeFormatOptions =
+    d.getFullYear() === new Date().getFullYear()
+      ? { month: "short", day: "numeric" }
+      : { month: "short", day: "numeric", year: "numeric" };
+  return new Intl.DateTimeFormat("en-US", opts).format(d);
 }
 
-export function NewsList({ items }: { items: NewsItem[] }) {
+/** `flat` drops the outer border for use inside an already-bordered container,
+ *  like the archive's per-year fold. */
+export function NewsList({ items, flat = false }: { items: NewsItem[]; flat?: boolean }) {
   if (items.length === 0) {
     return (
       <EmptyState title="No headlines available right now.">
@@ -20,7 +29,11 @@ export function NewsList({ items }: { items: NewsItem[] }) {
     );
   }
   return (
-    <ul className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-surface">
+    <ul
+      className={`divide-y divide-border overflow-hidden bg-surface ${
+        flat ? "rounded-b-xl" : "rounded-xl border border-border"
+      }`}
+    >
       {items.map((item) => (
         <li key={item.url}>
           <a
