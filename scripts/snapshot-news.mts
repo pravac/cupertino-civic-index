@@ -62,7 +62,30 @@ const QUERIES = [
  * merely looks right, because a wrong link under a real headline is worse
  * than the gap it fills.
  */
-const PINNED: (NewsItem & { confirmedOn: string })[] = [];
+const PINNED: (NewsItem & { confirmedOn: string })[] = [
+  {
+    // Checked against the live page: og:title matches, published 2016-11-03,
+    // and the text carries the sign theft, assault and misappropriation
+    // allegations from the Measure C/D campaign's final days. Google's index
+    // no longer returns it under any query tried.
+    title: "Cupertino's Vallco measures: Contentious last days of campaign",
+    url: "https://www.mercurynews.com/2016/11/03/sign-of-the-times-tension-division-in-cupertino-over-vallco-measures/",
+    source: "The Mercury News",
+    publishedAt: "2016-11-03T18:26:07.000Z",
+    topic: "archive",
+    confirmedOn: "2026-09-06",
+  },
+  {
+    // Already captured by query, but through a Google redirect link. Pinned
+    // with the canonical URL, which wins deduplication and replaces it.
+    title: "District attorney drops investigation into Cupertino council",
+    url: "https://sanjosespotlight.com/district-attorney-drops-investigation-into-cupertino-council/",
+    source: "San José Spotlight",
+    publishedAt: "2023-05-27T00:00:00.000Z",
+    topic: "archive",
+    confirmedOn: "2026-09-06",
+  },
+];
 
 interface Archive {
   capturedAt: string;

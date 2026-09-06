@@ -1,0 +1,78 @@
+name: Refresh news archive
+
+# The news archive accumulates council-relevant coverage back to 2016 from
+# dated Google News queries (scripts/snapshot-news.mts). History only grows at
+# the near end, so weekly is enough: the live topic feeds on the news page
+# already cover the last sixty days on their own.
+#
+# The capture ACCUMULATES and never removes what an earlier run found, so a
+# bad week costs freshness, not history.
+
+on:
+  schedule:
+    - cron: "23 13 * * 1" # 06:23 Pacific on Mondays
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+# The scheduler occasionally fires a cron twice. Without this, both runs race
+# to push and the loser fails on a non-fast-forward.
+concurrency:
+  group: refresh-news
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    env:
+      # Read at the job level so the deploy step's `if` can see it. A step's own
+      # `env` block is not in scope for that step's condition.
+      HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Capture news archive
+        run: npm run snapshot:news
+
+      - name: Commit if the archive grew
+        id: commit
+        run: |
+          # capturedAt changes on every run; only the item list is a real change.
+          if git diff -- src/data/news-archive.json | grep -q '^[+-]    "title"'; then
+            :
+          else
+            git checkout -- src/data/news-archive.json
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No new headlines."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/news-archive.json
+          git commit -m "Refresh news archive"
+          # Someone else may have landed a commit since checkout. Rebase onto
+          # whatever is there and try again rather than failing the run.
+          for attempt in 1 2 3; do
+            if git push; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "Push rejected, rebasing (attempt $attempt)."
+            git pull --rebase origin main
+          done
+          echo "Could not push after three attempts."
+          exit 1
+
+      # Deploys are not wired to Git, so a commit alone does not reach the site.
+      # Skipped automatically when the hook secret is absent.
+      - name: Trigger a deploy
+        if: steps.commit.outputs.changed == 'true' && env.HOOK != ''
+        run: curl -fsS -X POST "$HOOK" -o /dev/null && echo "Deploy triggered."
