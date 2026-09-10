@@ -110,7 +110,9 @@ const CANDIDATES_2026: Candidate[] = [
       "Housing affordability and production",
       "Compromise across policy disagreements",
     ],
-    sources: [],
+    sources: [
+      { url: "https://cupertinotogether.org/", label: "Slate campaign website", confirmedOn: "2026-09-10" },
+    ],
   },
   {
     name: "Tracy Kosolcharoen",
@@ -150,7 +152,9 @@ const CANDIDATES_2026: Candidate[] = [
       "Diversify city tax revenue",
       "Safer streets and trails",
     ],
-    sources: [],
+    sources: [
+      { url: "https://cupertinotogether.org/", label: "Slate campaign website", confirmedOn: "2026-09-10" },
+    ],
   },
   {
     name: "Santosh Rao",
@@ -182,7 +186,9 @@ const CANDIDATES_2026: Candidate[] = [
       "Reduce city staff turnover",
       "Redevelop Vallco as a mixed-use destination",
     ],
-    sources: [],
+    sources: [
+      { url: "https://cupertinotogether.org/", label: "Slate campaign website", confirmedOn: "2026-09-10" },
+    ],
   },
   {
     name: "J.Z. Wang",
