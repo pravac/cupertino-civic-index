@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-09-12T16:21:22.836Z",
+  "capturedAt": "2026-09-13T16:59:14.082Z",
   "events": [
     {
       "title": "Holidays in Hawaii",
@@ -136,7 +136,7 @@
       "title": "Environmental Education Center Open House",
       "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Environmental-Education-Center-Open-House",
       "location": "McClellan Ranch Preserve, 22221 McClellan Road, 95014",
-      "summary": "Environmental Education Center Open House Next date: Saturday, September 12, 2026 | 11:00 AM to 03:00 PM Drop by the Environmental Education Center (EEC) at McClellan Ranch Preserve every Saturday from 11 a.m. to 3 p.m. for family fun and discovery. Meet the City's animal ambassadors, explore local wildlife, engage with preserve staff and park rangers, and enjoy hands-on activities that bring natu",
+      "summary": "Environmental Education Center Open House Next date: Saturday, September 19, 2026 | 11:00 AM to 03:00 PM Drop by the Environmental Education Center (EEC) at McClellan Ranch Preserve every Saturday from 11 a.m. to 3 p.m. for family fun and discovery. Meet the City's animal ambassadors, explore local wildlife, engage with preserve staff and park rangers, and enjoy hands-on activities that bring natu",
       "occurrences": [
         {
           "date": "2026-05-09",
@@ -514,20 +514,6 @@
       "stale": true
     },
     {
-      "title": "Rotary Fall Festival",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Festivals/Rotary-Fall-Festival",
-      "location": "Memorial Park, 21121 Stevens Creek Blvd, 95014",
-      "summary": "Rotary Fall Festival Next date: Saturday, September 12, 2026 | 10:00 AM to 07:00 PM The Silicon Valley Fall Festival is a City-sponsored event managed by an external organization. For details, visit the event organizer's webpage . When Saturday, September 12, 2026 | 10:00 AM - 07:00 PM Location Memorial Park, 21121 Stevens Creek Blvd, 95014, View Map Skip to below map 37.3240594,-122.0445573 21121",
-      "occurrences": [
-        {
-          "date": "2026-09-12",
-          "start": "10:00",
-          "end": "19:00"
-        }
-      ],
-      "stale": false
-    },
-    {
       "title": "Join-A-Ranger: IDs for the Trees",
       "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Join-A-Ranger-IDs-for-the-Trees",
       "location": "McClellan Ranch Preserve, 22221 McClellan Rd, 95014",
@@ -584,6 +570,20 @@
           "date": "2026-09-27",
           "start": "10:00",
           "end": "11:30"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Family Friendly Introduction to Nature Journaling",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Family-Friendly-Introduction-to-Nature-Journaling",
+      "location": "McClellan Ranch Preserve, 22221 McClellan Rd, 95014",
+      "summary": "Family Friendly Introduction to Nature Journaling Next date: Sunday, September 27, 2026 | 11:00 AM to 02:00 PM Explore McClellan Ranch Preserve through nature journaling. Participants will have an opportunity to develop keen observation skills and learn more about the natural world through journaling. Learn the fundamentals of nature journaling and practice sketching and writing about what you see",
+      "occurrences": [
+        {
+          "date": "2026-09-27",
+          "start": "11:00",
+          "end": "14:00"
         }
       ],
       "stale": false
