@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-09-13T16:59:14.082Z",
+  "capturedAt": "2026-09-14T18:40:00.598Z",
   "events": [
     {
       "title": "Holidays in Hawaii",
@@ -514,20 +514,6 @@
       "stale": true
     },
     {
-      "title": "Join-A-Ranger: IDs for the Trees",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Join-A-Ranger-IDs-for-the-Trees",
-      "location": "McClellan Ranch Preserve, 22221 McClellan Rd, 95014",
-      "summary": "Join-A-Ranger: IDs for the Trees Next date: Sunday, September 13, 2026 | 09:00 AM to 10:30 AM Explore McClellan Ranch Preserve alongside one of our Park Rangers. You'll learn how to use a dichotomous key to identify the different trees of the area and their uses. All attendees must register and an adult must accompany children. The hike is approximately one-quarter mile on a combination of dirt tr",
-      "occurrences": [
-        {
-          "date": "2026-09-13",
-          "start": "09:00",
-          "end": "10:30"
-        }
-      ],
-      "stale": false
-    },
-    {
       "title": "Teen Movie Night - Jurassic Park (1993)",
       "url": "https://www.cupertino.gov/Parks-Recreation/Events/Teen-Movie-Night-Jurassic-Park-1993",
       "location": "Quinlan Community Center, 10185 N Stelling Road, 95014",
@@ -584,6 +570,20 @@
           "date": "2026-09-27",
           "start": "11:00",
           "end": "14:00"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Heritage India Faire Festival",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Festivals/Heritage-India-Faire-Festival",
+      "location": "Memorial Park, 21121 Stevens Creek Blvd, 95014",
+      "summary": "Heritage India Faire Festival Next date: Sunday, September 27, 2026 | 11:00 AM to 06:00 PM The Heritage India Faire Festival is a City-sponsored event managed by an external organization. For details, visit the event organizer's webpage . When Sunday, September 27, 2026 | 11:00 AM - 06:00 PM Location Memorial Park, 21121 Stevens Creek Blvd, 95014, View Map Skip to below map 37.3240594,-122.0445573",
+      "occurrences": [
+        {
+          "date": "2026-09-27",
+          "start": "11:00",
+          "end": "18:00"
         }
       ],
       "stale": false
