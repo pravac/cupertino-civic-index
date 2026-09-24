@@ -140,5 +140,5 @@ and the assistant tooling are not Cupertino-specific.
 
 ---
 
-Not affiliated with or endorsed by the City of Cupertino. For official notice, records and legal
+For official notice, records and legal
 deadlines, consult the city directly.
