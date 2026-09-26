@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-09-25T17:58:36.115Z",
+  "capturedAt": "2026-09-26T17:13:25.719Z",
   "events": [
     {
       "title": "Holidays in Hawaii",
@@ -514,39 +514,6 @@
       "stale": true
     },
     {
-      "title": "Teen Movie Night - Jurassic Park (1993)",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Teen-Movie-Night-Jurassic-Park-1993",
-      "location": "Quinlan Community Center, 10185 N Stelling Road, 95014",
-      "summary": "Teen Movie Night - Jurassic Park (1993) Next date: Friday, September 25, 2026 | 06:00 PM to 08:30 PM Cupertino teens, get ready for movie night! Join us at the Quinlan Community Center on Friday, September 25 for a free screening of Jurassic Park on the big screen. Bring your friends, grab some free food and snacks, and enjoy the movie together. Doors open at 6 p.m., movie starts at 6:30 p.m. Admi",
-      "occurrences": [
-        {
-          "date": "2026-09-25",
-          "start": "18:00",
-          "end": "20:30"
-        }
-      ],
-      "stale": false
-    },
-    {
-      "title": "Join-A-Ranger: Bird ID and Guided Hike",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Join-A-Ranger-Bird-ID-and-Guided-Hike",
-      "location": "McClellan Ranch Preserve, 22221 McClellan Rd, 95014",
-      "summary": "Join-A-Ranger: Bird ID and Guided Hike Next date: Saturday, September 26, 2026 | 08:00 AM to 10:00 AM The Park Rangers invite you to learn about the birds living in our riparian habitat and how to ID them! Walk the trails to see the environment they live in and maybe catch a glimpse of a Red-Shoulder Hawk, Screech Owl, or more! All attendees must register and an adult must accompany children. The ",
-      "occurrences": [
-        {
-          "date": "2026-09-26",
-          "start": "08:00",
-          "end": "10:00"
-        },
-        {
-          "date": "2026-11-07",
-          "start": "08:00",
-          "end": "10:00"
-        }
-      ],
-      "stale": false
-    },
-    {
       "title": "Pumpkin Pool-ooza",
       "url": "https://www.cupertino.gov/Parks-Recreation/Events/Pumpkin-Pool-ooza/Pumpkin-Pool-ooza",
       "location": null,
@@ -584,6 +551,20 @@
           "date": "2026-09-27",
           "start": "11:00",
           "end": "18:00"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Na Leo Mokupuni in Cupertino",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Na-Leo-Mokupuni-ma-Cupertino/Na-Leo-Mokupuni-in-Cupertino",
+      "location": "Community Hall, 10350 Torre Ave., 95014",
+      "summary": "Na Leo Mokupuni in Cupertino Next date: Saturday, October 03, 2026 | 10:00 AM to 04:00 PM Na Leo Mokupuni in Cupertino &ndash; meaning island sounds in Cupertino Experience the rhythms, songs, and dances of the islands! Na Leo Mokupuni brings together performers to celebrate the vibrant traditions of island music and dance&mdash;right here in Cupertino. Preregistration is recommended. Limited tick",
+      "occurrences": [
+        {
+          "date": "2026-10-03",
+          "start": "10:00",
+          "end": "16:00"
         }
       ],
       "stale": false
