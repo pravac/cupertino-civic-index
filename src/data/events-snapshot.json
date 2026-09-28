@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-09-27T17:47:36.281Z",
+  "capturedAt": "2026-09-28T20:08:24.455Z",
   "events": [
     {
       "title": "Holidays in Hawaii",
@@ -14,6 +14,45 @@
         }
       ],
       "stale": true
+    },
+    {
+      "title": "Join-A-Ranger: Night Hike and Flashlight Tour",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Join-A-Ranger-Night-Hike-and-Flashlight-Tour",
+      "location": "McClellan Ranch Preserve, 22221 McClellan Rd, 95014",
+      "summary": "Join-A-Ranger: Night Hike and Flashlight Tour Next date: Friday, October 16, 2026 | 07:00 PM to 08:30 PM Enjoy a fun-filled Night Hike and Flashlight Tour of McClellan Ranch Preserve and Blackberry Farm! We will explore the woods and nature at night, learn about nocturnal animals' special adaptations, and test our heightened senses in the dark with games and activities. The hike is approximately o",
+      "occurrences": [
+        {
+          "date": "2025-10-17",
+          "start": "18:30",
+          "end": "20:00"
+        },
+        {
+          "date": "2026-01-16",
+          "start": "17:30",
+          "end": "19:00"
+        },
+        {
+          "date": "2026-02-20",
+          "start": "18:00",
+          "end": "19:30"
+        },
+        {
+          "date": "2026-10-16",
+          "start": "19:00",
+          "end": "20:30"
+        },
+        {
+          "date": "2026-11-13",
+          "start": "18:00",
+          "end": "19:30"
+        },
+        {
+          "date": "2026-12-18",
+          "start": "18:00",
+          "end": "19:30"
+        }
+      ],
+      "stale": false
     },
     {
       "title": "Cupertino Spelling Bee",
@@ -514,48 +553,6 @@
       "stale": true
     },
     {
-      "title": "Pumpkin Pool-ooza",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Pumpkin-Pool-ooza/Pumpkin-Pool-ooza",
-      "location": null,
-      "summary": "Pumpkin Pool-ooza Next date: Sunday, September 27, 2026 | 10:00 AM to 11:30 AM Celebrate fall with a festive morning at the Blackberry Farm Pools. Pumpkin Pool-ooza features a floating pumpkin patch, swimming, pumpkin decorating, games, music, and seasonal activities for the whole family. Each registered participant can choose a pumpkin from the pool to take home. Costumes are encouraged on the po",
-      "occurrences": [
-        {
-          "date": "2026-09-27",
-          "start": "10:00",
-          "end": "11:30"
-        }
-      ],
-      "stale": false
-    },
-    {
-      "title": "Family Friendly Introduction to Nature Journaling",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Family-Friendly-Introduction-to-Nature-Journaling",
-      "location": "McClellan Ranch Preserve, 22221 McClellan Rd, 95014",
-      "summary": "Family Friendly Introduction to Nature Journaling Next date: Sunday, September 27, 2026 | 11:00 AM to 02:00 PM Explore McClellan Ranch Preserve through nature journaling. Participants will have an opportunity to develop keen observation skills and learn more about the natural world through journaling. Learn the fundamentals of nature journaling and practice sketching and writing about what you see",
-      "occurrences": [
-        {
-          "date": "2026-09-27",
-          "start": "11:00",
-          "end": "14:00"
-        }
-      ],
-      "stale": false
-    },
-    {
-      "title": "Heritage India Faire Festival",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Festivals/Heritage-India-Faire-Festival",
-      "location": "Memorial Park, 21121 Stevens Creek Blvd, 95014",
-      "summary": "Heritage India Faire Festival Next date: Sunday, September 27, 2026 | 11:00 AM to 06:00 PM The Heritage India Faire Festival is a City-sponsored event managed by an external organization. For details, visit the event organizer's webpage . When Sunday, September 27, 2026 | 11:00 AM - 06:00 PM Location Memorial Park, 21121 Stevens Creek Blvd, 95014, View Map Skip to below map 37.3240594,-122.0445573",
-      "occurrences": [
-        {
-          "date": "2026-09-27",
-          "start": "11:00",
-          "end": "18:00"
-        }
-      ],
-      "stale": false
-    },
-    {
       "title": "Na Leo Mokupuni in Cupertino",
       "url": "https://www.cupertino.gov/Parks-Recreation/Events/Na-Leo-Mokupuni-ma-Cupertino/Na-Leo-Mokupuni-in-Cupertino",
       "location": "Community Hall, 10350 Torre Ave., 95014",
@@ -579,6 +576,20 @@
           "date": "2026-10-15",
           "start": "18:30",
           "end": "20:00"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Diwali Festival",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Festivals/Diwali-Festival",
+      "location": "Memorial Park, 21121 Stevens Creek Blvd, 95014",
+      "summary": "Diwali Festival Next date: Saturday, October 17, 2026 | 11:00 AM to 06:00 PM The Diwali Festival is a City-sponsored event managed by an external organization. For details, visit the event organizer's webpage . When Saturday, October 17, 2026 | 11:00 AM - 06:00 PM Location Memorial Park, 21121 Stevens Creek Blvd, 95014, View Map Skip to below map 37.3240594,-122.0445573 21121 Stevens Creek Blvd , ",
+      "occurrences": [
+        {
+          "date": "2026-10-17",
+          "start": "11:00",
+          "end": "18:00"
         }
       ],
       "stale": false
