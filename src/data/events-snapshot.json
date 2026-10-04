@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-03T17:18:42.843Z",
+  "capturedAt": "2026-10-04T17:36:52.232Z",
   "events": [
     {
       "title": "Holidays in Hawaii",
@@ -175,7 +175,7 @@
       "title": "Environmental Education Center Open House",
       "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Environmental-Education-Center-Open-House",
       "location": "McClellan Ranch Preserve, 22221 McClellan Road, 95014",
-      "summary": "Environmental Education Center Open House Next date: Saturday, October 03, 2026 | 11:00 AM to 03:00 PM Drop by the Environmental Education Center (EEC) at McClellan Ranch Preserve every Saturday from 11 a.m. to 3 p.m. for family fun and discovery. Meet the City's animal ambassadors, explore local wildlife, engage with preserve staff and park rangers, and enjoy hands-on activities that bring nature",
+      "summary": "Environmental Education Center Open House Next date: Saturday, October 10, 2026 | 11:00 AM to 03:00 PM Drop by the Environmental Education Center (EEC) at McClellan Ranch Preserve every Saturday from 11 a.m. to 3 p.m. for family fun and discovery. Meet the City's animal ambassadors, explore local wildlife, engage with preserve staff and park rangers, and enjoy hands-on activities that bring nature",
       "occurrences": [
         {
           "date": "2026-05-09",
@@ -551,20 +551,6 @@
         }
       ],
       "stale": true
-    },
-    {
-      "title": "Na Leo Mokupuni in Cupertino",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Na-Leo-Mokupuni-ma-Cupertino/Na-Leo-Mokupuni-in-Cupertino",
-      "location": "Community Hall, 10350 Torre Ave., 95014",
-      "summary": "Na Leo Mokupuni in Cupertino Next date: Saturday, October 03, 2026 | 10:00 AM to 04:00 PM Na Leo Mokupuni in Cupertino &ndash; meaning island sounds in Cupertino Experience the rhythms, songs, and dances of the islands! Na Leo Mokupuni brings together performers to celebrate the vibrant traditions of island music and dance&mdash;right here in Cupertino. Preregistration is recommended. Limited tick",
-      "occurrences": [
-        {
-          "date": "2026-10-03",
-          "start": "10:00",
-          "end": "16:00"
-        }
-      ],
-      "stale": false
     },
     {
       "title": "Pizza and Politics",
