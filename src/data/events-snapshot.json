@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-07T19:22:33.792Z",
+  "capturedAt": "2026-10-08T19:18:00.436Z",
   "events": [
     {
       "title": "Holidays in Hawaii",
@@ -562,20 +562,6 @@
           "date": "2026-10-15",
           "start": "18:30",
           "end": "20:00"
-        }
-      ],
-      "stale": false
-    },
-    {
-      "title": "Diwali Festival",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Festivals/Diwali-Festival",
-      "location": "Memorial Park, 21121 Stevens Creek Blvd, 95014",
-      "summary": "Diwali Festival Next date: Saturday, October 17, 2026 | 11:00 AM to 06:00 PM The Diwali Festival is a City-sponsored event managed by an external organization. For details, visit the event organizer's webpage . When Saturday, October 17, 2026 | 11:00 AM - 06:00 PM Location Memorial Park, 21121 Stevens Creek Blvd, 95014, View Map Skip to below map 37.3240594,-122.0445573 21121 Stevens Creek Blvd , ",
-      "occurrences": [
-        {
-          "date": "2026-10-17",
-          "start": "11:00",
-          "end": "18:00"
         }
       ],
       "stale": false
