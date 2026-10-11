@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-10T17:53:11.879Z",
+  "capturedAt": "2026-10-11T18:06:51.626Z",
   "events": [
     {
       "title": "Holidays in Hawaii",
@@ -86,6 +86,70 @@
         }
       ],
       "stale": true
+    },
+    {
+      "title": "Baer Blacksmith Shop Demonstrations",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Baer-Blacksmith-Shop-Demonstrations",
+      "location": "McClellan Ranch Preserve, 22221 McClellan Road, 95014",
+      "summary": "Baer Blacksmith Shop Demonstrations Next date: Saturday, October 31, 2026 | 11:00 AM to 03:00 PM Community members are invited to visit the Baer Blacksmith Shop from 11 a.m. to 3 p.m. and learn about early Cupertino history, the craft of blacksmithing, and learn from our experienced blacksmith, who will be firing the forge to give demonstrations. When Saturday, January 31, 2026 | 11:00 AM - 03:00 ",
+      "occurrences": [
+        {
+          "date": "2026-01-31",
+          "start": "11:00",
+          "end": "15:00"
+        },
+        {
+          "date": "2026-02-28",
+          "start": "11:00",
+          "end": "15:00"
+        },
+        {
+          "date": "2026-03-28",
+          "start": "11:00",
+          "end": "15:00"
+        },
+        {
+          "date": "2026-04-25",
+          "start": "11:00",
+          "end": "15:00"
+        },
+        {
+          "date": "2026-05-30",
+          "start": "11:00",
+          "end": "15:00"
+        },
+        {
+          "date": "2026-06-27",
+          "start": "11:00",
+          "end": "15:00"
+        },
+        {
+          "date": "2026-07-25",
+          "start": "11:00",
+          "end": "15:00"
+        },
+        {
+          "date": "2026-08-29",
+          "start": "11:00",
+          "end": "15:00"
+        },
+        {
+          "date": "2026-10-31",
+          "start": "11:00",
+          "end": "15:00"
+        },
+        {
+          "date": "2026-11-28",
+          "start": "11:00",
+          "end": "15:00"
+        },
+        {
+          "date": "2026-12-26",
+          "start": "11:00",
+          "end": "15:00"
+        }
+      ],
+      "stale": false
     },
     {
       "title": "Sweetheart Social",
@@ -175,7 +239,7 @@
       "title": "Environmental Education Center Open House",
       "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Environmental-Education-Center-Open-House",
       "location": "McClellan Ranch Preserve, 22221 McClellan Road, 95014",
-      "summary": "Environmental Education Center Open House Next date: Saturday, October 10, 2026 | 11:00 AM to 03:00 PM Drop by the Environmental Education Center (EEC) at McClellan Ranch Preserve every Saturday from 11 a.m. to 3 p.m. for family fun and discovery. Meet the City's animal ambassadors, explore local wildlife, engage with preserve staff and park rangers, and enjoy hands-on activities that bring nature",
+      "summary": "Environmental Education Center Open House Next date: Saturday, October 17, 2026 | 11:00 AM to 03:00 PM Drop by the Environmental Education Center (EEC) at McClellan Ranch Preserve every Saturday from 11 a.m. to 3 p.m. for family fun and discovery. Meet the City's animal ambassadors, explore local wildlife, engage with preserve staff and park rangers, and enjoy hands-on activities that bring nature",
       "occurrences": [
         {
           "date": "2026-05-09",
@@ -349,7 +413,7 @@
       "title": "Pooch Plunge",
       "url": "https://www.cupertino.gov/Parks-Recreation/Events/Pooch-Plunge/Pooch-Plunge-Event",
       "location": "Blackberry Farm Park, 21979 San Fernando Avenue, Cupertino, CA, 95014",
-      "summary": "Pooch Plunge Next date: Saturday, October 10, 2026 | 09:00 AM to 12:45 PM Let your pup take the plunge during a dog-only swim in the Blackberry Farm pools. It's a paws-itively fun way for your pooch to enjoy the pools before they open for summer swimming&mdash;tail wags are highly encouraged. Swim Sessions (45 minutes of tail-wagging fun ) Block 1 - 9 to 9:45 a.m. Block 2 - 10 to 10:45 a.m. Block ",
+      "summary": "Pooch Plunge Let your pup take the plunge during a dog-only swim in the Blackberry Farm pools. It's a paws-itively fun way for your pooch to enjoy the pools before they open for summer swimming&mdash;tail wags are highly encouraged. Swim Sessions (45 minutes of tail-wagging fun ) Block 1 - 9 to 9:45 a.m. Block 2 - 10 to 10:45 a.m. Block 3 - 11 to 11:45 a.m. Block 4 - Noon to 12:45 p.m. Register Re",
       "occurrences": [
         {
           "date": "2026-05-16",
@@ -362,7 +426,7 @@
           "end": "12:45"
         }
       ],
-      "stale": false
+      "stale": true
     },
     {
       "title": "Summer Concert Series",
