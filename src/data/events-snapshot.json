@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-15T17:47:50.001Z",
+  "capturedAt": "2026-10-16T17:28:00.008Z",
   "events": [
     {
       "title": "Holidays in Hawaii",
@@ -620,7 +620,7 @@
       "title": "Pizza and Politics",
       "url": "https://www.cupertino.gov/Parks-Recreation/Events/Pizza-and-Politics/Pizza-and-Politics-Event",
       "location": "Cupertino Community Hall, 10350 Torre Ave, Cupertino, CA, 95014",
-      "summary": "Pizza and Politics Next date: Thursday, October 15, 2026 | 06:30 PM to 08:00 PM Pizza and Politics is an award-winning, youth-led biannual pre-election political forum coordinated by youth for youth. The event encourages youth and teen civic engagement, makes politics more accessible, and provides young people with the opportunity to connect directly with politicians. For more information, please ",
+      "summary": "Pizza and Politics Pizza and Politics is an award-winning, youth-led biannual pre-election political forum coordinated by youth for youth. The event encourages youth and teen civic engagement, makes politics more accessible, and provides young people with the opportunity to connect directly with politicians. For more information, please visit the Pizza and Politics event page . When Thursday, Octo",
       "occurrences": [
         {
           "date": "2026-10-15",
@@ -628,7 +628,7 @@
           "end": "20:00"
         }
       ],
-      "stale": false
+      "stale": true
     },
     {
       "title": "Hidden Treasures",
@@ -654,6 +654,20 @@
           "date": "2026-10-24",
           "start": "17:00",
           "end": "20:00"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Watershed Habitat of the Steelhead Nature Walk",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Watershed-Habitat-of-the-Steelhead-Nature-Walk",
+      "location": "McClellan Ranch Preserve, 22221 McClellan Rd, 95014",
+      "summary": "Watershed Habitat of the Steelhead Nature Walk Next date: Sunday, November 01, 2026 | 10:00 AM to 12:00 PM Join a Naturalist and learn about the Steelhead life cycle, riparian habitat and challenges faced in Stevens Creek. We will walk through history and view our ecosystem through the lens of this phenomenal species. You and your child will identify aquatic insects as a measure of water quality. ",
+      "occurrences": [
+        {
+          "date": "2026-11-01",
+          "start": "10:00",
+          "end": "12:00"
         }
       ],
       "stale": false
