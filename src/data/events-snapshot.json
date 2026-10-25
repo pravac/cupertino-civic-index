@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-24T16:38:33.989Z",
+  "capturedAt": "2026-10-25T17:04:35.065Z",
   "events": [
     {
       "title": "Holidays in Hawaii",
@@ -239,7 +239,7 @@
       "title": "Environmental Education Center Open House",
       "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Environmental-Education-Center-Open-House",
       "location": "McClellan Ranch Preserve, 22221 McClellan Road, 95014",
-      "summary": "Environmental Education Center Open House Next date: Saturday, October 24, 2026 | 11:00 AM to 03:00 PM Drop by the Environmental Education Center (EEC) at McClellan Ranch Preserve every Saturday from 11 a.m. to 3 p.m. for family fun and discovery. Meet the City's animal ambassadors, explore local wildlife, engage with preserve staff and park rangers, and enjoy hands-on activities that bring nature",
+      "summary": "Environmental Education Center Open House Next date: Saturday, October 31, 2026 | 11:00 AM to 03:00 PM Drop by the Environmental Education Center (EEC) at McClellan Ranch Preserve every Saturday from 11 a.m. to 3 p.m. for family fun and discovery. Meet the City's animal ambassadors, explore local wildlife, engage with preserve staff and park rangers, and enjoy hands-on activities that bring nature",
       "occurrences": [
         {
           "date": "2026-05-09",
@@ -667,7 +667,7 @@
       "title": "Monster Mash",
       "url": "https://www.cupertino.gov/Parks-Recreation/Events/Monster-Mash/Monster-Mash-Event",
       "location": "Quinlan Community Center, 10185 North Stelling Road, Cupertino, CA, 95014",
-      "summary": "Monster Mash Next date: Saturday, October 24, 2026 | 05:00 PM to 08:00 PM Get ready for a fang-tastic good time at Cupertino Parks and Recreation's annual Monster Mash Halloween event at the Quinlan Community Center. Put on your favorite costume and enjoy an evening of games, trick-or-treating, spooky crafts, and pumpkin decorating. It's a fun-filled night of Halloween activities for the whole fam",
+      "summary": "Monster Mash Get ready for a fang-tastic good time at Cupertino Parks and Recreation's annual Monster Mash Halloween event at the Quinlan Community Center. Put on your favorite costume and enjoy an evening of games, trick-or-treating, spooky crafts, and pumpkin decorating. It's a fun-filled night of Halloween activities for the whole family. Register For more information, please visit the Monster ",
       "occurrences": [
         {
           "date": "2026-10-24",
@@ -675,7 +675,7 @@
           "end": "20:00"
         }
       ],
-      "stale": false
+      "stale": true
     },
     {
       "title": "Watershed Habitat of the Steelhead Nature Walk",
