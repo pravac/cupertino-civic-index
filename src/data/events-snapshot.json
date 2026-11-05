@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-11-04T20:27:15.920Z",
+  "capturedAt": "2026-11-05T20:41:52.948Z",
   "events": [
     {
       "title": "Holidays in Hawaii",
@@ -53,20 +53,6 @@
         }
       ],
       "stale": false
-    },
-    {
-      "title": "Cupertino Spelling Bee",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Cupertino-Spelling-Bee/Cupertino-Spelling-Bee-Event",
-      "location": "Cupertino Community Hall, 10350 Torre Ave, Cupertino, CA, 95014",
-      "summary": "Cupertino Spelling Bee Saturday, January 24, 2026 Grades 2 to 3: 1 to 3 p.m. Grades 4 to 5: 3:30 to 5:30 p.m. Cupertino Community Hall 10350 Torre Ave, Cupertino, CA 95014 The Cupertino Spelling Bee is an annual contest for Cupertino students in grades 2-5, and is organized by the Cupertino Parks and Recreation Department and the Cupertino Youth Activity Board. For more information, please visit t",
-      "occurrences": [
-        {
-          "date": "2026-01-24",
-          "start": "13:00",
-          "end": "17:30"
-        }
-      ],
-      "stale": true
     },
     {
       "title": "Preschool Open House",
@@ -715,6 +701,20 @@
           "date": "2026-12-12",
           "start": "10:00",
           "end": "12:00"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Cupertino Spelling Bee",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Cupertino-Spelling-Bee/Cupertino-Spelling-Bee-Event",
+      "location": "Cupertino Community Hall, 10350 Torre Ave, Cupertino, CA, 95014",
+      "summary": "Cupertino Spelling Bee Next date: Saturday, January 23, 2027 | 01:00 PM to 05:30 PM The Cupertino Spelling Bee is an annual contest for Cupertino students in grades 2-5, and is organized by the Cupertino Parks and Recreation Department and the Cupertino Youth Activity Board. For more information, please visit the Cupertino Spelling Bee event page. Please note: The Cupertino Spelling Bee is not aff",
+      "occurrences": [
+        {
+          "date": "2027-01-23",
+          "start": "13:00",
+          "end": "17:30"
         }
       ],
       "stale": false
