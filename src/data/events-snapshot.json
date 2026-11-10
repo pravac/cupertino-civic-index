@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-11-09T23:00:43.474Z",
+  "capturedAt": "2026-11-10T20:29:33.840Z",
   "events": [
     {
       "title": "Holidays in Hawaii",
@@ -87,20 +87,20 @@
       "title": "Preschool Open House",
       "url": "https://www.cupertino.gov/Parks-Recreation/Events/Preschool-Open-House/Preschool-Open-House-Event",
       "location": "Quinlan Community Center, 10185 North Stelling Road, 95014",
-      "summary": "Preschool Open House Discover what makes Cupertino Preschool a welcoming, nurturing place for your child to learn and grow! Bring your little ones and explore our classrooms and outdoor play areas, meet our caring teachers and administrators, and get all your questions answered about our program, curriculum, and enrollment process. Kids can experience our play-based environment while parents learn",
+      "summary": "Preschool Open House Next date: Saturday, January 30, 2027 | 10:00 AM to 12:00 PM Discover what makes Cupertino Preschool a welcoming, nurturing place for your child to learn and grow! Bring your little ones and explore our classrooms and outdoor play areas, meet our caring teachers and administrators, and get all your questions answered about our program, curriculum, and enrollment process. Kids ",
       "occurrences": [
         {
-          "date": "2026-01-27",
+          "date": "2026-01-28",
           "start": "17:30",
-          "end": "19:00"
+          "end": "18:30"
         },
         {
-          "date": "2026-01-31",
+          "date": "2027-01-30",
           "start": "10:00",
-          "end": "11:30"
+          "end": "12:00"
         }
       ],
-      "stale": true
+      "stale": false
     },
     {
       "title": "Baer Blacksmith Shop Demonstrations",
@@ -185,90 +185,6 @@
         }
       ],
       "stale": false
-    },
-    {
-      "title": "Sweetheart Social",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Sweetheart-Social/Sweetheart-Social-Event",
-      "location": "Quinlan Community Center, 10185 North Stelling Road, 95014",
-      "summary": "Sweetheart Social Saturday, February 7 6 to 8 p.m. Quinlan Community Center 10185 North Stelling Road, Cupertino, CA 95014 Celebrate Valentine's Day with a memorable family night out at our Sweetheart Social! This event is the perfect way to make the Valentines Day feel extra special for you and your loved ones. Enjoy an evening filled with: Hands-on Valentine Crafts Fun Games and Activities Sweet",
-      "occurrences": [
-        {
-          "date": "2026-02-07",
-          "start": "18:00",
-          "end": "20:00"
-        }
-      ],
-      "stale": true
-    },
-    {
-      "title": "Big Bunny 5K and Kids Fun Run",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Big-Bunny-5K/Big-Bunny-5K-Event",
-      "location": "Cupertino Civic Center, 10300 Torre Avenue, Cupertino, CA, 95014",
-      "summary": "Big Bunny 5K and Kids Fun Run Lace up and join the fun at the Big Bunny 5K! Run, walk, or hop your way through a 3.1-mile course winding through the streets of Cupertino, starting and finishing at the Cupertino Civic Center . Whether you're racing for a personal best or enjoying a morning out with friends and family, this community fun run is the perfect way to kick off the day. For our youngest p",
-      "occurrences": [
-        {
-          "date": "2026-03-07",
-          "start": "08:30",
-          "end": "11:00"
-        }
-      ],
-      "stale": true
-    },
-    {
-      "title": "Teen Resource Fair",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Teen-Resource-Fair/Teen-Resource-Fair-Event",
-      "location": "Main Street Cupertino, 19401 Stevens Creek Boulevard, 95014",
-      "summary": "Teen Resource Fair This event is focused on helping teens explore City of Cupertino summer job opportunities and volunteer programs that build real-world skills and look great on college and job applications. Learn about opportunities like REV, YAB, LIT, and Techie Teens, and meet the staff who coordinate and recruit for these programs. In addition, the fair will include mental health and wellness",
-      "occurrences": [
-        {
-          "date": "2026-03-21",
-          "start": "12:00",
-          "end": "15:00"
-        }
-      ],
-      "stale": true
-    },
-    {
-      "title": "Earth and Arbor Day Festival",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Earth-and-Arbor-Day-Festival/Earth-and-Arbor-Day-Festival-Event",
-      "location": "Cupertino Civic Center, Torre Avenue, 95014",
-      "summary": "Earth and Arbor Day Festival Cupertino's annual Earth and Arbor Day Festival is an interactive event that invites community members of all ages to learn about environmental issues and solutions in a family-friendly atmosphere. Explore booths, hands-on activities, live entertainment, food trucks, and connect with local organizations working to protect our environment at this free community event. F",
-      "occurrences": [
-        {
-          "date": "2026-04-04",
-          "start": "11:00",
-          "end": "15:00"
-        }
-      ],
-      "stale": true
-    },
-    {
-      "title": "FootGolf Tournament",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/FootGolf-Tournament/FootGolf-Tournament-Event",
-      "location": "Blackberry Farm Golf Course, 22100 Stevens Creek Boulevard, Cupertino, 95014",
-      "summary": "FootGolf Tournament Enjoy a family-friendly evening of 9-hole FootGolf, a fun twist on traditional golf where you kick a soccer ball toward the hole. Check in at 4:30 p.m., then tee off with a 5 p.m. shotgun start. Your registration includes soccer ball rental, green fees, snacks, and prizes for top overall scores. Perfect for all ages and skill levels. Register For more information, visit the Foo",
-      "occurrences": [
-        {
-          "date": "2026-05-02",
-          "start": "16:30",
-          "end": "19:00"
-        }
-      ],
-      "stale": true
-    },
-    {
-      "title": "Live Well Age Well Health Expo",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Live-Well-Age-Well-Health-Expo/Live-Well-Age-Well-Health-Expo-Event",
-      "location": "Cupertino Senior Center, 21251 Stevens Creek Blvd, 95014",
-      "summary": "Live Well Age Well Health Expo Embrace a vibrant life at 50 and beyond! Join the Cupertino Senior Center for the Live Well Age Well Health Expo designed for individuals ages 50 and better. Explore booths, resources, and educational sessions tailored to support a healthy lifestyle as you age. Then get moving with exciting activity demonstrations, perfect for discovering new exercises that will help",
-      "occurrences": [
-        {
-          "date": "2026-05-08",
-          "start": "10:30",
-          "end": "13:30"
-        }
-      ],
-      "stale": true
     },
     {
       "title": "Pooch Plunge",
@@ -960,6 +876,90 @@
           "date": "2027-01-23",
           "start": "13:00",
           "end": "17:30"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Sweetheart Social",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Sweetheart-Social/Sweetheart-Social-Event",
+      "location": "Quinlan Community Center, 10185 North Stelling Road, 95014",
+      "summary": "Sweetheart Social Next date: Saturday, February 13, 2027 | 05:30 PM to 07:30 PM Celebrate Valentine's Day with a memorable family night out at our Sweetheart Social! This event is the perfect way to make the Valentines Day feel extra special for you and your loved ones. Enjoy an evening filled with hands-on Valentine crafts, fun games and activities, sweet treat, and a keepsake photo! Create sweet",
+      "occurrences": [
+        {
+          "date": "2027-02-13",
+          "start": "17:30",
+          "end": "19:30"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Big Bunny 5K and Kids Fun Run",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Big-Bunny-5K/Big-Bunny-5K-Event",
+      "location": "Cupertino Civic Center, 10300 Torre Avenue, Cupertino, CA, 95014",
+      "summary": "Big Bunny 5K and Kids Fun Run Next date: Saturday, March 06, 2027 | 08:30 AM to 11:00 AM Lace up and join the fun at the Big Bunny 5K! Run, walk, or hop your way through a 3.1-mile course winding through the streets of Cupertino, starting and finishing at the Cupertino Civic Center . Whether you're racing for a personal best or enjoying a morning out with friends and family, this community fun run",
+      "occurrences": [
+        {
+          "date": "2027-03-06",
+          "start": "08:30",
+          "end": "11:00"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Teen Resource Fair",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Teen-Resource-Fair/Teen-Resource-Fair-Event",
+      "location": "Main Street Cupertino, 19401 Stevens Creek Boulevard, 95014",
+      "summary": "Teen Resource Fair Next date: Saturday, March 20, 2027 | 12:00 PM to 03:00 PM This event is focused on helping teens explore City of Cupertino summer job opportunities and volunteer programs that build real-world skills and look great on college and job applications. Learn about opportunities like REV, YAB, LIT, and Techie Teens, and meet the staff who coordinate and recruit for these programs. In",
+      "occurrences": [
+        {
+          "date": "2027-03-20",
+          "start": "12:00",
+          "end": "15:00"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Earth and Arbor Day Festival",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Earth-and-Arbor-Day-Festival/Earth-and-Arbor-Day-Festival-Event",
+      "location": "Cupertino Civic Center, Torre Avenue, 95014",
+      "summary": "Earth and Arbor Day Festival Next date: Saturday, April 03, 2027 | 10:00 AM to 02:00 PM Cupertino's annual Earth and Arbor Day Festival is an interactive event that invites community members of all ages to learn about environmental issues and solutions in a family-friendly atmosphere. Explore booths, hands-on activities, live entertainment, food trucks, and connect with local organizations working",
+      "occurrences": [
+        {
+          "date": "2027-04-03",
+          "start": "10:00",
+          "end": "14:00"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "FootGolf Tournament",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/FootGolf-Tournament/FootGolf-Tournament-Event",
+      "location": "Blackberry Farm Golf Course, 22100 Stevens Creek Boulevard, Cupertino, 95014",
+      "summary": "FootGolf Tournament Next date: Saturday, May 01, 2027 | 04:30 PM to 07:00 PM Enjoy a family-friendly evening of 9-hole FootGolf, a fun twist on traditional golf where you kick a soccer ball toward the hole. Check in at 4:30 p.m., then tee off with a 5 p.m. shotgun start. Your registration includes soccer ball rental, green fees, snacks, and prizes for top overall scores. Perfect for all ages and s",
+      "occurrences": [
+        {
+          "date": "2027-05-01",
+          "start": "16:30",
+          "end": "19:00"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Live Well Age Well Health Expo",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Live-Well-Age-Well-Health-Expo/Live-Well-Age-Well-Health-Expo-Event",
+      "location": "Cupertino Senior Center, 21251 Stevens Creek Blvd, 95014",
+      "summary": "Live Well Age Well Health Expo Next date: Friday, May 14, 2027 | 10:30 AM to 01:30 PM Embrace a vibrant life at 50 and beyond! Join the Cupertino Senior Center for the Live Well Age Well Health Expo designed for individuals ages 50 and better. Explore booths, resources, and educational sessions tailored to support a healthy lifestyle as you age. Then get moving with exciting activity demonstration",
+      "occurrences": [
+        {
+          "date": "2027-05-14",
+          "start": "10:30",
+          "end": "13:30"
         }
       ],
       "stale": false
