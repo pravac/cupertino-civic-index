@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-11-13T20:30:49.005Z",
+  "capturedAt": "2026-11-14T18:46:04.809Z",
   "events": [
     {
       "title": "Holidays in Hawaii",
@@ -19,7 +19,7 @@
       "title": "Join-A-Ranger: Night Hike and Flashlight Tour",
       "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Join-A-Ranger-Night-Hike-and-Flashlight-Tour",
       "location": "McClellan Ranch Preserve, 22221 McClellan Rd, 95014",
-      "summary": "Join-A-Ranger: Night Hike and Flashlight Tour Next date: Friday, November 13, 2026 | 06:00 PM to 07:30 PM Enjoy a fun-filled Night Hike and Flashlight Tour of McClellan Ranch Preserve and Blackberry Farm! We will explore the woods and nature at night, learn about nocturnal animals' special adaptations, and test our heightened senses in the dark with games and activities. The hike is approximately ",
+      "summary": "Join-A-Ranger: Night Hike and Flashlight Tour Next date: Friday, December 18, 2026 | 06:00 PM to 07:30 PM Enjoy a fun-filled Night Hike and Flashlight Tour of McClellan Ranch Preserve and Blackberry Farm! We will explore the woods and nature at night, learn about nocturnal animals' special adaptations, and test our heightened senses in the dark with games and activities. The hike is approximately ",
       "occurrences": [
         {
           "date": "2025-10-17",
@@ -68,20 +68,6 @@
         }
       ],
       "stale": false
-    },
-    {
-      "title": "Holiday Sing-along",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Holiday-Sing-along/Holiday-Sing-along-Event",
-      "location": "Cupertino Senior Center, 21251 Stevens Creek Blvd, 95014",
-      "summary": "Holiday Sing-along Come and sing holiday songs accompanied by our Harmonikatz band. Light refreshments will be served. When Monday, December 15, 2025 | 01:30 PM - 02:30 PM Location Cupertino Senior Center, 21251 Stevens Creek Blvd, 95014, View Map Skip to below map 37.3232337,-122.04556 21251 Stevens Creek Blvd , 95014 Cupertino Senior Center 21251 Stevens Creek Blvd , 95014 Holiday Sing-along Ski",
-      "occurrences": [
-        {
-          "date": "2025-12-15",
-          "start": "13:30",
-          "end": "14:30"
-        }
-      ],
-      "stale": true
     },
     {
       "title": "Preschool Open House",
