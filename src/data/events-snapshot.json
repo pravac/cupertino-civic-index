@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-11-24T00:57:10.048Z",
+  "capturedAt": "2026-11-24T23:03:46.728Z",
   "events": [
     {
       "title": "Holidays in Hawaii",
@@ -14,60 +14,6 @@
         }
       ],
       "stale": true
-    },
-    {
-      "title": "Join-A-Ranger: Night Hike and Flashlight Tour",
-      "url": "https://www.cupertino.gov/Parks-Recreation/Events/McClellan-Events/Join-A-Ranger-Night-Hike-and-Flashlight-Tour",
-      "location": "McClellan Ranch Preserve, 22221 McClellan Rd, 95014",
-      "summary": "Join-A-Ranger: Night Hike and Flashlight Tour Next date: Friday, December 18, 2026 | 06:00 PM to 07:30 PM Enjoy a fun-filled Night Hike and Flashlight Tour of McClellan Ranch Preserve and Blackberry Farm! We will explore the woods and nature at night, learn about nocturnal animals' special adaptations, and test our heightened senses in the dark with games and activities. The hike is approximately ",
-      "occurrences": [
-        {
-          "date": "2025-10-17",
-          "start": "18:30",
-          "end": "20:00"
-        },
-        {
-          "date": "2026-01-16",
-          "start": "17:30",
-          "end": "19:00"
-        },
-        {
-          "date": "2026-02-20",
-          "start": "18:00",
-          "end": "19:30"
-        },
-        {
-          "date": "2026-10-16",
-          "start": "19:00",
-          "end": "20:30"
-        },
-        {
-          "date": "2026-11-13",
-          "start": "18:00",
-          "end": "19:30"
-        },
-        {
-          "date": "2026-12-18",
-          "start": "18:00",
-          "end": "19:30"
-        },
-        {
-          "date": "2027-01-15",
-          "start": "18:00",
-          "end": "19:30"
-        },
-        {
-          "date": "2027-02-19",
-          "start": "18:00",
-          "end": "19:30"
-        },
-        {
-          "date": "2027-03-05",
-          "start": "18:30",
-          "end": "20:00"
-        }
-      ],
-      "stale": false
     },
     {
       "title": "Preschool Open House",
@@ -848,6 +794,20 @@
           "date": "2026-12-12",
           "start": "10:00",
           "end": "12:00"
+        }
+      ],
+      "stale": false
+    },
+    {
+      "title": "Cupertino Café",
+      "url": "https://www.cupertino.gov/Parks-Recreation/Events/Cupertino-Café",
+      "location": "Quinlan Community Center, 10185 N Stelling Road, 95014",
+      "summary": "Cupertino Café Next date: Sunday, December 13, 2026 | 03:00 PM to 08:00 PM Teens, need a productive place to study? The Youth Activity Board is opening the Quinlan Community Center's banquet hall for a special teen study space. Enjoy free Panda Express, snacks, and coffee while you settle in and prepare for exams. When you're ready for a break, unwind with recreational games and calming activities",
+      "occurrences": [
+        {
+          "date": "2026-12-13",
+          "start": "15:00",
+          "end": "20:00"
         }
       ],
       "stale": false
